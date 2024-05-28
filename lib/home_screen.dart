@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class VentanaPrincipal extends StatelessWidget {
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ventana Principal'),
+        title: Text('Pantalla Principal'),
       ),
       body: Center(
-        child: Text('Bienvenido a la Ventana Principal!'),
+        child: Text('Bienvenido a la pantalla principal!'),
       ),
     );
   }
