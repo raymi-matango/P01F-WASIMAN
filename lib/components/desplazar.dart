@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:animated_text_kit/animated_text_kit.dart'; // Importa el paquete de texto animado
-import 'home_screen.dart'; // Asegúrate de tener esta pantalla creada
+import 'package:iniciofront/pages/home.dart';
 
 class SplashScreen extends StatefulWidget {
   @override

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'splash_screen.dart';
-import 'home_screen.dart';
+import 'package:iniciofront/components/desplazar.dart';
 
 void main() {
   runApp(const MyApp());
