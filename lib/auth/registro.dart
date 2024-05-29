@@ -42,11 +42,20 @@ class _RegistrarState extends State<Registrar> {
         }),
       );
 
+      //teoria de colores aplicar
       if (response.statusCode == 201) {
         final data = jsonDecode(response.body);
         if (data['message'] == 'Usuario registrado exitosamente') {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(data['message'])),
+            SnackBar(
+              content: Text(
+                data['message'],
+                style: const TextStyle(
+                    color: Color.fromARGB(255, 0, 255, 8),
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold), // Color verde para éxito
+              ),
+            ),
           );
           Navigator.pushReplacement(
             context,
@@ -54,19 +63,43 @@ class _RegistrarState extends State<Registrar> {
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error: ${data['message']}')),
+            SnackBar(
+              content: Text(
+                'Error: ${data['message']}',
+                style: const TextStyle(
+                  color: Color.fromARGB(255, 255, 17, 0),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ), // Color rojo para error
+              ),
+            ),
           );
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-              content:
-                  Text('Error al registrar usuario: ${response.reasonPhrase}')),
+            content: Text(
+              'Error al registrar usuario: ${response.reasonPhrase}',
+              style: const TextStyle(
+                  color: Color.fromARGB(255, 255, 17, 0),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold), // Color rojo para error
+            ),
+          ),
         );
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error al registrar usuario: $e')),
+        SnackBar(
+          content: Text(
+            'Error al registrar usuario:   $e',
+            style: const TextStyle(
+              color: Colors.red, // Color rojo para error
+              fontWeight: FontWeight.bold, // Negrita
+              fontSize: 18, // Tamaño de fuente más grande
+            ),
+          ),
+        ),
       );
     }
   }
