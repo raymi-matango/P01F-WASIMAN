@@ -248,3 +248,4 @@ class _RegistrarState extends State<Registrar> {
     );
   }
 }
+//version login ultima actualizacion mejorada no cambiar
