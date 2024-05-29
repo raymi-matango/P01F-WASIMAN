@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:iniciofront/auth/login.dart';
 
 class Registrar extends StatefulWidget {
@@ -14,9 +16,61 @@ class _RegistrarState extends State<Registrar> {
   final email = TextEditingController();
   final clave = TextEditingController();
   final confirmaClave = TextEditingController();
-  bool invisible = false;
+  bool invisibleClave = true;
+  bool invisibleConfirmaClave = true;
 
   final formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    nombre.dispose();
+    email.dispose();
+    clave.dispose();
+    confirmaClave.dispose();
+    super.dispose();
+  }
+
+  Future<void> registrarUsuario() async {
+    try {
+      final response = await http.post(
+        Uri.parse('http://localhost:7777/api/autenticar/registrar'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'nombre': nombre.text,
+          'email': email.text,
+          'clave': clave.text,
+        }),
+      );
+
+      if (response.statusCode == 201) {
+        final data = jsonDecode(response.body);
+        if (data['message'] == 'Usuario registrado exitosamente') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(data['message'])),
+          );
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => LoginPagina()),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error: ${data['message']}')),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content:
+                  Text('Error al registrar usuario: ${response.reasonPhrase}')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al registrar usuario: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +78,6 @@ class _RegistrarState extends State<Registrar> {
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(10.0),
-            //Controladores
             child: Form(
               key: formKey,
               child: Column(
@@ -36,102 +89,89 @@ class _RegistrarState extends State<Registrar> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  //Logo
+                  const SizedBox(height: 20),
                   Image.asset(
                     "assets/registrar.png",
                     width: 250,
                   ),
-                  Container(
-                    margin: EdgeInsets.all(8),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.green.withOpacity(0.2),
-                    ),
-                    child: TextFormField(
-                      controller: nombre,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Este campo es obligatorio";
-                        }
-                        if (!RegExp(r'^[a-zA-Z]+(\s[a-zA-Z]+)?$')
-                            .hasMatch(value)) {
-                          return "Por favor, introduce tu nombre";
-                        }
-                        return null; // Devuelve null si la validación es exitosa
+                  const SizedBox(height: 20),
+                  _buildTextField(
+                    controller: nombre,
+                    hintText: "Nombres",
+                    icon: Icons.person,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Este campo es obligatorio";
+                      }
+                      if (!RegExp(r'^[a-zA-Z]+(\s[a-zA-Z]+)?$')
+                          .hasMatch(value)) {
+                        return "Por favor, introduce tu nombre y apellido";
+                      }
+                      return null;
+                    },
+                  ),
+                  _buildTextField(
+                    controller: email,
+                    hintText: "Email",
+                    icon: Icons.email,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Este campo es obligatorio";
+                      }
+                      if (!EmailValidator.validate(value)) {
+                        return "Por favor, introduce un correo electrónico válido";
+                      }
+                      return null;
+                    },
+                  ),
+                  _buildTextField(
+                    controller: clave,
+                    hintText: "Clave",
+                    icon: Icons.lock,
+                    obscureText: invisibleClave,
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          invisibleClave = !invisibleClave;
+                        });
                       },
-                      decoration: const InputDecoration(
-                        icon: Icon(Icons.person),
-                        border: InputBorder.none,
-                        hintText: "Nombres",
-                      ),
+                      icon: Icon(invisibleClave
+                          ? Icons.visibility
+                          : Icons.visibility_off),
                     ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Este campo es obligatorio";
+                      }
+                      return null;
+                    },
                   ),
-                  //Usuario en este caso debe ser email
-                  Container(
-                    margin: EdgeInsets.all(8),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.green.withOpacity(0.2),
-                    ),
-                    child: TextFormField(
-                      controller: email,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Este campo es obligatorio";
-                        }
-                        if (!EmailValidator.validate(value)) {
-                          return "Por favor, introduce un correo electrónico válido";
-                        }
-                        return null; // Devuelve null si la validación es exitosa
+                  _buildTextField(
+                    controller: confirmaClave,
+                    hintText: "Confirma Clave",
+                    icon: Icons.lock,
+                    obscureText: invisibleConfirmaClave,
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          invisibleConfirmaClave = !invisibleConfirmaClave;
+                        });
                       },
-                      decoration: const InputDecoration(
-                        icon: Icon(Icons.email),
-                        border: InputBorder.none,
-                        hintText: "Email",
-                      ),
+                      icon: Icon(invisibleConfirmaClave
+                          ? Icons.visibility
+                          : Icons.visibility_off),
                     ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Este campo es obligatorio";
+                      }
+                      if (value != clave.text) {
+                        return "Las contraseñas no coinciden";
+                      }
+                      return null;
+                    },
                   ),
-
-                  //Constrasenia
-                  Container(
-                    margin: EdgeInsets.all(8),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.green.withOpacity(0.2),
-                    ),
-                    child: TextFormField(
-                      controller: clave,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Este campo es obligatorio";
-                        }
-                      },
-                      obscureText: invisible,
-                      decoration: InputDecoration(
-                          icon: Icon(Icons.lock),
-                          border: InputBorder.none,
-                          hintText: "Clave",
-                          suffixIcon: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  invisible = !invisible;
-                                });
-                              },
-                              icon: Icon(invisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off))),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  //Boton para ingresar
+                  const SizedBox(height: 12),
                   Container(
                     height: 55,
                     width: MediaQuery.of(context).size.width * 0.9,
@@ -142,7 +182,7 @@ class _RegistrarState extends State<Registrar> {
                     child: TextButton(
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
-                          //metodo que ingrese
+                          registrarUsuario();
                         }
                       },
                       child: const Text(
@@ -151,9 +191,7 @@ class _RegistrarState extends State<Registrar> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 15,
-                  ),
+                  const SizedBox(height: 15),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -169,13 +207,42 @@ class _RegistrarState extends State<Registrar> {
                           "ACCEDER",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                      )
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String hintText,
+    required IconData icon,
+    bool obscureText = false,
+    Widget? suffixIcon,
+    required String? Function(String?) validator,
+  }) {
+    return Container(
+      margin: EdgeInsets.all(8),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: Colors.green.withOpacity(0.2),
+      ),
+      child: TextFormField(
+        controller: controller,
+        obscureText: obscureText,
+        validator: validator,
+        decoration: InputDecoration(
+          icon: Icon(icon),
+          border: InputBorder.none,
+          hintText: hintText,
+          suffixIcon: suffixIcon,
         ),
       ),
     );
