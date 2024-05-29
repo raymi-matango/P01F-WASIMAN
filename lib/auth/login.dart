@@ -15,34 +15,64 @@ class LoginPagina extends StatefulWidget {
 class _LoginPaginaState extends State<LoginPagina> {
   final email = TextEditingController();
   final clave = TextEditingController();
-  bool invisible = false;
+  bool invisible = true;
   final formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    email.dispose();
+    clave.dispose();
+    super.dispose();
+  }
 
   Future<void> _login() async {
     final uri = Uri.parse("http://192.168.137.1:7777/api/autenticar/login");
-    final response = await http.post(
-      uri,
-      body: json.encode({
-        "email": email.text,
-        "clave": clave.text,
-      }),
-      headers: {"Content-Type": "application/json"},
-    );
-
-    if (response.statusCode == 200) {
-      // Si la autenticación fue exitosa, redirige a la página de inicio
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+    try {
+      final response = await http.post(
+        uri,
+        body: json.encode({
+          "email": email.text,
+          "clave": clave.text,
+        }),
+        headers: {"Content-Type": "application/json"},
       );
-    } else if (response.statusCode == 400) {
-      // Si hubo un error de validación en la API, muestra el mensaje de error recibido
-      final error = json.decode(response.body)["mensaje"];
-      print("Error de validación: $error");
-    } else {
-      // Si ocurrió algún otro error, muestra un mensaje genérico
-      print("Error al autenticar, por favor inténtalo de nuevo más tarde");
+
+      if (response.statusCode == 200) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+      } else if (response.statusCode == 400) {
+        final error = json.decode(response.body)["mensaje"];
+        _showErrorMessage(error);
+      } else if (response.statusCode == 404) {
+        _showErrorMessage("Email no encontrado");
+      } else if (response.statusCode == 401) {
+        _showErrorMessage("Contraseña incorrecta");
+      } else {
+        _showErrorMessage(
+            "Error al autenticar, por favor inténtalo de nuevo más tarde");
+      }
+    } catch (e) {
+      _showErrorMessage(
+          "Error al autenticar, por favor inténtalo de nuevo más tarde: $e");
     }
+  }
+
+  void _showErrorMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: const TextStyle(
+            color: Colors.red,
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+        ),
+        backgroundColor: Color.fromARGB(255, 1, 20, 6),
+      ),
+    );
   }
 
   @override
@@ -129,7 +159,11 @@ class _LoginPaginaState extends State<LoginPagina> {
                       color: Colors.green,
                     ),
                     child: TextButton(
-                      onPressed: _login,
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          _login();
+                        }
+                      },
                       child: const Text(
                         "Acceder",
                         style: TextStyle(color: Colors.white),
