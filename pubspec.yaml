@@ -19,6 +19,7 @@ dependencies:
   animated_text_kit: ^4.2.2
   simple_circular_progress_bar: ^1.0.2
   email_validator: ^2.1.17
+  another_flushbar: ^1.12.30
 
 dev_dependencies:
   flutter_test:
