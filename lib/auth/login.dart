@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:iniciofront/auth/registro.dart';
 
 class LoginPagina extends StatefulWidget {
   const LoginPagina({super.key});
@@ -121,7 +122,12 @@ class _LoginPaginaState extends State<LoginPagina> {
                     children: [
                       const Text("¿Nuevo por aquí? ¡Crea tu cuenta!"),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Registrar()));
+                        },
                         child: const Text(
                           "REGÍSTRATE",
                           style: TextStyle(fontWeight: FontWeight.bold),
@@ -138,3 +144,4 @@ class _LoginPaginaState extends State<LoginPagina> {
     );
   }
 }
+//vesion de ui mucho mejor
