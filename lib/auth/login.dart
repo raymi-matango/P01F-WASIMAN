@@ -9,7 +9,7 @@ class LoginPagina extends StatefulWidget {
 }
 
 class _LoginPaginaState extends State<LoginPagina> {
-  final usuario = TextEditingController();
+  final email = TextEditingController();
   final clave = TextEditingController();
   bool invisible = false;
   //Global
