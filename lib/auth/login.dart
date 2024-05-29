@@ -19,7 +19,7 @@ class _LoginPaginaState extends State<LoginPagina> {
   final formKey = GlobalKey<FormState>();
 
   Future<void> _login() async {
-    final uri = Uri.parse("http://localhost:7777/api/autenticar/login");
+    final uri = Uri.parse("http://192.168.137.1:7777/api/autenticar/login");
     final response = await http.post(
       uri,
       body: json.encode({

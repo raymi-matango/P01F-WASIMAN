@@ -33,7 +33,7 @@ class _RegistrarState extends State<Registrar> {
   Future<void> registrarUsuario() async {
     try {
       final response = await http.post(
-        Uri.parse('http://localhost:7777/api/autenticar/registrar'),
+        Uri.parse('http://192.168.137.1:7777/api/autenticar/registrar'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'nombre': nombre.text,
