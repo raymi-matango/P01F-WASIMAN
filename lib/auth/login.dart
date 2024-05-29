@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:email_validator/email_validator.dart';
 import 'package:iniciofront/auth/registro.dart';
+import 'package:iniciofront/pages/wasi.dart'; // Importa la página de inicio
 
 class LoginPagina extends StatefulWidget {
-  const LoginPagina({super.key});
+  const LoginPagina({Key? key}) : super(key: key);
 
   @override
   State<LoginPagina> createState() => _LoginPaginaState();
@@ -13,8 +16,34 @@ class _LoginPaginaState extends State<LoginPagina> {
   final email = TextEditingController();
   final clave = TextEditingController();
   bool invisible = false;
-  //Global
   final formKey = GlobalKey<FormState>();
+
+  Future<void> _login() async {
+    final uri = Uri.parse("http://localhost:7777/api/autenticar/login");
+    final response = await http.post(
+      uri,
+      body: json.encode({
+        "email": email.text,
+        "clave": clave.text,
+      }),
+      headers: {"Content-Type": "application/json"},
+    );
+
+    if (response.statusCode == 200) {
+      // Si la autenticación fue exitosa, redirige a la página de inicio
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    } else if (response.statusCode == 400) {
+      // Si hubo un error de validación en la API, muestra el mensaje de error recibido
+      final error = json.decode(response.body)["mensaje"];
+      print("Error de validación: $error");
+    } else {
+      // Si ocurrió algún otro error, muestra un mensaje genérico
+      print("Error al autenticar, por favor inténtalo de nuevo más tarde");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,17 +52,14 @@ class _LoginPaginaState extends State<LoginPagina> {
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(10.0),
-            //Controladores
             child: Form(
               key: formKey,
               child: Column(
                 children: [
-                  //Logo
                   Image.asset(
                     "assets/login.png",
                     width: 250,
                   ),
-                  //Usuario en este caso debe ser email
                   Container(
                     margin: EdgeInsets.all(8),
                     padding:
@@ -43,6 +69,7 @@ class _LoginPaginaState extends State<LoginPagina> {
                       color: Colors.green.withOpacity(0.2),
                     ),
                     child: TextFormField(
+                      controller: email,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Este campo es obligatorio";
@@ -50,7 +77,7 @@ class _LoginPaginaState extends State<LoginPagina> {
                         if (!EmailValidator.validate(value)) {
                           return "Por favor, introduce un correo electrónico válido";
                         }
-                        return null; // Devuelve null si la validación es exitosa
+                        return null;
                       },
                       decoration: const InputDecoration(
                         icon: Icon(Icons.email),
@@ -59,8 +86,6 @@ class _LoginPaginaState extends State<LoginPagina> {
                       ),
                     ),
                   ),
-
-                  //Constrasenia
                   Container(
                     margin: EdgeInsets.all(8),
                     padding:
@@ -70,10 +95,12 @@ class _LoginPaginaState extends State<LoginPagina> {
                       color: Colors.green.withOpacity(0.2),
                     ),
                     child: TextFormField(
+                      controller: clave,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Este campo es obligatorio";
                         }
+                        return null;
                       },
                       obscureText: invisible,
                       decoration: InputDecoration(
@@ -94,7 +121,6 @@ class _LoginPaginaState extends State<LoginPagina> {
                   const SizedBox(
                     height: 12,
                   ),
-                  //Boton para ingresar
                   Container(
                     height: 55,
                     width: MediaQuery.of(context).size.width * 0.9,
@@ -103,11 +129,7 @@ class _LoginPaginaState extends State<LoginPagina> {
                       color: Colors.green,
                     ),
                     child: TextButton(
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          //metodo que ingrese
-                        }
-                      },
+                      onPressed: _login,
                       child: const Text(
                         "Acceder",
                         style: TextStyle(color: Colors.white),
@@ -144,4 +166,3 @@ class _LoginPaginaState extends State<LoginPagina> {
     );
   }
 }
-//vesion de ui mucho mejor
