@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:email_validator/email_validator.dart';
 import 'package:iniciofront/auth/registro.dart';
 import 'package:iniciofront/components/buttuns_navbar.dart';
-import 'package:iniciofront/pages/wasi.dart'; // Importa la página de inicio
 
 class LoginPagina extends StatefulWidget {
   const LoginPagina({Key? key}) : super(key: key);

@@ -21,6 +21,7 @@ dependencies:
   email_validator: ^2.1.17
   another_flushbar: ^1.12.30
   build: ^2.4.1
+  font_awesome_flutter: ^10.7.0
 
 dev_dependencies:
   flutter_test:
