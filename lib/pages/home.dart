@@ -194,7 +194,7 @@ class _HomePageState extends State<HomePage> {
             //Caja de botones
             Container(
               padding: EdgeInsets.all(8),
-              margin: EdgeInsets.symmetric(vertical: 5, horizontal: 60),
+              margin: EdgeInsets.symmetric(vertical: 4, horizontal: 40),
               decoration: BoxDecoration(
                 color: Color.fromARGB(
                     255, 3, 46, 82), // Color de fondo del contenedor
@@ -305,12 +305,12 @@ class _HomePageState extends State<HomePage> {
       {VoidCallback? onTap}) {
     return Padding(
       padding: const EdgeInsets.symmetric(
-          horizontal: 30), // Ajusta el espacio horizontal
+          horizontal: 10), // Ajusta el espacio horizontal
       child: ElevatedButton(
         onPressed: onTap,
         style: ButtonStyle(
           padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-            EdgeInsets.all(7),
+            EdgeInsets.all(5),
           ),
           backgroundColor: MaterialStateProperty.all<Color>(
             const Color.fromARGB(255, 99, 4, 4),
