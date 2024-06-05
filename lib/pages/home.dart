@@ -194,7 +194,7 @@ class _HomePageState extends State<HomePage> {
             //Caja de botones
             Container(
               padding: EdgeInsets.all(8),
-              margin: EdgeInsets.symmetric(vertical: 5, horizontal: 40),
+              margin: EdgeInsets.symmetric(vertical: 5, horizontal: 60),
               decoration: BoxDecoration(
                 color: Color.fromARGB(
                     255, 3, 46, 82), // Color de fondo del contenedor
@@ -310,7 +310,7 @@ class _HomePageState extends State<HomePage> {
         onPressed: onTap,
         style: ButtonStyle(
           padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-            EdgeInsets.all(10),
+            EdgeInsets.all(7),
           ),
           backgroundColor: MaterialStateProperty.all<Color>(
             const Color.fromARGB(255, 99, 4, 4),
