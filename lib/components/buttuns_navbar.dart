@@ -16,7 +16,6 @@ class ButtonsNavBarPage extends StatefulWidget {
 class _ButtonsNavBarState extends State<ButtonsNavBarPage> {
   int myIndex = 0;
   List pages = const [
-    HomePage(),
     ProfilePage(),
     QualifyPage(),
     SearchPage(),
