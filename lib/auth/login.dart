@@ -1,9 +1,29 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:iniciofront/auth/registro.dart';
 import 'package:iniciofront/pages/trips.dart';
+
+class TokenManager {
+  static const _key = 'jwt_token';
+
+  static Future<void> saveToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_key, token);
+  }
+
+  static Future<String?> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_key);
+  }
+
+  static Future<void> deleteToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_key);
+  }
+}
 
 class LoginPagina extends StatefulWidget {
   const LoginPagina({Key? key}) : super(key: key);
@@ -18,7 +38,6 @@ class _LoginPaginaState extends State<LoginPagina> {
   bool invisible = true;
   final formKey = GlobalKey<FormState>();
   bool isLoggedIn = false;
-  String? token;
 
   @override
   void dispose() {
@@ -41,7 +60,9 @@ class _LoginPaginaState extends State<LoginPagina> {
 
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
-        token = responseData['token']; // Almacena el token JWT
+        final token = responseData['token']; // Almacena el token JWT
+        await TokenManager.saveToken(
+            token); // Guarda el token en SharedPreferences
         setState(() {
           isLoggedIn = true; // El usuario ha iniciado sesión correctamente
         });

@@ -25,6 +25,7 @@ dependencies:
   shared_preferences: ^2.2.3
   carousel_slider: ^4.2.1
   provider: ^6.1.2
+  dart_jsonwebtoken: ^2.14.0
 
 dev_dependencies:
   flutter_test:

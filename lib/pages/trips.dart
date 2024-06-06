@@ -1,65 +1,45 @@
-import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
-class Viaje {
-  final int id;
-  final String destino;
-  final String fechaSalida;
-  final String horaSalida;
-  final String puntosRecogida;
-  final int capacidadAsientos;
-  final String detalles;
-  final bool disponible;
-
-  Viaje({
-    required this.id,
-    required this.destino,
-    required this.fechaSalida,
-    required this.horaSalida,
-    required this.puntosRecogida,
-    required this.capacidadAsientos,
-    required this.detalles,
-    required this.disponible,
-  });
-
-  factory Viaje.fromJson(Map<String, dynamic> json) {
-    return Viaje(
-      id: json['id'],
-      destino: json['destino'],
-      fechaSalida: json['fechaSalida'],
-      horaSalida: json['horaSalida'],
-      puntosRecogida: json['puntosRecogida'],
-      capacidadAsientos: json['capacidadAsientos'],
-      detalles: json['detalles'],
-      disponible: json['disponible'],
-    );
-  }
-}
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ViajePagina extends StatefulWidget {
+  const ViajePagina({Key? key}) : super(key: key);
+
   @override
-  _ViajePaginaState createState() => _ViajePaginaState();
+  State<ViajePagina> createState() => _ViajePaginaState();
 }
 
 class _ViajePaginaState extends State<ViajePagina> {
-  late Future<List<Viaje>> futureViajes;
+  List<dynamic> viajes = [];
 
   @override
   void initState() {
     super.initState();
-    futureViajes = _fetchViajes();
+    _fetchViajes();
   }
 
-  Future<List<Viaje>> _fetchViajes() async {
-    final response =
-        await http.get(Uri.parse('http://localhost:7777/api/viajes/listar'));
+  Future<void> _fetchViajes() async {
+    final token = await TokenManager.getToken();
+
+    if (token == null) {
+      // Manejar el caso en que el token no esté disponible
+      print('Token no disponible');
+      return;
+    }
+
+    final response = await http.get(
+      Uri.parse('http://localhost:7777/api/viajes/listar'),
+      headers: {'Authorization': 'Bearer $token'},
+    );
 
     if (response.statusCode == 200) {
-      final jsonResponse = json.decode(response.body)['viajes'] as List;
-      return jsonResponse.map((viaje) => Viaje.fromJson(viaje)).toList();
+      setState(() {
+        viajes = json.decode(response.body);
+      });
     } else {
-      throw Exception('Failed to load viajes');
+      // Manejar el error de manera apropiada
+      print('Error al cargar los viajes: ${response.statusCode}');
     }
   }
 
@@ -69,28 +49,41 @@ class _ViajePaginaState extends State<ViajePagina> {
       appBar: AppBar(
         title: Text('Lista de Viajes'),
       ),
-      body: FutureBuilder<List<Viaje>>(
-        future: futureViajes,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else {
-            List<Viaje> viajes = snapshot.data!;
-            return ListView.builder(
+      body: viajes.isEmpty
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView.builder(
               itemCount: viajes.length,
               itemBuilder: (context, index) {
+                final viaje = viajes[index];
                 return ListTile(
-                  title: Text(viajes[index].destino),
-                  subtitle: Text(
-                      'Fecha de salida: ${viajes[index].fechaSalida}, Hora de salida: ${viajes[index].horaSalida}'),
+                  title: Text(viaje['destino'] ?? ''),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Fecha de Salida: ${viaje['fechaSalida'] ?? ''}'),
+                      Text('Hora de Salida: ${viaje['horaSalida'] ?? ''}'),
+                      Text(
+                          'Puntos de Recogida: ${viaje['puntosRecogida'] ?? ''}'),
+                      Text(
+                          'Capacidad de Asientos: ${viaje['capacidadAsientos'] ?? ''}'),
+                      Text('Detalles: ${viaje['detalles'] ?? ''}'),
+                      Text('Disponible: ${viaje['disponible'] ?? ''}'),
+                    ],
+                  ),
                 );
               },
-            );
-          }
-        },
-      ),
+            ),
     );
+  }
+}
+
+class TokenManager {
+  static const _key = 'jwt_token';
+
+  static Future<String?> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_key);
   }
 }
