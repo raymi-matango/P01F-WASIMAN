@@ -1,5 +1,26 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:iniciofront/auth/login.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+class TokenManager {
+  static const _key = 'jwt_token';
+
+  static Future<void> saveToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_key, token);
+  }
+
+  static Future<String?> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_key);
+  }
+
+  static Future<void> deleteToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_key);
+  }
+}
 
 class ViajePagina extends StatefulWidget {
   const ViajePagina({Key? key}) : super(key: key);
@@ -9,31 +30,51 @@ class ViajePagina extends StatefulWidget {
 }
 
 class _ViajePaginaState extends State<ViajePagina> {
-  String? token;
+  List<dynamic> destinos = [];
 
   @override
   void initState() {
     super.initState();
-    _loadToken();
+    _fetchViajes();
   }
 
-  Future<void> _loadToken() async {
-    final retrievedToken = await TokenManager.getToken();
-    setState(() {
-      token = retrievedToken;
-    });
+  Future<void> _fetchViajes() async {
+    final token = await TokenManager.getToken();
+
+    final response = await http.get(
+      Uri.parse('http://localhost:7777/api/viajes/listar'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final responseData = json.decode(response.body);
+      final List<dynamic> viajes = responseData['viajes'];
+      setState(() {
+        destinos = viajes;
+      });
+    } else {
+      // Manejar el error de alguna manera apropiada
+      print('Error al cargar los viajes: ${response.statusCode}');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Viaje Página'),
+        title: Text('Lista de Destinos'),
       ),
-      body: Center(
-        child: token != null
-            ? Text('Token: $token')
-            : CircularProgressIndicator(), // Muestra un indicador de carga mientras se obtiene el token
+      body: ListView.builder(
+        itemCount: destinos.length,
+        itemBuilder: (context, index) {
+          final viaje = destinos[index];
+          return ListTile(
+            title: Text(viaje['detalles']),
+          );
+        },
       ),
     );
   }

@@ -60,9 +60,9 @@ class _LoginPaginaState extends State<LoginPagina> {
 
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
-        final token = responseData['token']; // Token recibido del servidor
-        TokenManager.saveToken(token); // Guardar el token en shared_preferences
-        print('Token guardado: $token');
+        final token = responseData['token']; // Almacena el token JWT
+        await TokenManager.saveToken(
+            token); // Guarda el token en SharedPreferences
         setState(() {
           isLoggedIn = true; // El usuario ha iniciado sesión correctamente
         });
