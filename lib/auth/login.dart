@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:email_validator/email_validator.dart';
 import 'package:iniciofront/auth/registro.dart';
-import 'package:iniciofront/components/buttuns_navbar.dart';
+import 'package:iniciofront/pages/trips.dart';
 
 class LoginPagina extends StatefulWidget {
   const LoginPagina({Key? key}) : super(key: key);
@@ -17,6 +17,8 @@ class _LoginPaginaState extends State<LoginPagina> {
   final clave = TextEditingController();
   bool invisible = true;
   final formKey = GlobalKey<FormState>();
+  bool isLoggedIn = false;
+  String? token;
 
   @override
   void dispose() {
@@ -26,7 +28,7 @@ class _LoginPaginaState extends State<LoginPagina> {
   }
 
   Future<void> _login() async {
-    final uri = Uri.parse("http://192.168.137.1:7777/api/autenticar/login");
+    final uri = Uri.parse("http://localhost:7777/api/autenticar/login");
     try {
       final response = await http.post(
         uri,
@@ -38,9 +40,14 @@ class _LoginPaginaState extends State<LoginPagina> {
       );
 
       if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        token = responseData['token']; // Almacena el token JWT
+        setState(() {
+          isLoggedIn = true; // El usuario ha iniciado sesión correctamente
+        });
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => ButtonsNavBarPage()),
+          MaterialPageRoute(builder: (context) => ViajePagina()),
         );
       } else if (response.statusCode == 400) {
         final error = json.decode(response.body)["mensaje"];

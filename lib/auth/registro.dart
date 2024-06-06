@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:iniciofront/auth/login.dart';
 
 class Registrar extends StatefulWidget {
-  const Registrar({super.key});
+  const Registrar({Key? key}) : super(key: key);
 
   @override
   State<Registrar> createState() => _RegistrarState();
@@ -33,7 +33,7 @@ class _RegistrarState extends State<Registrar> {
   Future<void> registrarUsuario() async {
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.137.1:7777/api/autenticar/registrar'),
+        Uri.parse('http://localhost:7777/api/autenticar/registrar'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'nombre': nombre.text,
@@ -42,7 +42,6 @@ class _RegistrarState extends State<Registrar> {
         }),
       );
 
-      //teoria de colores aplicar
       if (response.statusCode == 201) {
         final data = jsonDecode(response.body);
         if (data['message'] == 'Usuario registrado exitosamente') {
@@ -51,9 +50,10 @@ class _RegistrarState extends State<Registrar> {
               content: Text(
                 data['message'],
                 style: const TextStyle(
-                    color: Color.fromARGB(255, 0, 255, 8),
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold), // Color verde para éxito
+                  color: Color.fromARGB(255, 0, 255, 8),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ), // Color verde para éxito
               ),
             ),
           );
@@ -81,9 +81,10 @@ class _RegistrarState extends State<Registrar> {
             content: Text(
               'Error al registrar usuario: ${response.reasonPhrase}',
               style: const TextStyle(
-                  color: Color.fromARGB(255, 255, 17, 0),
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold), // Color rojo para error
+                color: Color.fromARGB(255, 255, 17, 0),
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ), // Color rojo para error
             ),
           ),
         );

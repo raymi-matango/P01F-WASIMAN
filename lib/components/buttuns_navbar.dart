@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:iniciofront/pages/home.dart';
 import 'package:iniciofront/pages/profile.dart';
 import 'package:iniciofront/pages/qualify.dart';
 import 'package:iniciofront/pages/search.dart';
-import 'package:iniciofront/pages/trips.dart';
 
 class ButtonsNavBarPage extends StatefulWidget {
   const ButtonsNavBarPage({super.key});
@@ -19,7 +17,6 @@ class _ButtonsNavBarState extends State<ButtonsNavBarPage> {
     ProfilePage(),
     QualifyPage(),
     SearchPage(),
-    TripsPage(),
   ];
 
   @override
