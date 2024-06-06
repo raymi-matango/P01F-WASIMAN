@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:iniciofront/pages/screens/reservas.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TokenManager {
@@ -56,9 +57,17 @@ class _ViajePaginaState extends State<ViajePagina> {
         destinos = viajes;
       });
     } else {
-      // Manejar el error de alguna manera apropiada
       print('Error al cargar los viajes: ${response.statusCode}');
     }
+  }
+
+  void _reservarAsientos(int viajeId) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ReservaPagina(viajeId: viajeId),
+      ),
+    );
   }
 
   @override
@@ -72,7 +81,9 @@ class _ViajePaginaState extends State<ViajePagina> {
         itemBuilder: (context, index) {
           final viaje = destinos[index];
           return ListTile(
-            title: Text(viaje['detalles']),
+            title: Text(viaje['destino']),
+            subtitle: Text(viaje['detalles']),
+            onTap: () => _reservarAsientos(viaje['id']),
           );
         },
       ),
