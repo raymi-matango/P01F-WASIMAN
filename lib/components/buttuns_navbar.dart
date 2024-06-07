@@ -1,70 +1,76 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:iniciofront/pages/home.dart';
 import 'package:iniciofront/pages/profile.dart';
 import 'package:iniciofront/pages/qualify.dart';
+import 'package:iniciofront/pages/screens/reservas.dart';
 import 'package:iniciofront/pages/search.dart';
+import 'package:iniciofront/pages/trips.dart';
 
-class ButtonsNavBarPage extends StatefulWidget {
-  const ButtonsNavBarPage({super.key});
+class BotonesNavegan extends StatefulWidget {
+  const BotonesNavegan({Key? key}) : super(key: key);
 
   @override
-  State<ButtonsNavBarPage> createState() => _ButtonsNavBarState();
+  _BotonesNaveganState createState() => _BotonesNaveganState();
 }
 
-class _ButtonsNavBarState extends State<ButtonsNavBarPage> {
-  int myIndex = 0;
-  List pages = const [
+class _BotonesNaveganState extends State<BotonesNavegan> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _pages = [
+    // Usa HomePage aquí
+    HomePage(),
     ProfilePage(),
     QualifyPage(),
     SearchPage(),
+    ViajePagina(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black, //quitar
-        bottomNavigationBar: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          decoration: const BoxDecoration(boxShadow: [
-            BoxShadow(
-                color: Color.fromARGB(66, 18, 123, 215),
-                blurRadius: 30,
-                offset: Offset(0, 20))
-          ]),
-          child: ClipRRect(
-            borderRadius: BorderRadiusDirectional.circular(25),
-            child: BottomNavigationBar(
-              currentIndex: myIndex,
-              backgroundColor: Colors.black12,
-              selectedItemColor: Color.fromARGB(255, 10, 121, 3),
-              unselectedItemColor: Color.fromARGB(255, 25, 0, 107),
-              selectedFontSize: 15,
-              showSelectedLabels: true,
-              showUnselectedLabels: false,
-              onTap: (index) {
-                setState(() {
-                  myIndex = index;
-                });
-              },
-              items: const [
-                BottomNavigationBarItem(
-                    icon: FaIcon(FontAwesomeIcons.house), label: 'Inicio'),
-                BottomNavigationBarItem(
-                    icon: FaIcon(FontAwesomeIcons.carSide), label: 'Viajes'),
-                BottomNavigationBarItem(
-                    icon: FaIcon(FontAwesomeIcons.magnifyingGlassLocation),
-                    label: 'Buscar'),
-                BottomNavigationBarItem(
-                    icon: FaIcon(
-                      FontAwesomeIcons.star,
-                    ),
-                    label: 'Calificación'),
-                BottomNavigationBarItem(
-                    icon: FaIcon(FontAwesomeIcons.userLarge), label: 'Perfil'),
-              ],
-            ),
+      body: _pages[_selectedIndex],
+      bottomNavigationBar: Container(
+        color: Colors.black,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          child: GNav(
+            backgroundColor: Colors.black,
+            color: Colors.white,
+            activeColor: Colors.white,
+            tabBackgroundColor: Colors.grey.shade800,
+            gap: 5,
+            onTabChange: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+            padding: EdgeInsets.all(16),
+            tabs: const [
+              GButton(
+                icon: Icons.home,
+                text: 'Inicio',
+              ),
+              GButton(
+                icon: Icons.favorite,
+                text: 'Favoritos',
+              ),
+              GButton(
+                icon: Icons.search,
+                text: 'Buscar',
+              ),
+              GButton(
+                icon: Icons.save,
+                text: 'Reservas',
+              ),
+              GButton(
+                icon: Icons.settings,
+                text: 'Configurar',
+              ),
+            ],
           ),
         ),
-        body: pages[myIndex]);
+      ),
+    );
   }
 }
