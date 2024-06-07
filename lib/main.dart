@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:iniciofront/auth/login.dart';
-import 'package:iniciofront/components/buttuns_navbar.dart';
 
 void main() {
   runApp(const MyApp());
