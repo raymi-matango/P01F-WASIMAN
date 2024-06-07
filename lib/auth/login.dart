@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:iniciofront/pages/screens/detallesreservas.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:iniciofront/auth/registro.dart';
@@ -47,7 +48,7 @@ class _LoginPaginaState extends State<LoginPagina> {
   }
 
   Future<void> _login() async {
-    final uri = Uri.parse("http://localhost:7777/api/autenticar/login");
+    final uri = Uri.parse("http://192.168.137.1:7777/api/autenticar/login");
     try {
       final response = await http.post(
         uri,
@@ -68,7 +69,7 @@ class _LoginPaginaState extends State<LoginPagina> {
         });
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => ViajePagina()),
+          MaterialPageRoute(builder: (context) => DetalleReserva()),
         );
       } else if (response.statusCode == 400) {
         final error = json.decode(response.body)["mensaje"];

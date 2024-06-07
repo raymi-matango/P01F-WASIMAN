@@ -1,8 +1,26 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:iniciofront/auth/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+class TokenManager {
+  static const _key = 'jwt_token';
+
+  static Future<void> saveToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_key, token);
+  }
+
+  static Future<String?> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_key);
+  }
+
+  static Future<void> deleteToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_key);
+  }
+}
 
 class ReservaPagina extends StatefulWidget {
   final int viajeId;
@@ -15,9 +33,56 @@ class ReservaPagina extends StatefulWidget {
 
 class _ReservaPaginaState extends State<ReservaPagina> {
   final _cantidadAsientosController = TextEditingController();
+  bool _isLoading = false;
+
+  Future<void> _mostrarDialogo(String mensaje) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.check_circle, color: Colors.green, size: 60),
+              SizedBox(height: 16),
+              Text(mensaje),
+            ],
+          ),
+        );
+      },
+    );
+
+    await Future.delayed(Duration(seconds: 2));
+    Navigator.of(context).pop();
+  }
 
   Future<void> _reservarAsientos() async {
+    final cantidadAsientos = int.tryParse(_cantidadAsientosController.text);
+    if (cantidadAsientos == null || cantidadAsientos <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Ingrese una cantidad válida de asientos')),
+      );
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
     final token = await TokenManager.getToken();
+    if (token == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(
+                'Token no disponible. Por favor, inicie sesión de nuevo.')),
+      );
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    }
+
     final uri = Uri.parse('http://localhost:7777/api/reservas/crear');
     final response = await http.post(
       uri,
@@ -27,18 +92,23 @@ class _ReservaPaginaState extends State<ReservaPagina> {
       },
       body: json.encode({
         'viajeId': widget.viajeId,
-        'cantidadAsientos': int.parse(_cantidadAsientosController.text),
+        'cantidadAsientos': cantidadAsientos,
       }),
     );
 
-    if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Reserva realizada con éxito')),
-      );
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (response.statusCode == 201) {
+      await _mostrarDialogo('Reserva realizada con éxito');
+      Navigator.pop(context);
     } else {
+      final responseData = json.decode(response.body);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text('Error al realizar la reserva: ${response.body}')),
+            content: Text(
+                'Error al realizar la reserva: ${responseData['error'] ?? response.body}')),
       );
     }
   }
@@ -66,10 +136,12 @@ class _ReservaPaginaState extends State<ReservaPagina> {
               keyboardType: TextInputType.number,
             ),
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _reservarAsientos,
-              child: Text('Reservar'),
-            ),
+            _isLoading
+                ? CircularProgressIndicator()
+                : ElevatedButton(
+                    onPressed: _reservarAsientos,
+                    child: Text('Reservar'),
+                  ),
           ],
         ),
       ),
