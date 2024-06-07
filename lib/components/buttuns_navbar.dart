@@ -52,8 +52,8 @@ class _BotonesNaveganState extends State<BotonesNavegan> {
                 text: 'Inicio',
               ),
               GButton(
-                icon: Icons.favorite,
-                text: 'Favoritos',
+                icon: Icons.car_crash,
+                text: 'Mis viajes',
               ),
               GButton(
                 icon: Icons.search,
@@ -61,11 +61,11 @@ class _BotonesNaveganState extends State<BotonesNavegan> {
               ),
               GButton(
                 icon: Icons.save,
-                text: 'Reservas',
+                text: 'Mis reservas',
               ),
               GButton(
-                icon: Icons.settings,
-                text: 'Configurar',
+                icon: Icons.person,
+                text: 'Perfil',
               ),
             ],
           ),
