@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:iniciofront/auth/login.dart';
 import 'package:iniciofront/components/buttuns_navbar.dart';
-import 'package:iniciofront/pages/home.dart';
-import 'package:iniciofront/pages/trips.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'Inicio del Proyecto Wasiman',
       theme:
           ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.white)),
-      home: BotonesNavegan(), // Inicia con la pantalla de splash
+      home: LoginPagina(), // Inicia con la pantalla de splash
     );
   }
 }

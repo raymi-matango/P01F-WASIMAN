@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:iniciofront/pages/home.dart';
-import 'package:iniciofront/pages/profile.dart';
-import 'package:iniciofront/pages/qualify.dart';
-import 'package:iniciofront/pages/screens/reservas.dart';
-import 'package:iniciofront/pages/search.dart';
+import 'package:iniciofront/pages/screens/detallesreservas.dart';
 import 'package:iniciofront/pages/trips.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BotonesNavegan extends StatefulWidget {
   const BotonesNavegan({Key? key}) : super(key: key);
@@ -16,18 +14,45 @@ class BotonesNavegan extends StatefulWidget {
 
 class _BotonesNaveganState extends State<BotonesNavegan> {
   int _selectedIndex = 0;
+  String? _token;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadToken();
+  }
+
+  Future<void> _loadToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _token = prefs.getString('jwt_token');
+    });
+  }
+
+  void _saveToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('jwt_token', token);
+  }
+
+  void _deleteToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('jwt_token');
+  }
 
   final List<Widget> _pages = [
-    // Usa HomePage aquí
     HomePage(),
-    ProfilePage(),
-    QualifyPage(),
-    SearchPage(),
     ViajePagina(),
+    HomePage(),
+    DetalleReserva(),
+    HomePage(),
   ];
 
   @override
   Widget build(BuildContext context) {
+    if (_token == null) {
+      return Center(child: CircularProgressIndicator());
+    }
+
     return Scaffold(
       body: _pages[_selectedIndex],
       bottomNavigationBar: Container(

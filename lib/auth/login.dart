@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:iniciofront/components/buttuns_navbar.dart';
 import 'package:iniciofront/pages/screens/detallesreservas.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:iniciofront/auth/registro.dart';
-import 'package:iniciofront/pages/trips.dart';
 
 class TokenManager {
   static const _key = 'jwt_token';
@@ -69,7 +69,7 @@ class _LoginPaginaState extends State<LoginPagina> {
         });
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => DetalleReserva()),
+          MaterialPageRoute(builder: (context) => BotonesNavegan()),
         );
       } else if (response.statusCode == 400) {
         final error = json.decode(response.body)["mensaje"];
