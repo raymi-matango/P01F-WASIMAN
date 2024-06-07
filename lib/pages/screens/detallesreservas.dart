@@ -32,7 +32,7 @@ class _DetalleReservaState extends State<DetalleReserva> {
       return;
     }
 
-    final uri = Uri.parse('http://192.168.137.1:7777/api/reservas/detalles');
+    final uri = Uri.parse('http://localhost:7777/api/reservas/detalles');
     final response = await http.get(
       uri,
       headers: {
@@ -70,7 +70,7 @@ class _DetalleReservaState extends State<DetalleReserva> {
     }
 
     final uri =
-        Uri.parse('http://192.168.137.1:7777/api/reservas/cancelar/$reservaId');
+        Uri.parse('http://localhost:7777/api/reservas/cancelar/$reservaId');
     final response = await http.delete(
       uri,
       headers: {
