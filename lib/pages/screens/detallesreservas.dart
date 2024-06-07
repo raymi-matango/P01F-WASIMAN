@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:iniciofront/auth/login.dart';
+import 'package:iniciofront/pages/screens/reservas.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetalleReserva extends StatefulWidget {
   const DetalleReserva({super.key});
@@ -119,6 +120,17 @@ class _DetalleReservaState extends State<DetalleReserva> {
     });
   }
 
+  void _abrirChatWhatsApp(String mensaje) async {
+    final whatsappUrl = 'https://wa.me/?text=$mensaje';
+    if (await canLaunch(whatsappUrl)) {
+      await launch(whatsappUrl);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('No se puede abrir WhatsApp')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,11 +157,17 @@ class _DetalleReservaState extends State<DetalleReserva> {
                         Text('Estado de Reserva: ${reserva['estadoReserva']}'),
                       ],
                     ),
-                    trailing: IconButton(
-                      icon: Icon(Icons.delete, color: Colors.red),
-                      onPressed: () =>
-                          _confirmarCancelacionReserva(reserva['id']),
-                    ),
+                    trailing: reserva['estadoReserva'] == 'pendiente'
+                        ? IconButton(
+                            icon: Icon(Icons.delete, color: Colors.red),
+                            onPressed: () =>
+                                _confirmarCancelacionReserva(reserva['id']),
+                          )
+                        : IconButton(
+                            icon: Icon(Icons.telegram, color: Colors.green),
+                            onPressed: () => _abrirChatWhatsApp(
+                                'Detalles de la reserva: ${reserva['id']}'),
+                          ),
                   );
                 },
               ),
