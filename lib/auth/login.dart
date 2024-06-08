@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:iniciofront/components/buttuns_navbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -124,7 +125,7 @@ class _LoginPaginaState extends State<LoginPagina> {
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: Colors.green.withOpacity(0.2),
+                      color: Colors.green.withOpacity(0.4),
                     ),
                     child: TextFormField(
                       controller: email,
@@ -138,10 +139,18 @@ class _LoginPaginaState extends State<LoginPagina> {
                         return null;
                       },
                       decoration: const InputDecoration(
-                        icon: Icon(Icons.email),
+                        icon: FaIcon(
+                          FontAwesomeIcons.envelope,
+                          color: Color(0xff0E402E),
+                        ),
                         border: InputBorder.none,
-                        hintText: "Email",
+                        hintText: "Correo Electrónico",
+                        hintStyle: TextStyle(color: Color(0xff0E402E)),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xffBF8756)),
+                        ),
                       ),
+                      style: TextStyle(color: Color(0xff0E402E)),
                     ),
                   ),
                   Container(
@@ -150,7 +159,7 @@ class _LoginPaginaState extends State<LoginPagina> {
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: Colors.green.withOpacity(0.2),
+                      color: Colors.green.withOpacity(0.4),
                     ),
                     child: TextFormField(
                       controller: clave,
@@ -162,9 +171,16 @@ class _LoginPaginaState extends State<LoginPagina> {
                       },
                       obscureText: invisible,
                       decoration: InputDecoration(
-                          icon: Icon(Icons.lock),
+                          icon: const FaIcon(
+                            FontAwesomeIcons.lock,
+                            color: Color(0xff0E402E),
+                          ),
                           border: InputBorder.none,
-                          hintText: "Clave",
+                          hintText: "Contraseña",
+                          hintStyle: const TextStyle(color: Color(0xff0E402E)),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xffBF8756)),
+                          ),
                           suffixIcon: IconButton(
                               onPressed: () {
                                 setState(() {
@@ -172,8 +188,9 @@ class _LoginPaginaState extends State<LoginPagina> {
                                 });
                               },
                               icon: Icon(invisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off))),
+                                  ? FontAwesomeIcons.eye
+                                  : FontAwesomeIcons.eyeSlash))),
+                      style: const TextStyle(color: Color(0xff0E402E)),
                     ),
                   ),
                   const SizedBox(
@@ -184,7 +201,7 @@ class _LoginPaginaState extends State<LoginPagina> {
                     width: MediaQuery.of(context).size.width * 0.9,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: Colors.green,
+                      color: Color(0xff0E402E),
                     ),
                     child: TextButton(
                       onPressed: () {
@@ -193,8 +210,12 @@ class _LoginPaginaState extends State<LoginPagina> {
                         }
                       },
                       child: const Text(
-                        "Acceder",
-                        style: TextStyle(color: Colors.white),
+                        "INGRESAR",
+                        style: TextStyle(
+                          color: Color(0xffF2B90C),
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
@@ -214,7 +235,10 @@ class _LoginPaginaState extends State<LoginPagina> {
                         },
                         child: const Text(
                           "REGÍSTRATE",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            color: Color(0xffBF8756),
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       )
                     ],

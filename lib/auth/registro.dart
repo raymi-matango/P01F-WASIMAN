@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:iniciofront/auth/login.dart';
@@ -132,7 +133,7 @@ class _RegistrarState extends State<Registrar> {
                   _buildTextField(
                     controller: nombre,
                     hintText: "Nombres",
-                    icon: Icons.person,
+                    icon: FontAwesomeIcons.user,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "Este campo es obligatorio";
@@ -147,7 +148,7 @@ class _RegistrarState extends State<Registrar> {
                   _buildTextField(
                     controller: email,
                     hintText: "Email",
-                    icon: Icons.email,
+                    icon: FontAwesomeIcons.envelope,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "Este campo es obligatorio";
@@ -160,8 +161,8 @@ class _RegistrarState extends State<Registrar> {
                   ),
                   _buildTextField(
                     controller: clave,
-                    hintText: "Clave",
-                    icon: Icons.lock,
+                    hintText: "Contraseña",
+                    icon: FontAwesomeIcons.lock,
                     obscureText: invisibleClave,
                     suffixIcon: IconButton(
                       onPressed: () {
@@ -170,8 +171,8 @@ class _RegistrarState extends State<Registrar> {
                         });
                       },
                       icon: Icon(invisibleClave
-                          ? Icons.visibility
-                          : Icons.visibility_off),
+                          ? FontAwesomeIcons.eye
+                          : FontAwesomeIcons.eyeSlash),
                     ),
                     validator: (value) {
                       if (value!.isEmpty) {
@@ -183,7 +184,7 @@ class _RegistrarState extends State<Registrar> {
                   _buildTextField(
                     controller: confirmaClave,
                     hintText: "Confirma Clave",
-                    icon: Icons.lock,
+                    icon: FontAwesomeIcons.lock,
                     obscureText: invisibleConfirmaClave,
                     suffixIcon: IconButton(
                       onPressed: () {
@@ -192,8 +193,8 @@ class _RegistrarState extends State<Registrar> {
                         });
                       },
                       icon: Icon(invisibleConfirmaClave
-                          ? Icons.visibility
-                          : Icons.visibility_off),
+                          ? FontAwesomeIcons.eye
+                          : FontAwesomeIcons.eyeSlash),
                     ),
                     validator: (value) {
                       if (value!.isEmpty) {
@@ -211,19 +212,22 @@ class _RegistrarState extends State<Registrar> {
                     width: MediaQuery.of(context).size.width * 0.9,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: Colors.green,
+                      color: Color(0xff0E402E),
                     ),
                     child: TextButton(
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          registrarUsuario();
-                        }
-                      },
-                      child: const Text(
-                        "Registrar",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
+                            registrarUsuario();
+                          }
+                        },
+                        child: const Text(
+                          "REGISTRAR",
+                          style: TextStyle(
+                            color: Color(0xffF2B90C),
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )),
                   ),
                   const SizedBox(height: 15),
                   Row(
@@ -239,7 +243,9 @@ class _RegistrarState extends State<Registrar> {
                         },
                         child: const Text(
                           "ACCEDER",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xffBF8756)),
                         ),
                       ),
                     ],
@@ -266,7 +272,7 @@ class _RegistrarState extends State<Registrar> {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: Colors.green.withOpacity(0.2),
+        color: Colors.green.withOpacity(0.4),
       ),
       child: TextFormField(
         controller: controller,
@@ -276,8 +282,13 @@ class _RegistrarState extends State<Registrar> {
           icon: Icon(icon),
           border: InputBorder.none,
           hintText: hintText,
+          hintStyle: TextStyle(color: Color(0xff0E402E)),
           suffixIcon: suffixIcon,
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Color(0xffBF8756)),
+          ),
         ),
+        style: TextStyle(color: Color(0xff0E402E)),
       ),
     );
   }
