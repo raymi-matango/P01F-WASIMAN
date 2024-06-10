@@ -44,9 +44,8 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         title: const Text(
-          'Bienvenido, Kutik',
+          'Bienvenido',
           style: TextStyle(
-            fontFamily: 'Outfit',
             color: Color(0xFFF2B90C),
             fontSize: 24,
             letterSpacing: 0,
@@ -58,7 +57,7 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.fromLTRB(0, 0, 16, 0),
             child: IconButton(
               icon: const Icon(
-                Icons.notifications_active,
+                FontAwesomeIcons.bell,
                 color: Color(0xFFF2B90C),
                 size: 24,
               ),
@@ -109,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              'Ver todos',
+                              'Ver todos ',
                               style: TextStyle(
                                 fontFamily: 'Readex Pro',
                                 letterSpacing: 0,
@@ -117,7 +116,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             Icon(
-                              Icons.arrow_forward_sharp,
+                              FontAwesomeIcons.arrowRightLong,
                               size: 24,
                             ),
                           ],
@@ -211,15 +210,24 @@ class _HomePageState extends State<HomePage> {
                 ),
                 child: Column(
                   children: [
+                    SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         _buildDestination(
-                          '   Destinos   ',
+                          'Viajar',
                           FontAwesomeIcons.car,
                           onTap: () {
                             // Acción al hacer clic en Destino 1
                             print('Clic en Destino 1');
+                          },
+                        ),
+                        _buildDestination(
+                          'Reservas   ',
+                          FontAwesomeIcons.plane,
+                          onTap: () {
+                            // Acción al hacer clic en Destino 2
+                            print('Clic en Destino 2');
                           },
                         ),
                         _buildDestination(
@@ -233,27 +241,6 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                     SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _buildDestination(
-                          '   Reservas   ',
-                          FontAwesomeIcons.train,
-                          onTap: () {
-                            // Acción al hacer clic en Destino 3
-                            print('Clic en Destino 3');
-                          },
-                        ),
-                        _buildDestination(
-                          ' Disponibles  ',
-                          FontAwesomeIcons.bus,
-                          onTap: () {
-                            // Acción al hacer clic en Destino 4
-                            print('Clic en Destino 4');
-                          },
-                        ),
-                      ],
-                    ),
                   ],
                 ),
               ),
