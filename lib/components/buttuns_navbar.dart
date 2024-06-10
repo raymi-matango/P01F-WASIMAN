@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:iniciofront/pages/home.dart';
+import 'package:iniciofront/pages/qualify.dart';
 import 'package:iniciofront/pages/screens/detallesreservas.dart';
 import 'package:iniciofront/pages/trips.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,7 +44,7 @@ class _BotonesNaveganState extends State<BotonesNavegan> {
   final List<Widget> _pages = [
     HomePage(),
     ViajePagina(),
-    HomePage(),
+    CatCard(),
     HomePage(),
   ];
 
