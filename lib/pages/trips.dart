@@ -82,7 +82,7 @@ class _ViajePaginaState extends State<ViajePagina> {
           final viaje = destinos[index];
           return ListTile(
             title: Text(viaje['destino']),
-            subtitle: Text(viaje['detalles']),
+            subtitle: Text(viaje['detalle']),
             onTap: () => _reservarAsientos(viaje['id']),
           );
         },
