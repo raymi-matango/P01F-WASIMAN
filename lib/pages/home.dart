@@ -196,8 +196,7 @@ class _HomePageState extends State<HomePage> {
                 padding: EdgeInsets.all(8),
                 margin: EdgeInsets.symmetric(vertical: 4, horizontal: 40),
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(
-                      255, 3, 46, 82), // Color de fondo del contenedor
+                  color: Color(0xff688C6A), // Color de fondo del contenedor
                   borderRadius: BorderRadius.circular(20), // Bordes redondeados
                   boxShadow: [
                     BoxShadow(
@@ -215,24 +214,24 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         _buildDestination(
-                          'Viajar',
-                          FontAwesomeIcons.car,
+                          '    Viajar       ',
+                          FontAwesomeIcons.mapLocationDot,
                           onTap: () {
                             // Acción al hacer clic en Destino 1
                             print('Clic en Destino 1');
                           },
                         ),
                         _buildDestination(
-                          'Reservas   ',
-                          FontAwesomeIcons.plane,
+                          '    Reservas   ',
+                          FontAwesomeIcons.car,
                           onTap: () {
                             // Acción al hacer clic en Destino 2
                             print('Clic en Destino 2');
                           },
                         ),
                         _buildDestination(
-                          'Comentarios',
-                          FontAwesomeIcons.plane,
+                          ' Comentarios ',
+                          FontAwesomeIcons.comment,
                           onTap: () {
                             // Acción al hacer clic en Destino 2
                             print('Clic en Destino 2');
@@ -305,7 +304,7 @@ class _HomePageState extends State<HomePage> {
             EdgeInsets.all(5),
           ),
           backgroundColor: MaterialStateProperty.all<Color>(
-            const Color.fromARGB(255, 99, 4, 4),
+            const Color(0xff0E402E),
           ),
           shape: MaterialStateProperty.all<OutlinedBorder>(
             RoundedRectangleBorder(
@@ -315,7 +314,7 @@ class _HomePageState extends State<HomePage> {
           overlayColor: MaterialStateProperty.resolveWith<Color?>(
             (Set<MaterialState> states) {
               if (states.contains(MaterialState.pressed)) {
-                return const Color.fromARGB(255, 6, 117, 10);
+                return const Color(0xffBF8756);
               }
               return null;
             },
@@ -341,16 +340,16 @@ class _HomePageState extends State<HomePage> {
                 fontFamily: 'Font Awesome',
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 97, 244, 6),
+                color: Color(0xffF29F05),
               ),
             ),
             const SizedBox(height: 10),
             Icon(
               iconData,
               size: 50,
-              color: const Color.fromARGB(255, 129, 54, 54),
+              color: const Color(0xfff2B90C),
             ),
-            const SizedBox(height: 5),
+            const SizedBox(height: 6),
           ],
         ),
       ),
