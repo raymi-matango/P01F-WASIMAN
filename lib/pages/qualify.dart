@@ -6,6 +6,71 @@ class CatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                NextPage(), // Reemplaza NextPage() con tu página destino
+          ),
+        );
+      },
+      child: Column(
+        children: [
+          _buildCardRow(
+            imageUrl: 'https://i.ibb.co/4YDz5FF/estudiante1.jpg',
+            stars: '4.5',
+            userName: 'Pablo Fernando',
+            location: 'Carcelen',
+          ),
+          _buildCardRow(
+            imageUrl: 'https://i.ibb.co/4YDz5FF/estudiante1.jpg',
+            stars: '4.7',
+            userName: 'Juan Perez',
+            location: 'Quito',
+          ),
+          // Agrega más filas de tarjetas aquí según sea necesario
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCardRow({
+    required String imageUrl,
+    required String stars,
+    required String userName,
+    required String location,
+  }) {
+    return Row(
+      children: [
+        Expanded(
+          child: _buildCatCardItem(
+            imageUrl: imageUrl,
+            stars: stars,
+            userName: userName,
+            location: location,
+          ),
+        ),
+        SizedBox(width: 8), // Espaciado entre las tarjetas
+        Expanded(
+          child: _buildCatCardItem(
+            imageUrl: imageUrl,
+            stars: stars,
+            userName: userName,
+            location: location,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCatCardItem({
+    required String imageUrl,
+    required String stars,
+    required String userName,
+    required String location,
+  }) {
     return Card(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -13,7 +78,7 @@ class CatCard extends StatelessWidget {
           Stack(
             children: <Widget>[
               Image.network(
-                'https://i.ibb.co/4YDz5FF/estudiante1.jpg',
+                imageUrl,
                 height: 200,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -21,33 +86,25 @@ class CatCard extends StatelessWidget {
               Positioned(
                 top: 8,
                 left: 8,
-                child: Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: Colors.orange,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.star, // Placeholder for rating icon
+                child: Row(
+                  children: [
+                    Icon(
+                      FontAwesomeIcons.solidStar,
+                      color: Colors.white,
+                      size: 16,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      stars,
+                      style: TextStyle(
                         color: Colors.white,
-                        size: 16,
+                        fontWeight: FontWeight.bold,
                       ),
-                      const SizedBox(width: 4),
-                      Text(
-                        '4.5', // Placeholder for rating
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
               Positioned(
-                //Demuestra si esta disponible o no disponible
                 top: 8,
                 right: 8,
                 child: Container(
@@ -71,12 +128,12 @@ class CatCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Icon(
-                      Icons.person, // Placeholder for user icon
+                      FontAwesomeIcons.userTie,
                       color: Colors.white,
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      'Nombre del usuario', // Placeholder for username
+                      userName,
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -89,7 +146,7 @@ class CatCard extends StatelessWidget {
           ),
           ListTile(
             title: Text(
-              'Destino', // Placeholder for destination
+              location,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -98,6 +155,20 @@ class CatCard extends StatelessWidget {
             contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class NextPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Next Page'),
+      ),
+      body: Center(
+        child: Text('This is the next page!'),
       ),
     );
   }
