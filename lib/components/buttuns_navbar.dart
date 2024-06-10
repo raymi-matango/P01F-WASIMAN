@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:iniciofront/pages/home.dart';
 import 'package:iniciofront/pages/screens/detallesreservas.dart';
@@ -41,9 +42,8 @@ class _BotonesNaveganState extends State<BotonesNavegan> {
 
   final List<Widget> _pages = [
     HomePage(),
-    ViajePagina(),
     HomePage(),
-    DetalleReserva(),
+    HomePage(),
     HomePage(),
   ];
 
@@ -56,14 +56,14 @@ class _BotonesNaveganState extends State<BotonesNavegan> {
     return Scaffold(
       body: _pages[_selectedIndex],
       bottomNavigationBar: Container(
-        color: Colors.black,
+        color: Colors.white70,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
           child: GNav(
-            backgroundColor: Colors.black,
-            color: Colors.white,
-            activeColor: Colors.white,
-            tabBackgroundColor: Colors.grey.shade800,
+            backgroundColor: Colors.white10,
+            color: Color(0xff0E402E),
+            activeColor: Color(0xff0E402E),
+            tabBackgroundColor: Color(0xffF2B90C),
             gap: 5,
             onTabChange: (index) {
               setState(() {
@@ -73,24 +73,20 @@ class _BotonesNaveganState extends State<BotonesNavegan> {
             padding: EdgeInsets.all(16),
             tabs: const [
               GButton(
-                icon: Icons.home,
-                text: 'Inicio',
+                icon: FontAwesomeIcons.house,
+                text: ' Inicio',
               ),
               GButton(
-                icon: Icons.car_crash,
-                text: 'Mis viajes',
+                icon: FontAwesomeIcons.magnifyingGlassLocation,
+                text: ' Buscar',
               ),
               GButton(
-                icon: Icons.search,
-                text: 'Buscar',
+                icon: FontAwesomeIcons.carSide,
+                text: ' Mis reservas',
               ),
               GButton(
-                icon: Icons.save,
-                text: 'Mis reservas',
-              ),
-              GButton(
-                icon: Icons.person,
-                text: 'Perfil',
+                icon: FontAwesomeIcons.userLarge,
+                text: ' Perfil',
               ),
             ],
           ),
