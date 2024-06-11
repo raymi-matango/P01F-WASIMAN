@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:iniciofront/pages/screens/detalleviajes.dart';
 import 'package:iniciofront/pages/screens/reservas.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -107,16 +108,16 @@ class _ViajePaginaState extends State<ViajePagina> {
     );
   }
 
-  void _reservarAsientos(int viajeId) {
+  void _detallesViaje(int viajeId) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ReservaPagina(viajeId: viajeId),
+        builder: (context) => DetallesViajePagina(
+            viaje: destinos.firstWhere((element) => element['id'] == viajeId)),
       ),
     );
   }
 
-//mensaje:
   void _mostrarFiltro() {
     showDialog(
       context: context,
@@ -278,8 +279,7 @@ class _ViajePaginaState extends State<ViajePagina> {
                         userName: destinos[firstIndex]['nombre'],
                         location: destinos[firstIndex]['destino'],
                         available: destinos[firstIndex]['disponible'],
-                        onTap: () =>
-                            _reservarAsientos(destinos[firstIndex]['id']),
+                        onTap: () => _detallesViaje(destinos[firstIndex]['id']),
                       ),
                     ),
                     SizedBox(width: 8),
@@ -301,8 +301,7 @@ class _ViajePaginaState extends State<ViajePagina> {
                             ? destinos[secondIndex]['disponible']
                             : false,
                         onTap: destinos.length > secondIndex
-                            ? () =>
-                                _reservarAsientos(destinos[secondIndex]['id'])
+                            ? () => _detallesViaje(destinos[secondIndex]['id'])
                             : () {},
                       ),
                     ),
@@ -409,6 +408,54 @@ class _ViajePaginaState extends State<ViajePagina> {
                 ),
               ),
               contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class DetallesViajePagina extends StatelessWidget {
+  final dynamic viaje;
+
+  const DetallesViajePagina({Key? key, required this.viaje}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Detalles del Viaje'),
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Origen: ${viaje['origen']}'),
+            Text('Destino: ${viaje['destino']}'),
+            Text('Fecha: ${viaje['fecha']}'),
+            Text('Hora: ${viaje['hora']}'),
+            Text('Asiento: ${viaje['asiento']}'),
+            Text('Detalle: ${viaje['detalle']}'),
+            Text('Disponible: ${viaje['disponible']}'),
+            Text('Nombre: ${viaje['nombre']}'),
+            Text('Facultad: ${viaje['facultad']}'),
+            Text('Correo: ${viaje['correo']}'),
+            Text('Teléfono: ${viaje['telefono']}'),
+            Image.network(viaje['foto']),
+            Text('Calificación: ${viaje['calificacion']}'),
+            // Botón para reservar viaje
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ReservaPagina(viajeId: viaje['id']),
+                  ),
+                );
+              },
+              child: Text('Reservar Viaje'),
             ),
           ],
         ),
