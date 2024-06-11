@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:iniciofront/components/seleccionaMapa.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TokenManager {
@@ -33,6 +34,8 @@ class ReservaPagina extends StatefulWidget {
 
 class _ReservaPaginaState extends State<ReservaPagina> {
   final _cantidadAsientosController = TextEditingController();
+  final _ubicacionController =
+      TextEditingController(); // Controlador para la ubicación
   bool _isLoading = false;
 
   Future<void> _mostrarDialogo(String mensaje) async {
@@ -93,6 +96,8 @@ class _ReservaPaginaState extends State<ReservaPagina> {
       body: json.encode({
         'viajeId': widget.viajeId,
         'cantidadAsientos': cantidadAsientos,
+        'ubicacion': _ubicacionController
+            .text, // Usamos el valor ingresado en el campo de texto de ubicación
       }),
     );
 
@@ -101,7 +106,8 @@ class _ReservaPaginaState extends State<ReservaPagina> {
     });
 
     if (response.statusCode == 201) {
-      await _mostrarDialogo('Reserva realizada con éxito');
+      final responseData = json.decode(response.body);
+      await _mostrarDialogo(responseData['message']);
       Navigator.pop(context);
     } else {
       final responseData = json.decode(response.body);
@@ -116,6 +122,7 @@ class _ReservaPaginaState extends State<ReservaPagina> {
   @override
   void dispose() {
     _cantidadAsientosController.dispose();
+    _ubicacionController.dispose(); // Liberar el controlador de la ubicación
     super.dispose();
   }
 
@@ -134,6 +141,19 @@ class _ReservaPaginaState extends State<ReservaPagina> {
               controller: _cantidadAsientosController,
               decoration: InputDecoration(labelText: 'Cantidad de Asientos'),
               keyboardType: TextInputType.number,
+            ),
+            TextField(
+              controller: _ubicacionController,
+              decoration: InputDecoration(labelText: 'Ubicación'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MapSelectionPage()),
+                );
+              },
+              child: Text('Seleccionar Ubicación en el Mapa'),
             ),
             SizedBox(height: 20),
             _isLoading
