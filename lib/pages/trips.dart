@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:iniciofront/pages/screens/detalleviajes.dart';
+import 'package:iniciofront/pages/screens/comentarios.dart';
 import 'package:iniciofront/pages/screens/reservas.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -417,6 +417,7 @@ class _ViajePaginaState extends State<ViajePagina> {
 }
 
 ////Viajes Detallles//////////////////////////////////////
+
 class Comentario {
   final String comentario;
   final String nombreUsuario;
@@ -427,12 +428,17 @@ class Comentario {
   });
 }
 
-class ComentariosDialogo extends StatelessWidget {
+class ComentariosDialogo extends StatefulWidget {
   final List<Comentario> comentarios;
 
   const ComentariosDialogo({Key? key, required this.comentarios})
       : super(key: key);
 
+  @override
+  State<ComentariosDialogo> createState() => _ComentariosDialogoState();
+}
+
+class _ComentariosDialogoState extends State<ComentariosDialogo> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -440,7 +446,7 @@ class ComentariosDialogo extends StatelessWidget {
       content: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: comentarios.map((comentario) {
+          children: widget.comentarios.map((comentario) {
             return ListTile(
               title: Text(comentario.comentario),
               subtitle: Text('Usuario: ${comentario.nombreUsuario}'),
@@ -460,15 +466,20 @@ class ComentariosDialogo extends StatelessWidget {
   }
 }
 
-class DetallesViajePagina extends StatelessWidget {
+class DetallesViajePagina extends StatefulWidget {
   final dynamic viaje;
 
   const DetallesViajePagina({Key? key, required this.viaje}) : super(key: key);
 
   @override
+  State<DetallesViajePagina> createState() => _DetallesViajePaginaState();
+}
+
+class _DetallesViajePaginaState extends State<DetallesViajePagina> {
+  @override
   Widget build(BuildContext context) {
     List<Comentario> comentarios = [];
-    for (var comentario in viaje['comentarios']) {
+    for (var comentario in widget.viaje['comentarios']) {
       comentarios.add(Comentario(
         comentario: comentario['comentario'],
         nombreUsuario: comentario['usuario']['nombre'],
@@ -484,19 +495,19 @@ class DetallesViajePagina extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Origen: ${viaje['origen']}'),
-            Text('Destino: ${viaje['destino']}'),
-            Text('Fecha: ${viaje['fecha']}'),
-            Text('Hora: ${viaje['hora']}'),
-            Text('Asiento: ${viaje['asiento']}'),
-            Text('Detalle: ${viaje['detalle']}'),
-            Text('Disponible: ${viaje['disponible']}'),
-            Text('Nombre: ${viaje['nombre']}'),
-            Text('Facultad: ${viaje['facultad']}'),
-            Text('Correo: ${viaje['correo']}'),
-            Text('Teléfono: ${viaje['telefono']}'),
-            Image.network(viaje['foto']),
-            Text('Calificación: ${viaje['calificacion']}'),
+            Text('Origen: ${widget.viaje['origen']}'),
+            Text('Destino: ${widget.viaje['destino']}'),
+            Text('Fecha: ${widget.viaje['fecha']}'),
+            Text('Hora: ${widget.viaje['hora']}'),
+            Text('Asiento: ${widget.viaje['asiento']}'),
+            Text('Detalle: ${widget.viaje['detalle']}'),
+            Text('Disponible: ${widget.viaje['disponible']}'),
+            Text('Nombre: ${widget.viaje['nombre']}'),
+            Text('Facultad: ${widget.viaje['facultad']}'),
+            Text('Correo: ${widget.viaje['correo']}'),
+            Text('Teléfono: ${widget.viaje['telefono']}'),
+            Image.network(widget.viaje['foto']),
+            Text('Calificación: ${widget.viaje['calificacion']}'),
             // Botón para mostrar comentarios
             ElevatedButton(
               onPressed: () {
@@ -516,11 +527,24 @@ class DetallesViajePagina extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ReservaPagina(viajeId: viaje['id']),
+                    builder: (context) =>
+                        ReservaPagina(viajeId: widget.viaje['id']),
                   ),
                 );
               },
               child: Text('Reservar Viaje'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        ComentarioPagina(viajeId: widget.viaje['id']),
+                  ),
+                );
+              },
+              child: Text('comentar viaje'),
             ),
           ],
         ),
