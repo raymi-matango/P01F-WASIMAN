@@ -1,59 +1,126 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:iniciofront/pages/screens/reservas.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class CatCard extends StatelessWidget {
-  const CatCard({Key? key}) : super(key: key);
+class TokenManager {
+  static const _key = 'jwt_token';
+
+  static Future<void> saveToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_key, token);
+  }
+
+  static Future<String?> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_key);
+  }
+
+  static Future<void> deleteToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_key);
+  }
+}
+
+class ViajePagina extends StatefulWidget {
+  const ViajePagina({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SearchAndFilter(), // Agregamos el campo de búsqueda y el botón de filtro
-        SizedBox(
-            height: 8), // Espaciado entre el campo de búsqueda y las tarjetas
-        _buildCardRow(
-          imageUrl: 'https://i.ibb.co/4YDz5FF/estudiante1.jpg',
-          stars: '4.5',
-          userName: 'Pablo Fernando',
-          location: 'Carcelen',
-        ),
-        _buildCardRow(
-          imageUrl: 'https://i.ibb.co/4YDz5FF/estudiante1.jpg',
-          stars: '4.7',
-          userName: 'Juan Perez',
-          location: 'Quito',
-        ),
-        // Agrega más filas de tarjetas aquí según sea necesario
-      ],
+  State<ViajePagina> createState() => _ViajePaginaState();
+}
+
+class _ViajePaginaState extends State<ViajePagina> {
+  List<dynamic> destinos = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchViajes();
+  }
+
+  Future<void> _fetchViajes() async {
+    final token = await TokenManager.getToken();
+
+    final response = await http.get(
+      Uri.parse('http://localhost:7777/api/viajes/listar'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final responseData = json.decode(response.body);
+      final List<dynamic> viajes = responseData['viajes'];
+      setState(() {
+        destinos = viajes;
+      });
+    } else {
+      print('Error al cargar los viajes: ${response.statusCode}');
+    }
+  }
+
+  void _reservarAsientos(int viajeId) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ReservaPagina(viajeId: viajeId),
+      ),
     );
   }
 
-  Widget _buildCardRow({
-    required String imageUrl,
-    required String stars,
-    required String userName,
-    required String location,
-  }) {
-    return Row(
-      children: [
-        Expanded(
-          child: _buildCatCardItem(
-            imageUrl: imageUrl,
-            stars: stars,
-            userName: userName,
-            location: location,
-          ),
-        ),
-        SizedBox(width: 8), // Espaciado entre las tarjetas
-        Expanded(
-          child: _buildCatCardItem(
-            imageUrl: imageUrl,
-            stars: stars,
-            userName: userName,
-            location: location,
-          ),
-        ),
-      ],
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Lista de Destinos'),
+      ),
+      body: ListView.builder(
+        itemCount: (destinos.length / 2).ceil(),
+        itemBuilder: (context, index) {
+          final int firstIndex = index * 2;
+          final int secondIndex = index * 2 + 1;
+          return Row(
+            children: [
+              Expanded(
+                child: _buildCatCardItem(
+                  imageUrl: destinos[firstIndex]['foto'],
+                  stars: destinos[firstIndex]['calificacion'].toString(),
+                  userName: destinos[firstIndex]['nombre'],
+                  location: destinos[firstIndex]['destino'],
+                  available: destinos[firstIndex]['disponible'],
+                  onTap: () => _reservarAsientos(destinos[firstIndex]['id']),
+                ),
+              ),
+              SizedBox(width: 8), // Espaciado entre las tarjetas
+              Expanded(
+                child: _buildCatCardItem(
+                  imageUrl: destinos.length > secondIndex
+                      ? destinos[secondIndex]['foto']
+                      : '', // Evita errores si no hay suficientes destinos
+                  stars: destinos.length > secondIndex
+                      ? destinos[secondIndex]['calificacion'].toString()
+                      : '',
+                  userName: destinos.length > secondIndex
+                      ? destinos[secondIndex]['nombre']
+                      : '',
+                  location: destinos.length > secondIndex
+                      ? destinos[secondIndex]['destino']
+                      : '',
+                  available: destinos.length > secondIndex
+                      ? destinos[secondIndex]['disponible']
+                      : false,
+                  onTap: destinos.length > secondIndex
+                      ? () => _reservarAsientos(destinos[secondIndex]['id'])
+                      : () {},
+                ),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -62,11 +129,11 @@ class CatCard extends StatelessWidget {
     required String stars,
     required String userName,
     required String location,
+    required bool available,
+    required VoidCallback onTap,
   }) {
     return GestureDetector(
-      onTap: () {
-        print('presonado el contenedor ...');
-      },
+      onTap: onTap,
       child: Card(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -100,44 +167,24 @@ class CatCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                Positioned(
-                  top: 8,
-                  right: 8,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 2,
-                      ),
-                    ),
-                    child: CircleAvatar(
-                      backgroundColor: Colors.green,
-                      radius: 8,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 8,
-                  left: 8,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(
-                        FontAwesomeIcons.userTie,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        userName,
-                        style: TextStyle(
+                if (available)
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
                           color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                          width: 2,
                         ),
                       ),
-                    ],
+                      child: CircleAvatar(
+                        backgroundColor: Colors.green,
+                        radius: 8,
+                      ),
+                    ),
                   ),
-                ),
               ],
             ),
             ListTile(
@@ -152,54 +199,6 @@ class CatCard extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class NextPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Next Page'),
-      ),
-      body: Center(
-        child: Text('This is the next page!'),
-      ),
-    );
-  }
-}
-
-class SearchAndFilter extends StatelessWidget {
-  const SearchAndFilter({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(8),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Buscar',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-            ),
-          ),
-          SizedBox(width: 8),
-          IconButton(
-            icon: Icon(FontAwesomeIcons.filter),
-            onPressed: () {
-              print('presonado el filtro ...');
-              // Acción al presionar el botón de filtro
-            },
-          ),
-        ],
       ),
     );
   }
