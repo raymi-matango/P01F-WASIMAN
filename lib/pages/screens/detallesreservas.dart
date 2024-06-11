@@ -1,134 +1,101 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:iniciofront/pages/screens/reservas.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
-class DetalleReserva extends StatefulWidget {
-  const DetalleReserva({super.key});
+class DetalleReservas extends StatefulWidget {
+  const DetalleReservas({Key? key});
 
   @override
-  State<DetalleReserva> createState() => _DetalleReservaState();
+  State<DetalleReservas> createState() => _DetalleReservasState();
 }
 
-class _DetalleReservaState extends State<DetalleReserva> {
-  List<dynamic> reservas = [];
-  bool _isLoading = true;
+class _DetalleReservasState extends State<DetalleReservas> {
+  String? _token;
 
   @override
   void initState() {
     super.initState();
-    _fetchReservas();
+    _loadToken();
   }
 
-  Future<void> _fetchReservas() async {
-    final token = await TokenManager.getToken();
-    if (token == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text(
-                'Token no disponible. Por favor, inicie sesión de nuevo.')),
-      );
-      return;
-    }
-
-    final uri = Uri.parse('http://localhost:7777/api/reservas/detalles');
-    final response = await http.get(
-      uri,
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      final responseData = json.decode(response.body);
-      setState(() {
-        reservas = responseData['reservas'];
-        _isLoading = false;
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text('Error al cargar las reservas: ${response.body}')),
-      );
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
-  Future<void> _cancelarReserva(int reservaId) async {
-    final token = await TokenManager.getToken();
-    if (token == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text(
-                'Token no disponible. Por favor, inicie sesión de nuevo.')),
-      );
-      return;
-    }
-
-    final uri =
-        Uri.parse('http://localhost:7777/api/reservas/cancelar/$reservaId');
-    final response = await http.delete(
-      uri,
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      setState(() {
-        reservas.removeWhere((reserva) => reserva['id'] == reservaId);
-      });
-      _mostrarDialogoExito();
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text('Error al cancelar la reserva: ${response.body}')),
-      );
-    }
-  }
-
-  void _mostrarDialogoExito() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.check_circle, color: Colors.green, size: 60),
-              SizedBox(height: 20),
-              Text(
-                'Reserva cancelada con éxito',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-
-    Future.delayed(Duration(seconds: 2), () {
-      Navigator.of(context).pop();
+  Future<void> _loadToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _token = prefs.getString('jwt_token');
     });
   }
 
-  void _abrirChatWhatsApp(String mensaje) async {
-    final whatsappUrl = 'https://wa.me/?text=$mensaje';
-    if (await canLaunch(whatsappUrl)) {
-      await launch(whatsappUrl);
+  Future<void> _cancelarReserva(int reservaId) async {
+    final response = await http.delete(
+      Uri.parse('http://localhost:7777/api/reservas/cancelar/$reservaId'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $_token',
+      },
+    );
+    if (response.statusCode == 200) {
+      // Si la cancelación fue exitosa, actualiza la lista de reservas
+      setState(() {
+        // Aquí deberías actualizar la lista de reservas, ya sea volviendo a llamar fetchReservas o eliminando la reserva de la lista actual.
+      });
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('No se puede abrir WhatsApp')),
+      // Si la cancelación no fue exitosa, muestra un mensaje de error
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Error'),
+          content: Text('No se pudo cancelar la reserva.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('OK'),
+            ),
+          ],
+        ),
       );
     }
+  }
+
+  Future<List<dynamic>> fetchReservas() async {
+    final response = await http.get(
+      Uri.parse('http://localhost:7777/api/reservas/detalles'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $_token',
+      },
+    );
+    if (response.statusCode == 200) {
+      // Si la solicitud fue exitosa, analiza el JSON
+      Map<String, dynamic> data = jsonDecode(response.body);
+      return data['reservas'];
+    } else {
+      // Si la solicitud no fue exitosa, lanza una excepción
+      throw Exception('Failed to load reservas');
+    }
+  }
+
+  Future<void> _mostrarConfirmacionCancelar(
+      BuildContext context, int reservaId) async {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Confirmación'),
+        content: Text('¿Está seguro de cancelar esta reserva?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(true);
+              _cancelarReserva(reservaId);
+            },
+            child: Text('Cancelar reserva'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -137,63 +104,65 @@ class _DetalleReservaState extends State<DetalleReserva> {
       appBar: AppBar(
         title: Text('Detalles de Reservas'),
       ),
-      body: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : RefreshIndicator(
-              onRefresh: _fetchReservas,
+      body: FutureBuilder<List<dynamic>>(
+        future: fetchReservas(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // Mientras espera, muestra un indicador de progreso
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            // Si hay un error, muestra un mensaje de error
+            return Center(child: Text('Error al cargar reservas'));
+          } else {
+            // Si la llamada a la API fue exitosa, muestra los detalles de las reservas
+            List<dynamic> reservas = snapshot.data!;
+            return AnimationLimiter(
               child: ListView.builder(
                 itemCount: reservas.length,
                 itemBuilder: (context, index) {
                   final reserva = reservas[index];
-                  return ListTile(
-                    title: Text('Viaje ID: ${reserva['viajeId']}'),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                            'Cantidad de Asientos: ${reserva['cantidadAsientos']}'),
-                        Text(
-                            'Fecha y Hora de Reserva: ${reserva['fechaHoraReserva']}'),
-                        Text('Estado de Reserva: ${reserva['estadoReserva']}'),
-                      ],
-                    ),
-                    trailing: reserva['estadoReserva'] == 'pendiente'
-                        ? IconButton(
-                            icon: Icon(Icons.delete, color: Colors.red),
-                            onPressed: () =>
-                                _confirmarCancelacionReserva(reserva['id']),
-                          )
-                        : IconButton(
-                            icon: Icon(Icons.telegram, color: Colors.green),
-                            onPressed: () => _abrirChatWhatsApp(
-                                'Detalles de la reserva: ${reserva['id']}'),
+                  return AnimationConfiguration.staggeredList(
+                    position: index,
+                    duration: const Duration(milliseconds: 300),
+                    child: SlideAnimation(
+                      verticalOffset: 50.0,
+                      child: FadeInAnimation(
+                        child: Card(
+                          child: InkWell(
+                            onTap: () {
+                              _mostrarConfirmacionCancelar(
+                                  context, reserva['id']);
+                            },
+                            child: ListTile(
+                              title: Text(
+                                  'Destino: ${reserva['viaje']['destino']}'),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Fecha: ${reserva['fecha']}'),
+                                  Text('Estado: ${reserva['estado']}'),
+                                  Text('Asiento: ${reserva['asiento']}'),
+                                  Text('Ubicación: ${reserva['ubicacion']}'),
+                                ],
+                              ),
+                              trailing: ElevatedButton(
+                                onPressed: () {
+                                  _mostrarConfirmacionCancelar(
+                                      context, reserva['id']);
+                                },
+                                child: Text('Cancelar'),
+                              ),
+                            ),
                           ),
+                        ),
+                      ),
+                    ),
                   );
                 },
               ),
-            ),
-    );
-  }
-
-  void _confirmarCancelacionReserva(int reservaId) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Confirmar Cancelación'),
-        content: Text('¿Estás seguro de que deseas cancelar esta reserva?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text('No'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              _cancelarReserva(reservaId);
-            },
-            child: Text('Sí'),
-          ),
-        ],
+            );
+          }
+        },
       ),
     );
   }

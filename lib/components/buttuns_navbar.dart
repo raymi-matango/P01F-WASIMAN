@@ -44,7 +44,7 @@ class _BotonesNaveganState extends State<BotonesNavegan> {
   final List<Widget> _pages = [
     HomePage(),
     ViajePagina(),
-    DetalleReserva(),
+    DetalleReservas(),
     DetalleComentarios()
   ];
 

@@ -127,37 +127,64 @@ class _DetalleComentariosState extends State<DetalleComentarios> {
                     child: SlideAnimation(
                       verticalOffset: 50.0,
                       child: FadeInAnimation(
-                        child: InkWell(
-                          onTap: () {
-                            _mostrarConfirmacionEliminar(
-                                context, comentario['id']);
-                          },
-                          child: Container(
-                            color: Colors.transparent,
-                            child: ListTile(
-                              title: Text(comentario['comentario']),
-                              subtitle: Column(
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          elevation: 5,
+                          margin: EdgeInsets.all(10),
+                          child: InkWell(
+                            onTap: () {
+                              _mostrarConfirmacionEliminar(
+                                  context, comentario['id']);
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                      'Calificación: ${comentario['calificacion']}'),
-                                  Text('Fecha: ${comentario['fecha']}'),
-                                  Text(
-                                      'Nombre del viaje: ${comentario['viaje']['nombre']}'),
-                                  Text(
-                                      'Destino: ${comentario['viaje']['destino']}'),
-                                  Text(
-                                      'Fecha del viaje: ${comentario['viaje']['fecha']}'),
-                                  Text(
-                                      'Hora del viaje: ${comentario['viaje']['hora']}'),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          comentario['comentario'],
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        SizedBox(height: 5),
+                                        Text(
+                                          'Calificación: ${comentario['calificacion']}',
+                                        ),
+                                        Text(
+                                          'Fecha: ${comentario['fecha']}',
+                                        ),
+                                        Text(
+                                          'Nombre del viaje: ${comentario['viaje']['nombre']}',
+                                        ),
+                                        Text(
+                                          'Destino: ${comentario['viaje']['destino']}',
+                                        ),
+                                        Text(
+                                          'Fecha del viaje: ${comentario['viaje']['fecha']}',
+                                        ),
+                                        Text(
+                                          'Hora del viaje: ${comentario['viaje']['hora']}',
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.delete),
+                                    onPressed: () {
+                                      _mostrarConfirmacionEliminar(
+                                          context, comentario['id']);
+                                    },
+                                  ),
                                 ],
-                              ),
-                              trailing: IconButton(
-                                icon: Icon(Icons.delete),
-                                onPressed: () {
-                                  _mostrarConfirmacionEliminar(
-                                      context, comentario['id']);
-                                },
                               ),
                             ),
                           ),
