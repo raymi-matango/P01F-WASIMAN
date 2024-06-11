@@ -94,6 +94,85 @@ class _ViajePaginaState extends State<ViajePagina> {
     );
   }
 
+//mensaje:
+  void _mostrarFiltro() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Búsqueda'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: _nombreController,
+                decoration: InputDecoration(
+                  labelText: 'Nombre',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                    borderSide: BorderSide(
+                      color: Colors.blue,
+                      width: 2.0,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                    borderSide: BorderSide(
+                      color: Colors.grey,
+                      width: 1.0,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 16.0), // Espacio entre los TextFields
+              TextField(
+                controller: _horaController,
+                decoration: InputDecoration(
+                  labelText: 'Hora',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                    borderSide: BorderSide(
+                      color: Colors.blue,
+                      width: 2.0,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                    borderSide: BorderSide(
+                      color: Colors.grey,
+                      width: 1.0,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancelar'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _buscarViajes();
+                Navigator.of(context).pop(); // Cerrar el diálogo
+              },
+              child: Text('Buscar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,29 +182,41 @@ class _ViajePaginaState extends State<ViajePagina> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
               children: [
-                TextField(
-                  controller: _destinoController,
-                  onChanged: (text) {
-                    // Realiza la búsqueda cada vez que el texto cambie
-                    _buscarViajes();
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'Destino',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    suffixIcon: IconButton(
-                      icon: Icon(Icons.clear),
-                      onPressed: () {
-                        // Limpia el texto cuando se presiona el icono
-                        _destinoController.clear();
-                        _buscarViajes();
-                      },
+                Expanded(
+                  child: TextField(
+                    controller: _destinoController,
+                    onChanged: (text) {
+                      // Realiza la búsqueda cada vez que el texto cambie
+                      _buscarViajes();
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Destino',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.clear),
+                        onPressed: () {
+                          // Limpia el texto cuando se presiona el icono
+                          _destinoController.clear();
+                          _buscarViajes();
+                        },
+                      ),
                     ),
                   ),
+                ),
+                SizedBox(
+                    width: 8), // Espacio entre el TextField y el IconButton
+                IconButton(
+                  icon: const Icon(
+                    FontAwesomeIcons.filter,
+                    color: Color(0xFFF2B90C),
+                    size: 24,
+                  ),
+                  onPressed: _mostrarFiltro,
                 ),
               ],
             ),
