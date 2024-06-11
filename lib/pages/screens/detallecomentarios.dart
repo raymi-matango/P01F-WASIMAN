@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class DetalleComentarios extends StatefulWidget {
   const DetalleComentarios({Key? key});
@@ -26,6 +27,36 @@ class _DetalleComentariosState extends State<DetalleComentarios> {
     });
   }
 
+  Future<void> _eliminarComentario(int comentarioId) async {
+    final response = await http.delete(
+      Uri.parse('http://localhost:7777/api/comentarios/eliminar/$comentarioId'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $_token',
+      },
+    );
+    if (response.statusCode == 200) {
+      // Si la eliminación fue exitosa, actualiza la lista de comentarios
+      setState(() {
+        // Aquí deberías actualizar la lista de comentarios, ya sea volviendo a llamar fetchComentarios o eliminando el comentario de la lista actual.
+      });
+    } else {
+      // Si la eliminación no fue exitosa, muestra un mensaje de error
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Error'),
+          content: Text('No se pudo eliminar el comentario.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
   Future<List<dynamic>> fetchComentarios() async {
     final response = await http.get(
       Uri.parse('http://localhost:7777/api/comentarios/ver'),
@@ -41,6 +72,30 @@ class _DetalleComentariosState extends State<DetalleComentarios> {
       // Si la solicitud no fue exitosa, lanza una excepción
       throw Exception('Failed to load comentarios');
     }
+  }
+
+  Future<void> _mostrarConfirmacionEliminar(
+      BuildContext context, int comentarioId) async {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Confirmación'),
+        content: Text('¿Está seguro de eliminar este comentario?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(true);
+              _eliminarComentario(comentarioId);
+            },
+            child: Text('Eliminar'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -61,27 +116,57 @@ class _DetalleComentariosState extends State<DetalleComentarios> {
           } else {
             // Si la llamada a la API fue exitosa, muestra los comentarios
             List<dynamic> comentarios = snapshot.data!;
-            return ListView.builder(
-              itemCount: comentarios.length,
-              itemBuilder: (context, index) {
-                final comentario = comentarios[index];
-                return ListTile(
-                  title: Text(comentario['comentario']),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Calificación: ${comentario['calificacion']}'),
-                      Text('Fecha: ${comentario['fecha']}'),
-                      Text(
-                          'Nombre del viaje: ${comentario['viaje']['nombre']}'),
-                      Text('Destino: ${comentario['viaje']['destino']}'),
-                      Text('Fecha del viaje: ${comentario['viaje']['fecha']}'),
-                      Text('Hora del viaje: ${comentario['viaje']['hora']}'),
-                    ],
-                  ),
-                  // Puedes agregar más campos aquí según la estructura de tus datos
-                );
-              },
+            return AnimationLimiter(
+              child: ListView.builder(
+                itemCount: comentarios.length,
+                itemBuilder: (context, index) {
+                  final comentario = comentarios[index];
+                  return AnimationConfiguration.staggeredList(
+                    position: index,
+                    duration: const Duration(milliseconds: 300),
+                    child: SlideAnimation(
+                      verticalOffset: 50.0,
+                      child: FadeInAnimation(
+                        child: InkWell(
+                          onTap: () {
+                            _mostrarConfirmacionEliminar(
+                                context, comentario['id']);
+                          },
+                          child: Container(
+                            color: Colors.transparent,
+                            child: ListTile(
+                              title: Text(comentario['comentario']),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                      'Calificación: ${comentario['calificacion']}'),
+                                  Text('Fecha: ${comentario['fecha']}'),
+                                  Text(
+                                      'Nombre del viaje: ${comentario['viaje']['nombre']}'),
+                                  Text(
+                                      'Destino: ${comentario['viaje']['destino']}'),
+                                  Text(
+                                      'Fecha del viaje: ${comentario['viaje']['fecha']}'),
+                                  Text(
+                                      'Hora del viaje: ${comentario['viaje']['hora']}'),
+                                ],
+                              ),
+                              trailing: IconButton(
+                                icon: Icon(Icons.delete),
+                                onPressed: () {
+                                  _mostrarConfirmacionEliminar(
+                                      context, comentario['id']);
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
             );
           }
         },
