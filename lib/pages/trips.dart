@@ -76,6 +76,28 @@ class _ViajePaginaState extends State<ViajePagina> {
     }
   }
 
+  Future<void> _seleccionarHora(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null) {
+      String hora = picked.format(context); // Obtener la hora seleccionada
+      // Eliminar el AM/PM del formato de la hora
+      hora = hora.replaceAll(
+          RegExp(r'\s?[AP]M'), ''); // Elimina el AM o PM, si existe
+      setState(() {
+        _horaController.text = hora;
+      });
+    }
+  }
+
   void _buscarViajes() {
     _fetchViajes(
       nombre: _nombreController.text,
@@ -100,13 +122,21 @@ class _ViajePaginaState extends State<ViajePagina> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Búsqueda'),
+          title: Text('Búsqueda Avanzada'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: _nombreController,
                 decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.clear),
+                    onPressed: () {
+                      // Limpia el texto cuando se presiona el icono
+                      _nombreController.clear();
+                      _buscarViajes();
+                    },
+                  ),
                   labelText: 'Nombre',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20.0),
@@ -130,7 +160,19 @@ class _ViajePaginaState extends State<ViajePagina> {
               SizedBox(height: 16.0), // Espacio entre los TextFields
               TextField(
                 controller: _horaController,
+                onTap: () {
+                  _seleccionarHora(context);
+                },
+                readOnly: true,
                 decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.clear),
+                    onPressed: () {
+                      // Limpia el texto cuando se presiona el icono
+                      _horaController.clear();
+                      _buscarViajes();
+                    },
+                  ),
                   labelText: 'Hora',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20.0),
