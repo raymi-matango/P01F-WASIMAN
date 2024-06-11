@@ -44,7 +44,7 @@ class _ViajePaginaState extends State<ViajePagina> {
     final token = await TokenManager.getToken();
 
     final response = await http.get(
-      Uri.parse('http://192.168.137.1:7777/api/viajes/listar'),
+      Uri.parse('http://localhost:7777/api/viajes/listar'),
       headers: {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',
@@ -185,6 +185,27 @@ class _ViajePaginaState extends State<ViajePagina> {
                       ),
                     ),
                   ),
+                Positioned(
+                  bottom: 8,
+                  left: 8,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        FontAwesomeIcons.userTie,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        userName,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
             ListTile(
