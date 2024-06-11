@@ -416,6 +416,50 @@ class _ViajePaginaState extends State<ViajePagina> {
   }
 }
 
+////Viajes Detallles//////////////////////////////////////
+class Comentario {
+  final String comentario;
+  final String nombreUsuario;
+
+  Comentario({
+    required this.comentario,
+    required this.nombreUsuario,
+  });
+}
+
+class ComentariosDialogo extends StatelessWidget {
+  final List<Comentario> comentarios;
+
+  const ComentariosDialogo({Key? key, required this.comentarios})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('Comentarios'),
+      content: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: comentarios.map((comentario) {
+            return ListTile(
+              title: Text(comentario.comentario),
+              subtitle: Text('Usuario: ${comentario.nombreUsuario}'),
+            );
+          }).toList(),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text('Cerrar'),
+        ),
+      ],
+    );
+  }
+}
+
 class DetallesViajePagina extends StatelessWidget {
   final dynamic viaje;
 
@@ -423,6 +467,14 @@ class DetallesViajePagina extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Comentario> comentarios = [];
+    for (var comentario in viaje['comentarios']) {
+      comentarios.add(Comentario(
+        comentario: comentario['comentario'],
+        nombreUsuario: comentario['usuario']['nombre'],
+      ));
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Detalles del Viaje'),
@@ -445,6 +497,19 @@ class DetallesViajePagina extends StatelessWidget {
             Text('Teléfono: ${viaje['telefono']}'),
             Image.network(viaje['foto']),
             Text('Calificación: ${viaje['calificacion']}'),
+            // Botón para mostrar comentarios
+            ElevatedButton(
+              onPressed: () {
+                // Mostrar diálogo de comentarios
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return ComentariosDialogo(comentarios: comentarios);
+                  },
+                );
+              },
+              child: Text('Comentarios'),
+            ),
             // Botón para reservar viaje
             ElevatedButton(
               onPressed: () {
