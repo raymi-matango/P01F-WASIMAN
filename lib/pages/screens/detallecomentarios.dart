@@ -29,7 +29,8 @@ class _DetalleComentariosState extends State<DetalleComentarios> {
 
   Future<void> _eliminarComentario(int comentarioId) async {
     final response = await http.delete(
-      Uri.parse('http://localhost:7777/api/comentarios/eliminar/$comentarioId'),
+      Uri.parse(
+          'http://192.168.137.1:7777/api/comentarios/eliminar/$comentarioId'),
       headers: <String, String>{
         'Authorization': 'Bearer $_token',
       },
@@ -59,7 +60,7 @@ class _DetalleComentariosState extends State<DetalleComentarios> {
 
   Future<List<dynamic>> fetchComentarios() async {
     final response = await http.get(
-      Uri.parse('http://localhost:7777/api/comentarios/ver'),
+      Uri.parse('http://192.168.137.1:7777/api/comentarios/ver'),
       headers: <String, String>{
         'Authorization': 'Bearer $_token',
       },

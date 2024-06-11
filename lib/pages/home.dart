@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:iniciofront/components/notificacion.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -265,6 +266,8 @@ class _HomePageState extends State<HomePage> {
                 ),
                 child: TextButton(
                   onPressed: () {
+                    NotificationService().showNotification(
+                        title: 'Sample title', body: 'It works!');
                     print('Button pressed ...');
                   },
                   style: TextButton.styleFrom(

@@ -32,6 +32,8 @@ dependencies:
   fui_kit: ^2.0.2
   flutter_staggered_animations: ^1.1.1
   google_maps_flutter: ^2.7.0
+  flutter_map: ^7.0.1
+  latlong2: ^0.9.1
 
 dev_dependencies:
   flutter_test:

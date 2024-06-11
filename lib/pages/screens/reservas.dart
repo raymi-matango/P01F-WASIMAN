@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:iniciofront/components/seleccionaMapa.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TokenManager {
@@ -86,7 +85,7 @@ class _ReservaPaginaState extends State<ReservaPagina> {
       return;
     }
 
-    final uri = Uri.parse('http://localhost:7777/api/reservas/crear');
+    final uri = Uri.parse('http://192.168.137.1:7777/api/reservas/crear');
     final response = await http.post(
       uri,
       headers: {
@@ -145,15 +144,6 @@ class _ReservaPaginaState extends State<ReservaPagina> {
             TextField(
               controller: _ubicacionController,
               decoration: InputDecoration(labelText: 'Ubicación'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MapSelectionPage()),
-                );
-              },
-              child: Text('Seleccionar Ubicación en el Mapa'),
             ),
             SizedBox(height: 20),
             _isLoading
