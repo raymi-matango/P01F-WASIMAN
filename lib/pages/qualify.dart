@@ -6,33 +6,25 @@ class CatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                NextPage(), // Reemplaza NextPage() con tu página destino
-          ),
-        );
-      },
-      child: Column(
-        children: [
-          _buildCardRow(
-            imageUrl: 'https://i.ibb.co/4YDz5FF/estudiante1.jpg',
-            stars: '4.5',
-            userName: 'Pablo Fernando',
-            location: 'Carcelen',
-          ),
-          _buildCardRow(
-            imageUrl: 'https://i.ibb.co/4YDz5FF/estudiante1.jpg',
-            stars: '4.7',
-            userName: 'Juan Perez',
-            location: 'Quito',
-          ),
-          // Agrega más filas de tarjetas aquí según sea necesario
-        ],
-      ),
+    return Column(
+      children: [
+        SearchAndFilter(), // Agregamos el campo de búsqueda y el botón de filtro
+        SizedBox(
+            height: 8), // Espaciado entre el campo de búsqueda y las tarjetas
+        _buildCardRow(
+          imageUrl: 'https://i.ibb.co/4YDz5FF/estudiante1.jpg',
+          stars: '4.5',
+          userName: 'Pablo Fernando',
+          location: 'Carcelen',
+        ),
+        _buildCardRow(
+          imageUrl: 'https://i.ibb.co/4YDz5FF/estudiante1.jpg',
+          stars: '4.7',
+          userName: 'Juan Perez',
+          location: 'Quito',
+        ),
+        // Agrega más filas de tarjetas aquí según sea necesario
+      ],
     );
   }
 
@@ -71,90 +63,95 @@ class CatCard extends StatelessWidget {
     required String userName,
     required String location,
   }) {
-    return Card(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Stack(
-            children: <Widget>[
-              Image.network(
-                imageUrl,
-                height: 200,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
-              Positioned(
-                top: 8,
-                left: 8,
-                child: Row(
-                  children: [
-                    Icon(
-                      FontAwesomeIcons.solidStar,
-                      color: Colors.white,
-                      size: 16,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      stars,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+    return GestureDetector(
+      onTap: () {
+        print('presonado el contenedor ...');
+      },
+      child: Card(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Stack(
+              children: <Widget>[
+                Image.network(
+                  imageUrl,
+                  height: 200,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
                 ),
-              ),
-              Positioned(
-                top: 8,
-                right: 8,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: Colors.white,
-                      width: 2,
-                    ),
-                  ),
-                  child: CircleAvatar(
-                    backgroundColor: Colors.green,
-                    radius: 8,
+                Positioned(
+                  top: 8,
+                  left: 8,
+                  child: Row(
+                    children: [
+                      Icon(
+                        FontAwesomeIcons.solidStar,
+                        color: Colors.white,
+                        size: 16,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        stars,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              Positioned(
-                bottom: 8,
-                left: 8,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(
-                      FontAwesomeIcons.userTie,
-                      color: Colors.white,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      userName,
-                      style: TextStyle(
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
                         color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                        width: 2,
                       ),
                     ),
-                  ],
+                    child: CircleAvatar(
+                      backgroundColor: Colors.green,
+                      radius: 8,
+                    ),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          ListTile(
-            title: Text(
-              location,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+                Positioned(
+                  bottom: 8,
+                  left: 8,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        FontAwesomeIcons.userTie,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        userName,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
-          ),
-        ],
+            ListTile(
+              title: Text(
+                location,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -169,6 +166,40 @@ class NextPage extends StatelessWidget {
       ),
       body: Center(
         child: Text('This is the next page!'),
+      ),
+    );
+  }
+}
+
+class SearchAndFilter extends StatelessWidget {
+  const SearchAndFilter({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(8),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Buscar',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(width: 8),
+          IconButton(
+            icon: Icon(FontAwesomeIcons.filter),
+            onPressed: () {
+              print('presonado el filtro ...');
+              // Acción al presionar el botón de filtro
+            },
+          ),
+        ],
       ),
     );
   }
