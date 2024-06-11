@@ -48,7 +48,7 @@ class _LoginPaginaState extends State<LoginPagina> {
   }
 
   Future<void> _login() async {
-    final uri = Uri.parse("http://localhost:7777/api/autenticar/login");
+    final uri = Uri.parse("http://192.168.137.1:7777/api/autenticar/login");
     try {
       final response = await http.post(
         uri,
