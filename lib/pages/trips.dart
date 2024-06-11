@@ -33,6 +33,10 @@ class ViajePagina extends StatefulWidget {
 
 class _ViajePaginaState extends State<ViajePagina> {
   List<dynamic> destinos = [];
+  final TextEditingController _nombreController = TextEditingController();
+  final TextEditingController _destinoController = TextEditingController();
+  final TextEditingController _fechaController = TextEditingController();
+  final TextEditingController _horaController = TextEditingController();
 
   @override
   void initState() {
@@ -40,11 +44,21 @@ class _ViajePaginaState extends State<ViajePagina> {
     _fetchViajes();
   }
 
-  Future<void> _fetchViajes() async {
+  Future<void> _fetchViajes(
+      {String? nombre, String? destino, String? fecha, String? hora}) async {
     final token = await TokenManager.getToken();
+    final queryParameters = {
+      'nombre': nombre,
+      'destino': destino,
+      'fecha': fecha,
+      'hora': hora,
+    }..removeWhere((key, value) => value == null || value.isEmpty);
+
+    final uri =
+        Uri.http('localhost:7777', '/api/viajes/buscar', queryParameters);
 
     final response = await http.get(
-      Uri.parse('http://localhost:7777/api/viajes/listar'),
+      uri,
       headers: {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',
@@ -62,6 +76,15 @@ class _ViajePaginaState extends State<ViajePagina> {
     }
   }
 
+  void _buscarViajes() {
+    _fetchViajes(
+      nombre: _nombreController.text,
+      destino: _destinoController.text,
+      fecha: _fechaController.text,
+      hora: _horaController.text,
+    );
+  }
+
   void _reservarAsientos(int viajeId) {
     Navigator.push(
       context,
@@ -77,49 +100,85 @@ class _ViajePaginaState extends State<ViajePagina> {
       appBar: AppBar(
         title: Text('Lista de Destinos'),
       ),
-      body: ListView.builder(
-        itemCount: (destinos.length / 2).ceil(),
-        itemBuilder: (context, index) {
-          final int firstIndex = index * 2;
-          final int secondIndex = index * 2 + 1;
-          return Row(
-            children: [
-              Expanded(
-                child: _buildCatCardItem(
-                  imageUrl: destinos[firstIndex]['foto'],
-                  stars: destinos[firstIndex]['calificacion'].toString(),
-                  userName: destinos[firstIndex]['nombre'],
-                  location: destinos[firstIndex]['destino'],
-                  available: destinos[firstIndex]['disponible'],
-                  onTap: () => _reservarAsientos(destinos[firstIndex]['id']),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                TextField(
+                  controller: _destinoController,
+                  onChanged: (text) {
+                    // Realiza la búsqueda cada vez que el texto cambie
+                    _buscarViajes();
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Destino',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.clear),
+                      onPressed: () {
+                        // Limpia el texto cuando se presiona el icono
+                        _destinoController.clear();
+                        _buscarViajes();
+                      },
+                    ),
+                  ),
                 ),
-              ),
-              SizedBox(width: 8), // Espaciado entre las tarjetas
-              Expanded(
-                child: _buildCatCardItem(
-                  imageUrl: destinos.length > secondIndex
-                      ? destinos[secondIndex]['foto']
-                      : '', // Evita errores si no hay suficientes destinos
-                  stars: destinos.length > secondIndex
-                      ? destinos[secondIndex]['calificacion'].toString()
-                      : '',
-                  userName: destinos.length > secondIndex
-                      ? destinos[secondIndex]['nombre']
-                      : '',
-                  location: destinos.length > secondIndex
-                      ? destinos[secondIndex]['destino']
-                      : '',
-                  available: destinos.length > secondIndex
-                      ? destinos[secondIndex]['disponible']
-                      : false,
-                  onTap: destinos.length > secondIndex
-                      ? () => _reservarAsientos(destinos[secondIndex]['id'])
-                      : () {},
-                ),
-              ),
-            ],
-          );
-        },
+              ],
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: (destinos.length / 2).ceil(),
+              itemBuilder: (context, index) {
+                final int firstIndex = index * 2;
+                final int secondIndex = index * 2 + 1;
+                return Row(
+                  children: [
+                    Expanded(
+                      child: _buildCatCardItem(
+                        imageUrl: destinos[firstIndex]['foto'],
+                        stars: destinos[firstIndex]['calificacion'].toString(),
+                        userName: destinos[firstIndex]['nombre'],
+                        location: destinos[firstIndex]['destino'],
+                        available: destinos[firstIndex]['disponible'],
+                        onTap: () =>
+                            _reservarAsientos(destinos[firstIndex]['id']),
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: _buildCatCardItem(
+                        imageUrl: destinos.length > secondIndex
+                            ? destinos[secondIndex]['foto']
+                            : '',
+                        stars: destinos.length > secondIndex
+                            ? destinos[secondIndex]['calificacion'].toString()
+                            : '',
+                        userName: destinos.length > secondIndex
+                            ? destinos[secondIndex]['nombre']
+                            : '',
+                        location: destinos.length > secondIndex
+                            ? destinos[secondIndex]['destino']
+                            : '',
+                        available: destinos.length > secondIndex
+                            ? destinos[secondIndex]['disponible']
+                            : false,
+                        onTap: destinos.length > secondIndex
+                            ? () =>
+                                _reservarAsientos(destinos[secondIndex]['id'])
+                            : () {},
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
