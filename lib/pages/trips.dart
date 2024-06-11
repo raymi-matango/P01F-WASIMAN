@@ -55,7 +55,7 @@ class _ViajePaginaState extends State<ViajePagina> {
     }..removeWhere((key, value) => value == null || value.isEmpty);
 
     final uri =
-        Uri.http('192.168.137.1:7777', '/api/viajes/buscar', queryParameters);
+        Uri.http('localhost:7777', '/api/viajes/buscar', queryParameters);
 
     final response = await http.get(
       uri,
