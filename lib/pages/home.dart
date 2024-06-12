@@ -2,6 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iniciofront/components/notificacion.dart';
+import 'package:iniciofront/pages/screens/detallecomentarios.dart';
+import 'package:iniciofront/pages/screens/detallesreservas.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -93,6 +95,7 @@ class _HomePageState extends State<HomePage> {
                         fontSize: 20,
                         letterSpacing: 0,
                         fontWeight: FontWeight.w800,
+                        color: Color(0xFF0E402E),
                       ),
                     ),
                     Spacer(), // Espacio flexible para empujar el texto a la izquierda
@@ -114,12 +117,11 @@ class _HomePageState extends State<HomePage> {
                                 fontFamily: 'Readex Pro',
                                 letterSpacing: 0,
                                 fontWeight: FontWeight.w500,
+                                color: Color(0xFF0E402E),
                               ),
                             ),
-                            Icon(
-                              FontAwesomeIcons.arrowRightLong,
-                              size: 24,
-                            ),
+                            Icon(FontAwesomeIcons.arrowRightLong,
+                                size: 24, color: Color(0xFF0E402E)),
                           ],
                         ),
                       ),
@@ -180,13 +182,14 @@ class _HomePageState extends State<HomePage> {
               ),
 
               const SizedBox(
-                height: 20,
+                height: 35,
               ),
               const Text(
-                'Planea tu viaje',
+                'PREPARA TU VIAJE',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
+                  color: Color(0xffBF8756),
                 ),
               ),
               const SizedBox(
@@ -201,7 +204,8 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(20), // Bordes redondeados
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.orange.withOpacity(0.5), // Sombra naranja
+                      color: const Color(0xffBF8756)
+                          .withOpacity(0.4), // Sombra naranja
                       spreadRadius: 2,
                       blurRadius: 5,
                       offset: Offset(0, 2), // Desplazamiento de la sombra
@@ -215,27 +219,26 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         _buildDestination(
-                          '    Viajar       ',
-                          FontAwesomeIcons.mapLocationDot,
-                          onTap: () {
-                            // Acción al hacer clic en Destino 1
-                            print('Clic en Destino 1');
-                          },
-                        ),
-                        _buildDestination(
-                          '    Reservas   ',
+                          '     Reservas    ',
                           FontAwesomeIcons.car,
                           onTap: () {
-                            // Acción al hacer clic en Destino 2
-                            print('Clic en Destino 2');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DetalleReservas()),
+                            );
                           },
                         ),
                         _buildDestination(
-                          ' Comentarios ',
+                          '  Comentarios  ',
                           FontAwesomeIcons.comment,
                           onTap: () {
-                            // Acción al hacer clic en Destino 2
-                            print('Clic en Destino 2');
+                            // Acción al hacer clic en Comentarios
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DetalleComentarios()),
+                            );
                           },
                         ),
                       ],
@@ -244,7 +247,7 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              SizedBox(height: 16),
+              SizedBox(height: 50),
               //boton de reserva ahora
               Container(
                 width: 300,
