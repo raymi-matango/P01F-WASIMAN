@@ -494,105 +494,145 @@ class ConductorDetalle extends StatelessWidget {
         List<Map<String, dynamic>>.from(viaje['comentarios']);
 
     return Scaffold(
-      appBar: AppBar(title: Text('Detalle de Viaje')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: 120,
-                  height: 120,
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(10),
+      appBar: AppBar(
+        backgroundColor: Color(0xffBF8756),
+        centerTitle: true,
+        title: const Text(
+          '¡Explora y Reserva!',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        iconTheme: const IconThemeData(
+            color: Colors.white), // Cambia el color del icono de regreso
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          color: Color(0xff688C6A)
+              .withOpacity(0.2), // Color de fondo del contenedor
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 120,
+                    height: 120,
+                    decoration: BoxDecoration(
+                      color: Colors.orange,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: viaje['foto'] != null
+                          ? Image.network(
+                              viaje['foto'],
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                              height: double.infinity,
+                            )
+                          : Icon(Icons.person, size: 50, color: Colors.white),
+                    ),
                   ),
-                  child: viaje['foto'] != null
-                      ? Image.network(
-                          viaje['foto'],
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: double.infinity,
-                        )
-                      : Icon(Icons.person, size: 50, color: Colors.white),
-                ),
-                SizedBox(width: 20),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildDataRow('Destino:', viaje['destino']),
-                    _buildDataRow('Origen:', viaje['origen']),
-                    _buildDataRow('Hora:', viaje['hora']),
-                    SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Text('', style: TextStyle(fontSize: 16)),
-                        SizedBox(width: 10),
-                        _buildStarRating(4.5), // Puedes ajustar la calificación
-                        SizedBox(width: 10),
-                        ElevatedButton(
-                          onPressed: () {
-                            // Acción al presionar el botón de calificar
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    ComentarioPagina(viajeId: viaje['id']),
-                              ),
-                            );
-                          },
-                          child: Text('Calificar'),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-            Text('Datos del Conductor:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            SizedBox(height: 10),
-            _buildDataRow('Nombre:', viaje['nombre']),
-            _buildDataRow('Correo:', viaje['correo']),
-            _buildDataRow('Facultad:', viaje['facultad']),
-            _buildDataRow('Teléfono:', viaje['telefono']),
-            SizedBox(height: 20),
-            Text('Comentarios:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            SizedBox(height: 10),
-            Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: comentarios.length,
-                itemBuilder: (context, index) {
-                  return _buildComentarioItem(comentarios[index]);
-                },
+                  SizedBox(width: 5),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildDataRow('Destino:', viaje['destino']),
+                      _buildDataRow('Origen:', viaje['origen']),
+                      _buildDataRow('Hora:', viaje['hora']),
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          _buildStarRating(viaje['calificacion']),
+                          SizedBox(width: 10),
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              // Acción al presionar el botón de calificar
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      ComentarioPagina(viajeId: viaje['id']),
+                                ),
+                              );
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  Color(0xff0E402E)
+                                      .withOpacity(0.8)), // Color del botón
+                              padding: MaterialStateProperty.all(
+                                  EdgeInsets.symmetric(
+                                      vertical: 16.0,
+                                      horizontal:
+                                          20.0)), // Ajuste del espaciado interno
+                            ),
+                            icon: Icon(
+                              FontAwesomeIcons
+                                  .solidPenToSquare, // Ícono de lápiz
+                              size: 20, // Tamaño del ícono
+                            ),
+                            label: Text(
+                              'Calificar', // Texto del botón
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white), // Tamaño del texto
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            ),
-            SizedBox(height: 20),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ReservaPagina(viajeId: viaje['id']),
-                    ),
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Text('Reservar', style: TextStyle(fontSize: 18)),
+              SizedBox(height: 20),
+              Text('Datos del Conductor:',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              SizedBox(height: 10),
+              _buildDataRow('Nombre:', viaje['nombre']),
+              _buildDataRow('Correo:', viaje['correo']),
+              _buildDataRow('Facultad:', viaje['facultad']),
+              _buildDataRow('Teléfono:', viaje['telefono']),
+              SizedBox(height: 20),
+              Text('Comentarios:',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              SizedBox(height: 10),
+              Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: comentarios.length,
+                  itemBuilder: (context, index) {
+                    return _buildComentarioItem(comentarios[index]);
+                  },
                 ),
               ),
-            ),
-            SizedBox(height: 20),
-          ],
+              SizedBox(height: 20),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ReservaPagina(viajeId: viaje['id']),
+                      ),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: Text('Reservar', style: TextStyle(fontSize: 18)),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );
@@ -611,7 +651,7 @@ class ConductorDetalle extends StatelessWidget {
   Widget _buildStarRating(double rating) {
     return Row(
       children: [
-        Icon(Icons.star, color: Colors.yellow),
+        Icon(FontAwesomeIcons.solidStar, color: Colors.orange),
         SizedBox(width: 5),
         Text(rating.toString(), style: TextStyle(fontSize: 16)),
       ],
