@@ -1,9 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:iniciofront/components/notificacion.dart';
 import 'package:iniciofront/pages/screens/detallecomentarios.dart';
 import 'package:iniciofront/pages/screens/detallesreservas.dart';
+import 'package:iniciofront/pages/trips.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -36,8 +36,8 @@ class _HomePageState extends State<HomePage> {
               padding: EdgeInsets.all(2),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(50),
-                child: Image.network(
-                  'https://picsum.photos/seed/626/600',
+                child: Image.asset(
+                  'assets/usuarios.png', // Ruta de la imagen de usuario en tus activos
                   width: 40,
                   height: 40,
                   fit: BoxFit.cover,
@@ -65,7 +65,10 @@ class _HomePageState extends State<HomePage> {
                 size: 24,
               ),
               onPressed: () {
-                print('IconButton pressed ...');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DetalleReservas()),
+                );
               },
             ),
           ),
@@ -75,6 +78,10 @@ class _HomePageState extends State<HomePage> {
       ),
       body: SingleChildScrollView(
         child: Container(
+          decoration: BoxDecoration(
+            color: Color(0xff688C6A)
+                .withOpacity(0.09), // Color de fondo del contenedor
+          ),
           child: Column(
             children: [
               const SizedBox(
@@ -101,7 +108,11 @@ class _HomePageState extends State<HomePage> {
                     Spacer(), // Espacio flexible para empujar el texto a la izquierda
                     InkWell(
                       onTap: () {
-                        // Acción al presionar el botón "Ver todos"
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ViajePagina()),
+                        );
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(horizontal: 8),
@@ -120,8 +131,11 @@ class _HomePageState extends State<HomePage> {
                                 color: Color(0xFF0E402E),
                               ),
                             ),
-                            Icon(FontAwesomeIcons.arrowRightLong,
-                                size: 24, color: Color(0xFF0E402E)),
+                            Icon(
+                              FontAwesomeIcons.arrowRightLong,
+                              size: 24,
+                              color: Color(0xFF0E402E),
+                            ),
                           ],
                         ),
                       ),
@@ -163,7 +177,7 @@ class _HomePageState extends State<HomePage> {
                           width: MediaQuery.of(context).size.width,
                           margin: EdgeInsets.symmetric(horizontal: 5.0),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: Color(0xffBF8756).withOpacity(0.5),
                             borderRadius: BorderRadius.circular(
                                 16.0), // Radio del borde circular
                           ),
@@ -231,9 +245,8 @@ class _HomePageState extends State<HomePage> {
                         ),
                         _buildDestination(
                           '  Comentarios  ',
-                          FontAwesomeIcons.comment,
+                          FontAwesomeIcons.comments,
                           onTap: () {
-                            // Acción al hacer clic en Comentarios
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -248,15 +261,14 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               SizedBox(height: 50),
-              //boton de reserva ahora
               Container(
                 width: 300,
-                height: 50,
+                height: 60,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color: Color(0xFFF29F05),
-                    width: 1,
+                    color: Color(0xffBF8756),
+                    width: 2,
                   ),
                   color: Color(0xFF0E402E),
                   boxShadow: const [
@@ -269,9 +281,10 @@ class _HomePageState extends State<HomePage> {
                 ),
                 child: TextButton(
                   onPressed: () {
-                    NotificationService().showNotification(
-                        title: 'Sample title', body: 'It works!');
-                    print('Button pressed ...');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ViajePagina()),
+                    );
                   },
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 24),
@@ -280,16 +293,15 @@ class _HomePageState extends State<HomePage> {
                   child: const Text(
                     '¡Reserva Ahora!',
                     style: TextStyle(
-                      fontFamily: 'Readex Pro',
-                      color: Colors.white,
+                      color: Color(0xffF2B90C),
                       letterSpacing: 0,
-                      fontSize: 16,
+                      fontSize: 20,
                     ),
                   ),
                 ),
               ),
               SizedBox(
-                height: 15,
+                height: 78,
               )
             ],
           ),
