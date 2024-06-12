@@ -220,97 +220,134 @@ class _ViajePaginaState extends State<ViajePagina> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Lista de Destinos'),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _destinoController,
-                    onChanged: (text) {
-                      // Realiza la búsqueda cada vez que el texto cambie
-                      _buscarViajes();
-                    },
-                    decoration: InputDecoration(
-                      labelText: 'Destino',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      suffixIcon: IconButton(
-                        icon: Icon(Icons.clear),
-                        onPressed: () {
-                          // Limpia el texto cuando se presiona el icono
-                          _destinoController.clear();
-                          _buscarViajes();
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                    width: 8), // Espacio entre el TextField y el IconButton
-                IconButton(
-                  icon: const Icon(
-                    FontAwesomeIcons.filter,
-                    color: Color(0xFFF2B90C),
-                    size: 24,
-                  ),
-                  onPressed: _mostrarFiltro,
-                ),
-              ],
-            ),
+        title: const Text(
+          'Destinos para tu viaje',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: (destinos.length / 2).ceil(),
-              itemBuilder: (context, index) {
-                final int firstIndex = index * 2;
-                final int secondIndex = index * 2 + 1;
-                return Row(
+        ),
+        backgroundColor: Color(0xff688C6A),
+        centerTitle: true,
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          color: Color(0xff688C6A)
+              .withOpacity(0.09), // Color de fondo del contenedor
+        ),
+        child: Column(
+          children: [
+            Container(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
                   children: [
                     Expanded(
-                      child: _buildCatCardItem(
-                        imageUrl: destinos[firstIndex]['foto'],
-                        stars: destinos[firstIndex]['calificacion'].toString(),
-                        userName: destinos[firstIndex]['nombre'],
-                        location: destinos[firstIndex]['destino'],
-                        available: destinos[firstIndex]['disponible'],
-                        onTap: () => _detallesViaje(destinos[firstIndex]['id']),
+                      child: TextField(
+                        style: TextStyle(color: Color(0xFF0E402E)),
+                        controller: _destinoController,
+                        onChanged: (text) {
+                          _buscarViajes();
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'Escriba el destino deseado',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors
+                                  .orange, // Color del borde cuando no está enfocado
+                            ),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors
+                                  .orange, // Color del borde cuando está enfocado
+                            ),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              FontAwesomeIcons.solidCircleXmark,
+                              color: Color(0xFF0E402E).withOpacity(0.7),
+                            ),
+                            onPressed: () {
+                              // Limpia el texto cuando se presiona el icono
+                              _destinoController.clear();
+                              _buscarViajes();
+                            },
+                          ),
+                        ),
                       ),
                     ),
-                    SizedBox(width: 8),
-                    Expanded(
-                      child: _buildCatCardItem(
-                        imageUrl: destinos.length > secondIndex
-                            ? destinos[secondIndex]['foto']
-                            : '',
-                        stars: destinos.length > secondIndex
-                            ? destinos[secondIndex]['calificacion'].toString()
-                            : '',
-                        userName: destinos.length > secondIndex
-                            ? destinos[secondIndex]['nombre']
-                            : '',
-                        location: destinos.length > secondIndex
-                            ? destinos[secondIndex]['destino']
-                            : '',
-                        available: destinos.length > secondIndex
-                            ? destinos[secondIndex]['disponible']
-                            : false,
-                        onTap: destinos.length > secondIndex
-                            ? () => _detallesViaje(destinos[secondIndex]['id'])
-                            : () {},
+                    const SizedBox(
+                        width: 8), // Espacio entre el TextField y el IconButton
+                    IconButton(
+                      icon: Icon(
+                        FontAwesomeIcons.filter,
+                        color: Color(0xFF0E402E).withOpacity(0.7),
+                        size: 25,
                       ),
+                      onPressed: _mostrarFiltro,
                     ),
                   ],
-                );
-              },
+                ),
+              ),
             ),
-          ),
-        ],
+            Expanded(
+              child: ListView.builder(
+                itemCount: (destinos.length / 2).ceil(),
+                itemBuilder: (context, index) {
+                  final int firstIndex = index * 2;
+                  final int secondIndex = index * 2 + 1;
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: _buildCatCardItem(
+                          imageUrl: destinos[firstIndex]['foto'],
+                          stars:
+                              destinos[firstIndex]['calificacion'].toString(),
+                          userName: destinos[firstIndex]['nombre'],
+                          location: destinos[firstIndex]['destino'],
+                          available: destinos[firstIndex]['disponible'],
+                          onTap: () =>
+                              _detallesViaje(destinos[firstIndex]['id']),
+                        ),
+                      ),
+                      SizedBox(width: 8),
+                      Expanded(
+                        child: _buildCatCardItem(
+                          imageUrl: destinos.length > secondIndex
+                              ? destinos[secondIndex]['foto']
+                              : '',
+                          stars: destinos.length > secondIndex
+                              ? destinos[secondIndex]['calificacion'].toString()
+                              : '',
+                          userName: destinos.length > secondIndex
+                              ? destinos[secondIndex]['nombre']
+                              : '',
+                          location: destinos.length > secondIndex
+                              ? destinos[secondIndex]['destino']
+                              : '',
+                          available: destinos.length > secondIndex
+                              ? destinos[secondIndex]['disponible']
+                              : false,
+                          onTap: destinos.length > secondIndex
+                              ? () =>
+                                  _detallesViaje(destinos[secondIndex]['id'])
+                              : () {},
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -344,7 +381,7 @@ class _ViajePaginaState extends State<ViajePagina> {
                     children: [
                       Icon(
                         FontAwesomeIcons.solidStar,
-                        color: Colors.white,
+                        color: Color(0xffF29F05),
                         size: 16,
                       ),
                       const SizedBox(width: 4),
