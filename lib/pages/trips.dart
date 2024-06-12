@@ -112,7 +112,7 @@ class _ViajePaginaState extends State<ViajePagina> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => DetallesViajePagina(
+        builder: (context) => ConductorDetalle(
             viaje: destinos.firstWhere((element) => element['id'] == viajeId)),
       ),
     );
@@ -481,137 +481,177 @@ class _ViajePaginaState extends State<ViajePagina> {
 }
 
 ////Viajes Detallles//////////////////////////////////////
+///
 
-class Comentario {
-  final String comentario;
-  final String nombreUsuario;
+class ConductorDetalle extends StatelessWidget {
+  final Map<String, dynamic> viaje;
 
-  Comentario({
-    required this.comentario,
-    required this.nombreUsuario,
-  });
-}
+  ConductorDetalle({Key? key, required this.viaje}) : super(key: key);
 
-class ComentariosDialogo extends StatefulWidget {
-  final List<Comentario> comentarios;
-
-  const ComentariosDialogo({Key? key, required this.comentarios})
-      : super(key: key);
-
-  @override
-  State<ComentariosDialogo> createState() => _ComentariosDialogoState();
-}
-
-class _ComentariosDialogoState extends State<ComentariosDialogo> {
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text('Comentarios'),
-      content: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: widget.comentarios.map((comentario) {
-            return ListTile(
-              title: Text(comentario.comentario),
-              subtitle: Text('Usuario: ${comentario.nombreUsuario}'),
-            );
-          }).toList(),
-        ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: Text('Cerrar'),
-        ),
-      ],
-    );
-  }
-}
-
-class DetallesViajePagina extends StatefulWidget {
-  final dynamic viaje;
-
-  const DetallesViajePagina({Key? key, required this.viaje}) : super(key: key);
-
-  @override
-  State<DetallesViajePagina> createState() => _DetallesViajePaginaState();
-}
-
-class _DetallesViajePaginaState extends State<DetallesViajePagina> {
-  @override
-  Widget build(BuildContext context) {
-    List<Comentario> comentarios = [];
-    for (var comentario in widget.viaje['comentarios']) {
-      comentarios.add(Comentario(
-        comentario: comentario['comentario'],
-        nombreUsuario: comentario['usuario']['nombre'],
-      ));
-    }
+    List<Map<String, dynamic>> comentarios =
+        List<Map<String, dynamic>>.from(viaje['comentarios']);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Detalles del Viaje'),
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+      appBar: AppBar(title: Text('Detalle de Viaje')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Origen: ${widget.viaje['origen']}'),
-            Text('Destino: ${widget.viaje['destino']}'),
-            Text('Fecha: ${widget.viaje['fecha']}'),
-            Text('Hora: ${widget.viaje['hora']}'),
-            Text('Asiento: ${widget.viaje['asiento']}'),
-            Text('Detalle: ${widget.viaje['detalle']}'),
-            Text('Disponible: ${widget.viaje['disponible']}'),
-            Text('Nombre: ${widget.viaje['nombre']}'),
-            Text('Facultad: ${widget.viaje['facultad']}'),
-            Text('Correo: ${widget.viaje['correo']}'),
-            Text('Teléfono: ${widget.viaje['telefono']}'),
-            Image.network(widget.viaje['foto']),
-            Text('Calificación: ${widget.viaje['calificacion']}'),
-            // Botón para mostrar comentarios
-            ElevatedButton(
-              onPressed: () {
-                // Mostrar diálogo de comentarios
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return ComentariosDialogo(comentarios: comentarios);
-                  },
-                );
-              },
-              child: Text('Comentarios'),
-            ),
-            // Botón para reservar viaje
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        ReservaPagina(viajeId: widget.viaje['id']),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 120,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                );
-              },
-              child: Text('Reservar Viaje'),
+                  child: viaje['foto'] != null
+                      ? Image.network(
+                          viaje['foto'],
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                        )
+                      : Icon(Icons.person, size: 50, color: Colors.white),
+                ),
+                SizedBox(width: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildDataRow('Destino:', viaje['destino']),
+                    _buildDataRow('Origen:', viaje['origen']),
+                    _buildDataRow('Hora:', viaje['hora']),
+                    SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Text('', style: TextStyle(fontSize: 16)),
+                        SizedBox(width: 10),
+                        _buildStarRating(4.5), // Puedes ajustar la calificación
+                        SizedBox(width: 10),
+                        ElevatedButton(
+                          onPressed: () {
+                            // Acción al presionar el botón de calificar
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ComentarioPagina(viajeId: viaje['id']),
+                              ),
+                            );
+                          },
+                          child: Text('Calificar'),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        ComentarioPagina(viajeId: widget.viaje['id']),
-                  ),
-                );
-              },
-              child: Text('comentar viaje'),
+            SizedBox(height: 20),
+            Text('Datos del Conductor:',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            SizedBox(height: 10),
+            _buildDataRow('Nombre:', viaje['nombre']),
+            _buildDataRow('Correo:', viaje['correo']),
+            _buildDataRow('Facultad:', viaje['facultad']),
+            _buildDataRow('Teléfono:', viaje['telefono']),
+            SizedBox(height: 20),
+            Text('Comentarios:',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            SizedBox(height: 10),
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: comentarios.length,
+                itemBuilder: (context, index) {
+                  return _buildComentarioItem(comentarios[index]);
+                },
+              ),
             ),
+            SizedBox(height: 20),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ReservaPagina(viajeId: viaje['id']),
+                    ),
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: Text('Reservar', style: TextStyle(fontSize: 18)),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildDataRow(String title, String value) {
+    return Row(
+      children: [
+        Text(title, style: TextStyle(fontSize: 16)),
+        SizedBox(width: 20),
+        Text(value, style: TextStyle(fontSize: 16)),
+      ],
+    );
+  }
+
+  Widget _buildStarRating(double rating) {
+    return Row(
+      children: [
+        Icon(Icons.star, color: Colors.yellow),
+        SizedBox(width: 5),
+        Text(rating.toString(), style: TextStyle(fontSize: 16)),
+      ],
+    );
+  }
+
+  Widget _buildComentarioItem(Map<String, dynamic> comentario) {
+    return Container(
+      padding: EdgeInsets.all(10),
+      margin: EdgeInsets.symmetric(vertical: 5),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Usuario: ${comentario['usuario']}',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          SizedBox(height: 5),
+          Text('Comentario: ${comentario['comentario']}',
+              style: TextStyle(fontSize: 16)),
+          SizedBox(height: 5),
+          Row(
+            children: [
+              Text('Calificación: ', style: TextStyle(fontSize: 16)),
+              _buildStarRating(comentario['calificacion']),
+            ],
+          ),
+          SizedBox(height: 5),
+          Row(
+            children: [
+              Icon(Icons.thumb_up),
+              SizedBox(width: 5),
+              Icon(Icons.thumb_down),
+              SizedBox(width: 5),
+              Text('Reportar'),
+            ],
+          ),
+        ],
       ),
     );
   }

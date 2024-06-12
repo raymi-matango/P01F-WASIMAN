@@ -47,11 +47,7 @@ class _BotonesNaveganState extends State<BotonesNavegan> {
     HomePage(),
     ViajePagina(),
     DetalleReservas(),
-    Conductor(
-      nombre: 'Juan Pérez',
-      telefono: '555-1234',
-      correo: 'juan.perez@example.com',
-    )
+    HomePage()
   ];
 
   @override
