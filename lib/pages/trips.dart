@@ -233,7 +233,7 @@ class _ViajePaginaState extends State<ViajePagina> {
       body: Container(
         decoration: BoxDecoration(
           color: Color(0xff688C6A)
-              .withOpacity(0.09), // Color de fondo del contenedor
+              .withOpacity(0.5), // Color de fondo del contenedor
         ),
         child: Column(
           children: [
@@ -311,6 +311,7 @@ class _ViajePaginaState extends State<ViajePagina> {
                           stars:
                               destinos[firstIndex]['calificacion'].toString(),
                           userName: destinos[firstIndex]['nombre'],
+                          hora: destinos[firstIndex]['hora'],
                           location: destinos[firstIndex]['destino'],
                           available: destinos[firstIndex]['disponible'],
                           onTap: () =>
@@ -320,6 +321,9 @@ class _ViajePaginaState extends State<ViajePagina> {
                       SizedBox(width: 8),
                       Expanded(
                         child: _buildCatCardItem(
+                          hora: destinos.length > secondIndex
+                              ? destinos[secondIndex]['hora']
+                              : '',
                           imageUrl: destinos.length > secondIndex
                               ? destinos[secondIndex]['foto']
                               : '',
@@ -356,6 +360,7 @@ class _ViajePaginaState extends State<ViajePagina> {
     required String imageUrl,
     required String stars,
     required String userName,
+    required String hora,
     required String location,
     required bool available,
     required VoidCallback onTap,
@@ -381,7 +386,7 @@ class _ViajePaginaState extends State<ViajePagina> {
                     children: [
                       Icon(
                         FontAwesomeIcons.solidStar,
-                        color: Color(0xffF29F05),
+                        color: Colors.orange,
                         size: 16,
                       ),
                       const SizedBox(width: 4),
@@ -421,15 +426,36 @@ class _ViajePaginaState extends State<ViajePagina> {
                     children: [
                       Icon(
                         FontAwesomeIcons.userTie,
-                        color: Colors.white,
+                        color: Color(0xffBF8756),
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: 0.5),
                       Text(
                         userName,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
+                      ),
+                    ],
+                  ),
+                ),
+                Positioned(
+                  bottom: 8,
+                  right: 8,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        FontAwesomeIcons.clock,
+                        color: Colors.white,
+                        size: 11,
+                      ),
+                      Text(
+                        hora,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 11),
                       ),
                     ],
                   ),
@@ -442,6 +468,7 @@ class _ViajePaginaState extends State<ViajePagina> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
+                  color: Color(0xFF0E402E),
                 ),
               ),
               contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
