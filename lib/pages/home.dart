@@ -36,11 +36,14 @@ class _HomePageState extends State<HomePage> {
               padding: EdgeInsets.all(2),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(50),
-                child: Image.asset(
-                  'assets/usuarios.png', // Ruta de la imagen de usuario en tus activos
-                  width: 40,
-                  height: 40,
-                  fit: BoxFit.cover,
+                child: Container(
+                  color: Colors.green.shade200, // Color de fondo del contenedor
+                  child: Image.asset(
+                    'assets/usuarios.png',
+                    width: 40,
+                    height: 40,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
