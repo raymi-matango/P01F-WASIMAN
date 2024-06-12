@@ -495,22 +495,21 @@ class ConductorDetalle extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xffBF8756),
+        backgroundColor: Color(0xff0E402E),
         centerTitle: true,
         title: const Text(
           '¡Explora y Reserva!',
           style: TextStyle(
-            color: Colors.white,
+            color: Color(0xffF29F05),
             fontWeight: FontWeight.bold,
           ),
         ),
         iconTheme: const IconThemeData(
-            color: Colors.white), // Cambia el color del icono de regreso
+            color: Color(0xffF29F05)), // Cambia el color del icono de regreso
       ),
       body: Container(
-        decoration: BoxDecoration(
-          color: Color(0xff688C6A)
-              .withOpacity(0.2), // Color de fondo del contenedor
+        decoration: const BoxDecoration(
+          color: Colors.white24, // Color de fondo del contenedor
         ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -539,18 +538,67 @@ class ConductorDetalle extends StatelessWidget {
                           : Icon(Icons.person, size: 50, color: Colors.white),
                     ),
                   ),
-                  SizedBox(width: 5),
+                  SizedBox(width: 6),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildDataRow('Destino:', viaje['destino']),
-                      _buildDataRow('Origen:', viaje['origen']),
-                      _buildDataRow('Hora:', viaje['hora']),
-                      SizedBox(height: 10),
+                      Text(
+                        '${viaje['destino']}',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold, // Negrita
+                          color: Color(0xff0E402E), // Color del texto
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        children: [
+                          const Icon(
+                            FontAwesomeIcons.streetView,
+                            color: Color(0xffBF8756), // Color del icono
+                            size: 17, // Tamaño del icono
+                          ),
+                          const SizedBox(
+                            width: 4,
+                          ), // Espaciado entre el icono y el texto
+                          Text(
+                            '${viaje['origen']}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Color(0xff0E402E), // Color del texto
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        children: [
+                          const Icon(
+                            FontAwesomeIcons.clock,
+                            color: Color(0xffBF8756), // Color del icono
+                            size: 17, // Tamaño del icono
+                          ),
+                          const SizedBox(
+                            width: 4,
+                          ), // Espaciado entre el icono y el texto
+                          Text(
+                            '${viaje['hora']}',
+                            style: const TextStyle(
+                                fontSize: 16,
+                                color: Color(0xff0E402E) // Color del texto
+                                ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 5),
                       Row(
                         children: [
                           _buildStarRating(viaje['calificacion']),
-                          SizedBox(width: 10),
+                          SizedBox(width: 50),
                           ElevatedButton.icon(
                             onPressed: () {
                               // Acción al presionar el botón de calificar
@@ -563,25 +611,27 @@ class ConductorDetalle extends StatelessWidget {
                               );
                             },
                             style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                  Color(0xff0E402E)
-                                      .withOpacity(0.8)), // Color del botón
+                              backgroundColor: MaterialStateProperty.all(Colors
+                                  .orange
+                                  .withOpacity(0.8)), // Color del botón
                               padding: MaterialStateProperty.all(
-                                  EdgeInsets.symmetric(
+                                  const EdgeInsets.symmetric(
                                       vertical: 16.0,
                                       horizontal:
                                           20.0)), // Ajuste del espaciado interno
                             ),
-                            icon: Icon(
+                            icon: const Icon(
                               FontAwesomeIcons
                                   .solidPenToSquare, // Ícono de lápiz
-                              size: 20, // Tamaño del ícono
+                              size: 17,
+                              color: Color(0xff0E402E), // Tamaño del ícono
                             ),
-                            label: Text(
+                            label: const Text(
                               'Calificar', // Texto del botón
                               style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white), // Tamaño del texto
+                                fontSize: 16,
+                                color: Color(0xff0E402E),
+                              ), // Tamaño del texto
                             ),
                           ),
                         ],
@@ -590,14 +640,105 @@ class ConductorDetalle extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
-              Text('Datos del Conductor:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 20),
+              const Text('Datos del Conductor:',
+                  style: TextStyle(
+                    fontSize: 19,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xff0E402E),
+                  )),
               SizedBox(height: 10),
-              _buildDataRow('Nombre:', viaje['nombre']),
-              _buildDataRow('Correo:', viaje['correo']),
-              _buildDataRow('Facultad:', viaje['facultad']),
-              _buildDataRow('Teléfono:', viaje['telefono']),
+              Row(
+                children: [
+                  const SizedBox(
+                    width: 18,
+                  ), // Espa
+                  const Icon(
+                    FontAwesomeIcons.solidUser,
+                    color: Color(0xffBF8756), // Color del icono
+                    size: 20, // Tamaño del icono
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ), // Espaciado entre el icono y el texto
+                  Text(
+                    '${viaje['nombre']}',
+                    style: const TextStyle(
+                        fontSize: 17,
+                        color: Color(0xff0E402E) // Color del texto
+                        ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  const SizedBox(
+                    width: 18,
+                  ), // Espa
+                  const Icon(
+                    FontAwesomeIcons.envelopeCircleCheck,
+                    color: Color(0xffBF8756), // Color del icono
+                    size: 20, // Tamaño del icono
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ), // Espaciado entre el icono y el texto
+                  Text(
+                    '${viaje['correo']}',
+                    style: const TextStyle(
+                        fontSize: 17,
+                        color: Color(0xff0E402E) // Color del texto
+                        ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  const SizedBox(
+                    width: 18,
+                  ), // Espa
+                  const Icon(
+                    FontAwesomeIcons.school,
+                    color: Color(0xffBF8756), // Color del icono
+                    size: 20, // Tamaño del icono
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ), // Espaciado entre el icono y el texto
+                  Text(
+                    '${viaje['facultad']}',
+                    style: const TextStyle(
+                        fontSize: 17,
+                        color: Color(0xff0E402E) // Color del texto
+                        ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  const SizedBox(
+                    width: 18,
+                  ), // Espa
+                  const Icon(
+                    FontAwesomeIcons.phone,
+                    color: Color(0xffBF8756), // Color del icono
+                    size: 20, // Tamaño del icono
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ), // Espaciado entre el icono y el texto
+                  Text(
+                    '${viaje['telefono']}',
+                    style: const TextStyle(
+                        fontSize: 17,
+                        color: Color(0xff0E402E) // Color del texto
+                        ),
+                  ),
+                ],
+              ),
               SizedBox(height: 20),
               Text('Comentarios:',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
@@ -641,9 +782,17 @@ class ConductorDetalle extends StatelessWidget {
   Widget _buildDataRow(String title, String value) {
     return Row(
       children: [
-        Text(title, style: TextStyle(fontSize: 16)),
-        SizedBox(width: 20),
-        Text(value, style: TextStyle(fontSize: 16)),
+        Text(title,
+            style: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+              color: Color(0xff688C6A),
+            )),
+        Text(value,
+            style: const TextStyle(
+              fontSize: 15,
+              color: Colors.white,
+            )),
       ],
     );
   }
@@ -651,9 +800,20 @@ class ConductorDetalle extends StatelessWidget {
   Widget _buildStarRating(double rating) {
     return Row(
       children: [
-        Icon(FontAwesomeIcons.solidStar, color: Colors.orange),
+        Icon(
+          FontAwesomeIcons.solidStar,
+          color: Colors.orange,
+          size: 17,
+        ),
         SizedBox(width: 5),
-        Text(rating.toString(), style: TextStyle(fontSize: 16)),
+        Text(
+          rating.toString(),
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold, // Negrita
+            color: Color(0xff0E402E), // Color del texto
+          ),
+        ),
       ],
     );
   }
