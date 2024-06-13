@@ -31,7 +31,7 @@ class _DetalleReservasState extends State<DetalleReservas> {
 
   Future<void> _cancelarReserva(int reservaId) async {
     final response = await http.delete(
-      Uri.parse('http://localhost:7777/api/reservas/cancelar/$reservaId'),
+      Uri.parse('http://192.168.137.1:7777/api/reservas/cancelar/$reservaId'),
       headers: <String, String>{
         'Authorization': 'Bearer $_token',
       },
@@ -61,7 +61,7 @@ class _DetalleReservasState extends State<DetalleReservas> {
 
   Future<List<dynamic>> fetchReservas() async {
     final response = await http.get(
-      Uri.parse('http://localhost:7777/api/reservas/detalles'),
+      Uri.parse('http://192.168.137.1:7777/api/reservas/detalles'),
       headers: <String, String>{
         'Authorization': 'Bearer $_token',
       },
