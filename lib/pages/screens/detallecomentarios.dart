@@ -104,6 +104,8 @@ class _DetalleComentariosState extends State<DetalleComentarios> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Comentarios'),
+        backgroundColor:
+            Color(0xFF688C6A), // Color de fondo de la barra de aplicación
       ),
       body: FutureBuilder<List<dynamic>>(
         future: fetchComentarios(),
@@ -113,7 +115,12 @@ class _DetalleComentariosState extends State<DetalleComentarios> {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             // Si hay un error, muestra un mensaje de error
-            return Center(child: Text('Error al cargar comentarios'));
+            return Center(
+              child: Text(
+                'Error al cargar comentarios',
+                style: TextStyle(color: Colors.red), // Color del texto de error
+              ),
+            );
           } else {
             // Si la llamada a la API fue exitosa, muestra los comentarios
             List<dynamic> comentarios = snapshot.data!;
@@ -129,63 +136,77 @@ class _DetalleComentariosState extends State<DetalleComentarios> {
                       verticalOffset: 50.0,
                       child: FadeInAnimation(
                         child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                          elevation: 5,
-                          margin: EdgeInsets.all(10),
                           child: InkWell(
                             onTap: () {
                               _mostrarConfirmacionEliminar(
                                   context, comentario['id']);
                             },
-                            child: Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Row(
+                            child: ListTile(
+                              title: Text(
+                                comentario['comentario'],
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: Color(0xFF0E402E), // Color del título
+                                ),
+                              ),
+                              subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          comentario['comentario'],
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                        SizedBox(height: 5),
-                                        Text(
-                                          'Calificación: ${comentario['calificacion']}',
-                                        ),
-                                        Text(
-                                          'Fecha: ${comentario['fecha']}',
-                                        ),
-                                        Text(
-                                          'Nombre del viaje: ${comentario['viaje']['nombre']}',
-                                        ),
-                                        Text(
-                                          'Destino: ${comentario['viaje']['destino']}',
-                                        ),
-                                        Text(
-                                          'Fecha del viaje: ${comentario['viaje']['fecha']}',
-                                        ),
-                                        Text(
-                                          'Hora del viaje: ${comentario['viaje']['hora']}',
-                                        ),
-                                      ],
+                                  Text(
+                                    'Calificación: ${comentario['calificacion']}',
+                                    style: TextStyle(
+                                      color:
+                                          Color(0xFFBF8756), // Color del texto
                                     ),
                                   ),
-                                  IconButton(
-                                    icon: Icon(Icons.delete),
-                                    onPressed: () {
-                                      _mostrarConfirmacionEliminar(
-                                          context, comentario['id']);
-                                    },
+                                  Text(
+                                    'Fecha: ${comentario['fecha'].toString().split('T')[0]}',
+                                    style: TextStyle(
+                                      color:
+                                          Color(0xFFBF8756), // Color del texto
+                                    ),
+                                  ),
+                                  Text(
+                                    'Nombre del viaje: ${comentario['viaje']['nombre']}',
+                                    style: TextStyle(
+                                      color:
+                                          Color(0xFFBF8756), // Color del texto
+                                    ),
+                                  ),
+                                  Text(
+                                    'Destino: ${comentario['viaje']['destino']}',
+                                    style: TextStyle(
+                                      color:
+                                          Color(0xFFBF8756), // Color del texto
+                                    ),
+                                  ),
+                                  Text(
+                                    'Fecha del viaje: ${comentario['viaje']['fecha']}',
+                                    style: TextStyle(
+                                      color:
+                                          Color(0xFFBF8756), // Color del texto
+                                    ),
+                                  ),
+                                  Text(
+                                    'Hora del viaje: ${comentario['viaje']['hora']}',
+                                    style: TextStyle(
+                                      color:
+                                          Color(0xFFBF8756), // Color del texto
+                                    ),
                                   ),
                                 ],
+                              ),
+                              trailing: IconButton(
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                  size: 25,
+                                ),
+                                onPressed: () {
+                                  _mostrarConfirmacionEliminar(
+                                      context, comentario['id']);
+                                },
                               ),
                             ),
                           ),
