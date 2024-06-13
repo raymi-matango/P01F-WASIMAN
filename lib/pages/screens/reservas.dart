@@ -161,40 +161,36 @@ class _ReservaPaginaState extends State<ReservaPagina> {
               color: Color(0xff0E402E), // Color del icono
             ),
             SizedBox(height: 30),
-            DropdownButtonFormField<String>(
-              value: _selectedSeatCount,
-              decoration: InputDecoration(
-                labelText: 'Cantidad de Asientos',
-                labelStyle: TextStyle(fontSize: 18),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.orange,
-                    width: 2.0,
-                  ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Seleccione cantidad de asientos:',
+                  style: TextStyle(fontSize: 18),
                 ),
-                contentPadding: EdgeInsets.symmetric(
-                  vertical: 15,
-                  horizontal: 10,
+                SizedBox(
+                    height:
+                        10), // Espacio entre el texto y los botones de radio
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children:
+                      <String>['1', '2', '3', '4', '5'].map((String value) {
+                    return Expanded(
+                      child: RadioListTile<String>(
+                        title: Text(value),
+                        value: value,
+                        groupValue: _selectedSeatCount,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _selectedSeatCount = newValue;
+                            _cantidadAsientosController.text = newValue!;
+                          });
+                        },
+                      ),
+                    );
+                  }).toList(),
                 ),
-                suffixIcon: Icon(
-                  Icons.airline_seat_legroom_extra,
-                  color: Color(0xff0E402E),
-                  size: 30,
-                ),
-              ),
-              items: <String>['1', '2', '3', '4', '5']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  _selectedSeatCount = newValue;
-                  _cantidadAsientosController.text = newValue!;
-                });
-              },
+              ],
             ),
             SizedBox(height: 20),
             TextField(
