@@ -92,7 +92,7 @@ class _ComentarioPaginaState extends State<ComentarioPagina> {
       return;
     }
 
-    final uri = Uri.parse('http://192.168.137.1:7777/api/comentarios/crear');
+    final uri = Uri.parse('http://localhost:7777/api/comentarios/crear');
     final response = await http.post(
       uri,
       headers: {

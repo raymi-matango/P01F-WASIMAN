@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:iniciofront/components/buttuns_navbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetalleReservas extends StatefulWidget {
   const DetalleReservas({Key? key});
@@ -59,7 +61,7 @@ class _DetalleReservasState extends State<DetalleReservas> {
 
   Future<List<dynamic>> fetchReservas() async {
     final response = await http.get(
-      Uri.parse('http://192.168.137.1:7777/api/reservas/detalles'),
+      Uri.parse('http://localhost:7777/api/reservas/detalles'),
       headers: <String, String>{
         'Authorization': 'Bearer $_token',
       },
@@ -84,25 +86,44 @@ class _DetalleReservasState extends State<DetalleReservas> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: Text('Cancelar'),
+            child: Text('NO'),
           ),
           TextButton(
             onPressed: () {
               Navigator.of(context).pop(true);
               _cancelarReserva(reservaId);
             },
-            child: Text('Cancelar reserva'),
+            child: Text('SI'),
           ),
         ],
       ),
     );
   }
 
+  void _launchWhatsapp(
+      {required String number, required String message}) async {
+    final String url =
+        "whatsapp://send?phone=$number&text=${Uri.encodeFull(message)}";
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      print("Can't open WhatsApp");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Detalles de Reservas'),
+        title: Text(
+          'Detalles de Reservas',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor:
+            Color(0xFF688C6A), // Color de fondo de la barra de aplicación
       ),
       body: FutureBuilder<List<dynamic>>(
         future: fetchReservas(),
@@ -112,7 +133,12 @@ class _DetalleReservasState extends State<DetalleReservas> {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             // Si hay un error, muestra un mensaje de error
-            return Center(child: Text('Error al cargar reservas'));
+            return Center(
+              child: Text(
+                'Error al cargar reservas',
+                style: TextStyle(color: Colors.red), // Color del texto de error
+              ),
+            );
           } else {
             // Si la llamada a la API fue exitosa, muestra los detalles de las reservas
             List<dynamic> reservas = snapshot.data!;
@@ -135,22 +161,102 @@ class _DetalleReservasState extends State<DetalleReservas> {
                             },
                             child: ListTile(
                               title: Text(
-                                  'Destino: ${reserva['viaje']['destino']}'),
+                                'Destino: ${reserva['viaje']['destino']}',
+                                style: TextStyle(
+                                  color: Color(0xFF0E402E), // Color del título
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('Fecha: ${reserva['fecha']}'),
-                                  Text('Estado: ${reserva['estado']}'),
-                                  Text('Asiento: ${reserva['asiento']}'),
-                                  Text('Ubicación: ${reserva['ubicacion']}'),
+                                  Text(
+                                    'Fecha: ${reserva['fecha']}',
+                                    style: TextStyle(
+                                      color:
+                                          Color(0xFFBF8756), // Color del texto
+                                    ),
+                                  ),
+                                  Text(
+                                    'Estado: ${reserva['estado']}',
+                                    style: TextStyle(
+                                      color:
+                                          Color(0xFFF29F05), // Color del texto
+                                    ),
+                                  ),
+                                  Text(
+                                    'Asiento: ${reserva['asiento']}',
+                                    style: TextStyle(
+                                      color:
+                                          Color(0xFF0E402E), // Color del texto
+                                    ),
+                                  ),
+                                  Text(
+                                    'Ubicación: ${reserva['ubicacion']}',
+                                    style: TextStyle(
+                                      color:
+                                          Color(0xFFBF8756), // Color del texto
+                                    ),
+                                  ),
                                 ],
                               ),
-                              trailing: ElevatedButton(
-                                onPressed: () {
-                                  _mostrarConfirmacionCancelar(
-                                      context, reserva['id']);
-                                },
-                                child: Text('Cancelar'),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  GestureDetector(
+                                    child: Material(
+                                      color: Colors.transparent,
+                                      child: ClipOval(
+                                        child: InkWell(
+                                          onTap: () {
+                                            _mostrarConfirmacionCancelar(
+                                                context, reserva['id']);
+                                          },
+                                          splashColor:
+                                              Color.fromARGB(62, 255, 157, 0),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Icon(
+                                              Icons.delete,
+                                              color: Colors.red,
+                                              size: 25,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                      width: 16), // Espacio entre los íconos
+                                  GestureDetector(
+                                    onTap: () {
+                                      // Acción para el ícono de WhatsApp
+                                    },
+                                    child: Material(
+                                      color: Colors.transparent,
+                                      child: ClipOval(
+                                        child: InkWell(
+                                          onTap: () {
+                                            _launchWhatsapp(
+                                                number: "+593993994147",
+                                                message:
+                                                    "Hola, estoy en el punto de encuentro. ¿Dónde estás tú?");
+                                          },
+                                          splashColor:
+                                              Color.fromARGB(62, 255, 157, 0),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Icon(
+                                              Icons.telegram,
+                                              color: Colors.green,
+                                              size: 25,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),

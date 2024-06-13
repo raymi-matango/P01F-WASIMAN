@@ -56,7 +56,7 @@ class _ViajePaginaState extends State<ViajePagina> {
     }..removeWhere((key, value) => value == null || value.isEmpty);
 
     final uri =
-        Uri.http('192.168.137.1:7777', '/api/viajes/buscar', queryParameters);
+        Uri.http('localhost:7777', '/api/viajes/buscar', queryParameters);
 
     final response = await http.get(
       uri,
@@ -112,7 +112,7 @@ class _ViajePaginaState extends State<ViajePagina> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ConductorDetalle(
+        builder: (context) => DetallesViajePagina(
             viaje: destinos.firstWhere((element) => element['id'] == viajeId)),
       ),
     );
@@ -483,427 +483,136 @@ class _ViajePaginaState extends State<ViajePagina> {
 ////Viajes Detallles//////////////////////////////////////
 ///
 
-class ConductorDetalle extends StatelessWidget {
-  final Map<String, dynamic> viaje;
+class Comentario {
+  final String comentario;
+  final String nombreUsuario;
 
-  ConductorDetalle({Key? key, required this.viaje}) : super(key: key);
+  Comentario({
+    required this.comentario,
+    required this.nombreUsuario,
+  });
+}
+
+class ComentariosDialogo extends StatefulWidget {
+  final List<Comentario> comentarios;
+
+  const ComentariosDialogo({Key? key, required this.comentarios})
+      : super(key: key);
 
   @override
+  State<ComentariosDialogo> createState() => _ComentariosDialogoState();
+}
+
+class _ComentariosDialogoState extends State<ComentariosDialogo> {
+  @override
   Widget build(BuildContext context) {
-    List<Map<String, dynamic>> comentarios =
-        List<Map<String, dynamic>>.from(viaje['comentarios']);
+    return AlertDialog(
+      title: Text('Comentarios'),
+      content: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: widget.comentarios.map((comentario) {
+            return ListTile(
+              title: Text(comentario.comentario),
+              subtitle: Text('Usuario: ${comentario.nombreUsuario}'),
+            );
+          }).toList(),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text('Cerrar'),
+        ),
+      ],
+    );
+  }
+}
+
+class DetallesViajePagina extends StatefulWidget {
+  final dynamic viaje;
+
+  const DetallesViajePagina({Key? key, required this.viaje}) : super(key: key);
+
+  @override
+  State<DetallesViajePagina> createState() => _DetallesViajePaginaState();
+}
+
+class _DetallesViajePaginaState extends State<DetallesViajePagina> {
+  @override
+  Widget build(BuildContext context) {
+    List<Comentario> comentarios = [];
+    for (var comentario in widget.viaje['comentarios']) {
+      comentarios.add(Comentario(
+        comentario: comentario['comentario'],
+        nombreUsuario: comentario['usuario']['nombre'],
+      ));
+    }
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xff0E402E),
-        centerTitle: true,
-        title: const Text(
-          '¡Explora y Reserva!',
-          style: TextStyle(
-            color: Color(0xffF29F05),
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        iconTheme: const IconThemeData(
-            color: Color(0xffF29F05)), // Cambia el color del icono de regreso
+        title: Text('Detalles del Viaje'),
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white24, // Color de fondo del contenedor
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      color: Colors.orange,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: viaje['foto'] != null
-                          ? Image.network(
-                              viaje['foto'],
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                              height: double.infinity,
-                            )
-                          : Icon(Icons.person, size: 50, color: Colors.white),
-                    ),
-                  ),
-                  SizedBox(width: 6),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${viaje['destino']}',
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold, // Negrita
-                          color: Color(0xff0E402E), // Color del texto
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        children: [
-                          const Icon(
-                            FontAwesomeIcons.streetView,
-                            color: Color(0xffBF8756), // Color del icono
-                            size: 18, // Tamaño del icono
-                          ),
-                          const SizedBox(
-                            width: 4,
-                          ), // Espaciado entre el icono y el texto
-                          Text(
-                            '${viaje['origen']}',
-                            style: const TextStyle(
-                              fontSize: 18,
-                              color: Color(0xff0E402E), // Color del texto
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        children: [
-                          const Icon(
-                            FontAwesomeIcons.clock,
-                            color: Color(0xffBF8756), // Color del icono
-                            size: 18, // Tamaño del icono
-                          ),
-                          const SizedBox(
-                            width: 4,
-                          ), // Espaciado entre el icono y el texto
-                          Text(
-                            '${viaje['hora']}',
-                            style: const TextStyle(
-                                fontSize: 18,
-                                color: Color(0xff0E402E) // Color del texto
-                                ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 3),
-                      Row(
-                        children: [
-                          _buildStarRating(viaje['calificacion']),
-                          SizedBox(width: 50),
-                          ElevatedButton.icon(
-                            onPressed: () {
-                              // Acción al presionar el botón de calificar
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      ComentarioPagina(viajeId: viaje['id']),
-                                ),
-                              );
-                            },
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(Colors
-                                  .orange
-                                  .withOpacity(0.8)), // Color del botón
-                              padding: MaterialStateProperty.all(
-                                  const EdgeInsets.symmetric(
-                                      vertical: 16.0,
-                                      horizontal:
-                                          20.0)), // Ajuste del espaciado interno
-                            ),
-                            icon: const Icon(
-                              FontAwesomeIcons
-                                  .solidPenToSquare, // Ícono de lápiz
-                              size: 17,
-                              color: Color(0xff0E402E), // Tamaño del ícono
-                            ),
-                            label: const Text(
-                              'Calificar', // Texto del botón
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Color(0xff0E402E),
-                              ), // Tamaño del texto
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              const Text('Datos del Conductor:',
-                  style: TextStyle(
-                    fontSize: 19,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xff0E402E),
-                  )),
-              SizedBox(height: 10),
-              Row(
-                children: [
-                  const SizedBox(
-                    width: 18,
-                  ), // Espa
-                  const Icon(
-                    FontAwesomeIcons.solidUser,
-                    color: Color(0xff688C6A), // Color del icono
-                    size: 20, // Tamaño del icono
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ), // Espaciado entre el icono y el texto
-                  Text(
-                    '${viaje['nombre']}',
-                    style: const TextStyle(
-                        fontSize: 17,
-                        color: Color(0xff0E402E) // Color del texto
-                        ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 10),
-              Row(
-                children: [
-                  const SizedBox(
-                    width: 18,
-                  ), // Espa
-                  const Icon(
-                    FontAwesomeIcons.envelopeCircleCheck,
-                    color: Color(0xff688C6A), // Color del icono
-                    size: 20, // Tamaño del icono
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ), // Espaciado entre el icono y el texto
-                  Text(
-                    '${viaje['correo']}',
-                    style: const TextStyle(
-                        fontSize: 17,
-                        color: Color(0xff0E402E) // Color del texto
-                        ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 10),
-              Row(
-                children: [
-                  const SizedBox(
-                    width: 18,
-                  ), // Espa
-                  const Icon(
-                    FontAwesomeIcons.school,
-                    color: Color(0xff688C6A), // Color del icono
-                    size: 20, // Tamaño del icono
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ), // Espaciado entre el icono y el texto
-                  Text(
-                    '${viaje['facultad']}',
-                    style: const TextStyle(
-                        fontSize: 17,
-                        color: Color(0xff0E402E) // Color del texto
-                        ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 10),
-              Row(
-                children: [
-                  const SizedBox(
-                    width: 18,
-                  ), // Espa
-                  const Icon(
-                    FontAwesomeIcons.phone,
-                    color: Color(0xff688C6A), // Color del icono
-                    size: 20, // Tamaño del icono
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ), // Espaciado entre el icono y el texto
-                  Text(
-                    '${viaje['telefono']}',
-                    style: const TextStyle(
-                        fontSize: 17,
-                        color: Color(0xff0E402E) // Color del texto
-                        ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              const Text('Comentarios:',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xff0E402E),
-                  )),
-              SizedBox(height: 10),
-              Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: comentarios.length,
-                  itemBuilder: (context, index) {
-                    return _buildComentarioItem(comentarios[index]);
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Origen: ${widget.viaje['origen']}'),
+            Text('Destino: ${widget.viaje['destino']}'),
+            Text('Fecha: ${widget.viaje['fecha']}'),
+            Text('Hora: ${widget.viaje['hora']}'),
+            Text('Asiento: ${widget.viaje['asiento']}'),
+            Text('Detalle: ${widget.viaje['detalle']}'),
+            Text('Disponible: ${widget.viaje['disponible']}'),
+            Text('Nombre: ${widget.viaje['nombre']}'),
+            Text('Facultad: ${widget.viaje['facultad']}'),
+            Text('Correo: ${widget.viaje['correo']}'),
+            Text('Teléfono: ${widget.viaje['telefono']}'),
+            Image.network(widget.viaje['foto']),
+            Text('Calificación: ${widget.viaje['calificacion']}'),
+            // Botón para mostrar comentarios
+            ElevatedButton(
+              onPressed: () {
+                // Mostrar diálogo de comentarios
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return ComentariosDialogo(comentarios: comentarios);
                   },
-                ),
-              ),
-              SizedBox(height: 20),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            ReservaPagina(viajeId: viaje['id']),
-                      ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        Color(0xffBF8756), // Color de fondo del botón
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16.0),
-                    child: Text(
-                      'RESERVAR',
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold // Color del texto
-                          ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDataRow(String title, String value) {
-    return Row(
-      children: [
-        Text(title,
-            style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              color: Color(0xff688C6A),
-            )),
-        Text(value,
-            style: const TextStyle(
-              fontSize: 15,
-              color: Colors.white,
-            )),
-      ],
-    );
-  }
-
-  Widget _buildStarRating(double rating) {
-    return Row(
-      children: [
-        Icon(
-          FontAwesomeIcons.solidStar,
-          color: Colors.orange,
-          size: 17,
-        ),
-        SizedBox(width: 5),
-        Text(
-          rating.toString(),
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold, // Negrita
-            color: Color(0xff0E402E), // Color del texto
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildComentarioItem(Map<String, dynamic> comentario) {
-    return Container(
-      padding: EdgeInsets.all(16),
-      margin: EdgeInsets.symmetric(vertical: 8),
-      decoration: BoxDecoration(
-        color: Colors.white, // Fondo blanco para resaltar
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Color.fromARGB(255, 213, 146, 10).withOpacity(0.2),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: Offset(0, 3), // Desplazamiento de la sombra
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(
-                FontAwesomeIcons.at,
-                color: Color(0xFF616161),
-                size: 16,
-              ),
-              Text(
-                ' ${comentario['usuario']['nombre']}',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 8),
-          Text(
-            'Comentario: ${comentario['comentario']}',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey[800],
+                );
+              },
+              child: Text('todo los Comentarios'),
             ),
-          ),
-          SizedBox(height: 8),
-          Row(
-            children: [
-              Text(
-                'Calificación:',
-                style: TextStyle(fontSize: 16, color: Colors.grey[800]),
-              ),
-              SizedBox(width: 4),
-              _buildStarRating(comentario['calificacion']),
-            ],
-          ),
-          SizedBox(height: 8),
-          Row(
-            children: [
-              Icon(FontAwesomeIcons.thumbsUp, color: Colors.green, size: 15),
-              SizedBox(width: 8),
-              Transform.rotate(
-                angle: 3.14, // 180 grados en radianes
-                child: Icon(
-                  FontAwesomeIcons.thumbsUp,
-                  color: Colors.red,
-                  size: 15,
-                ),
-              )
-            ],
-          ),
-        ],
+            // Botón para reservar viaje
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        ReservaPagina(viajeId: widget.viaje['id']),
+                  ),
+                );
+              },
+              child: Text('RESERVAR'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        ComentarioPagina(viajeId: widget.viaje['id']),
+                  ),
+                );
+              },
+              child: Text('Calificar'),
+            ),
+          ],
+        ),
       ),
     );
   }
