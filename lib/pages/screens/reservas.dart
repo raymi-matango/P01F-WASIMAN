@@ -130,27 +130,40 @@ class _ReservaPaginaState extends State<ReservaPagina> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Reservar Asientos'),
+        backgroundColor: Color(0xFF0E402E),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('Viaje ID: ${widget.viajeId}'),
+            SizedBox(height: 20),
             TextField(
               controller: _cantidadAsientosController,
-              decoration: InputDecoration(labelText: 'Cantidad de Asientos'),
+              decoration: InputDecoration(
+                labelText: 'Cantidad de Asientos',
+                border: OutlineInputBorder(),
+              ),
               keyboardType: TextInputType.number,
             ),
+            SizedBox(height: 10),
             TextField(
               controller: _ubicacionController,
-              decoration: InputDecoration(labelText: 'Ubicación'),
+              decoration: InputDecoration(
+                labelText: 'Ubicación',
+                border: OutlineInputBorder(),
+              ),
             ),
             SizedBox(height: 20),
             _isLoading
-                ? CircularProgressIndicator()
+                ? Center(child: CircularProgressIndicator())
                 : ElevatedButton(
                     onPressed: _reservarAsientos,
-                    child: Text('Reservar'),
+                    child: Text('CONFIRMAR'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          Color(0xffBF8756), // Color de fondo del botón
+                    ),
                   ),
           ],
         ),
