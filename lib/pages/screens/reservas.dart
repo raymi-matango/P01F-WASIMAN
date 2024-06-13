@@ -130,6 +130,8 @@ class _ReservaPaginaState extends State<ReservaPagina> {
     super.dispose();
   }
 
+  String? _selectedSeatCount;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -159,8 +161,8 @@ class _ReservaPaginaState extends State<ReservaPagina> {
               color: Color(0xff0E402E), // Color del icono
             ),
             SizedBox(height: 30),
-            TextField(
-              controller: _cantidadAsientosController,
+            DropdownButtonFormField<String>(
+              value: _selectedSeatCount,
               decoration: InputDecoration(
                 labelText: 'Cantidad de Asientos',
                 labelStyle: TextStyle(fontSize: 18),
@@ -180,7 +182,19 @@ class _ReservaPaginaState extends State<ReservaPagina> {
                   size: 30,
                 ),
               ),
-              keyboardType: TextInputType.number,
+              items: <String>['1', '2', '3', '4', '5']
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedSeatCount = newValue;
+                  _cantidadAsientosController.text = newValue!;
+                });
+              },
             ),
             SizedBox(height: 20),
             TextField(
