@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinbox/flutter_spinbox.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -46,8 +48,12 @@ class _ReservaPaginaState extends State<ReservaPagina> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.check_circle, color: Colors.green, size: 60),
-              SizedBox(height: 16),
+              Icon(
+                FontAwesomeIcons.solidCircleCheck,
+                color: Colors.green,
+                size: 60,
+              ),
+              SizedBox(height: 18),
               Text(mensaje),
             ],
           ),
@@ -129,29 +135,75 @@ class _ReservaPaginaState extends State<ReservaPagina> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Reservar Asientos'),
-        backgroundColor: Color(0xFF0E402E),
+        title: const Text(
+          'Reserva',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Color(0xff688C6A),
+        centerTitle: true,
+        iconTheme: IconThemeData(
+            color: Colors
+                .white), // Cambia el color del icono de la barra de aplicación
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 20),
+            SizedBox(height: 100),
+            Icon(
+              FontAwesomeIcons.car,
+              size: 90, // Tamaño del icono
+              color: Color(0xff0E402E), // Color del icono
+            ),
+            SizedBox(height: 30),
             TextField(
               controller: _cantidadAsientosController,
               decoration: InputDecoration(
                 labelText: 'Cantidad de Asientos',
-                border: OutlineInputBorder(),
+                labelStyle: TextStyle(fontSize: 18),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.orange,
+                    width: 2.0,
+                  ),
+                ),
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 15,
+                  horizontal: 10,
+                ),
+                suffixIcon: Icon(
+                  Icons.airline_seat_legroom_extra,
+                  color: Color(0xff0E402E),
+                  size: 30,
+                ),
               ),
               keyboardType: TextInputType.number,
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 20),
             TextField(
               controller: _ubicacionController,
               decoration: InputDecoration(
                 labelText: 'Ubicación',
-                border: OutlineInputBorder(),
+                labelStyle: TextStyle(fontSize: 18),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.orange,
+                    width: 2.0,
+                  ),
+                ),
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 15,
+                  horizontal: 10,
+                ),
+                suffixIcon: Icon(
+                  FontAwesomeIcons.locationDot,
+                  color: Color(0xff0E402E),
+                  size: 28,
+                ),
               ),
             ),
             SizedBox(height: 20),
@@ -159,10 +211,19 @@ class _ReservaPaginaState extends State<ReservaPagina> {
                 ? Center(child: CircularProgressIndicator())
                 : ElevatedButton(
                     onPressed: _reservarAsientos,
-                    child: Text('CONFIRMAR'),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      child: Text(
+                        'CONFIRMAR',
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: Color(0xff0E402E),
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          Color(0xffBF8756), // Color de fondo del botón
+                      backgroundColor: Color(0xffF29F05),
+                      elevation: 4,
                     ),
                   ),
           ],

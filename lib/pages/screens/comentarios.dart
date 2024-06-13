@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -133,28 +134,97 @@ class _ComentarioPaginaState extends State<ComentarioPagina> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dejar Comentario'),
+        title: Text(
+          'Comparte tu opinión',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Color(0xff688C6A),
+        centerTitle: true,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('Viaje ID: ${widget.viajeId}'),
+            SizedBox(height: 100),
+            Icon(
+              FontAwesomeIcons.solidCommentDots,
+              size: 90,
+              color: Color(0xff0E402E),
+            ),
+            SizedBox(height: 30),
             TextField(
               controller: _comentarioController,
-              decoration: InputDecoration(labelText: 'Comentario'),
+              decoration: InputDecoration(
+                labelText: 'Comentario',
+                labelStyle: TextStyle(fontSize: 18),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.orange,
+                    width: 2.0,
+                  ),
+                ),
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 15,
+                  horizontal: 10,
+                ),
+                suffixIcon: Icon(
+                  FontAwesomeIcons.pen,
+                  color: Color(0xff0E402E),
+                  size: 28,
+                ),
+              ),
             ),
+            SizedBox(height: 20),
             TextField(
               controller: _calificacionController,
-              decoration: InputDecoration(labelText: 'Calificación (1-5)'),
+              decoration: InputDecoration(
+                labelText: 'Calificación (1-5)',
+                labelStyle: TextStyle(fontSize: 18),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.orange,
+                    width: 2.0,
+                  ),
+                ),
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 15,
+                  horizontal: 10,
+                ),
+                suffixIcon: Icon(
+                  FontAwesomeIcons.solidStar,
+                  color: Color(0xff0E402E),
+                  size: 28,
+                ),
+              ),
               keyboardType: TextInputType.number,
             ),
             SizedBox(height: 20),
             _isLoading
-                ? CircularProgressIndicator()
+                ? Center(child: CircularProgressIndicator())
                 : ElevatedButton(
                     onPressed: _enviarComentario,
-                    child: Text('Enviar Comentario'),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      child: Text(
+                        'ENVIAR',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Color(0xff0E402E),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xffF29F05),
+                      elevation: 4,
+                    ),
                   ),
           ],
         ),
