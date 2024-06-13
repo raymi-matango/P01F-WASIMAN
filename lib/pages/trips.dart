@@ -558,7 +558,7 @@ class ConductorDetalle extends StatelessWidget {
                           const Icon(
                             FontAwesomeIcons.streetView,
                             color: Color(0xffBF8756), // Color del icono
-                            size: 17, // Tamaño del icono
+                            size: 18, // Tamaño del icono
                           ),
                           const SizedBox(
                             width: 4,
@@ -566,7 +566,7 @@ class ConductorDetalle extends StatelessWidget {
                           Text(
                             '${viaje['origen']}',
                             style: const TextStyle(
-                              fontSize: 16,
+                              fontSize: 17,
                               color: Color(0xff0E402E), // Color del texto
                             ),
                           ),
@@ -580,7 +580,7 @@ class ConductorDetalle extends StatelessWidget {
                           const Icon(
                             FontAwesomeIcons.clock,
                             color: Color(0xffBF8756), // Color del icono
-                            size: 17, // Tamaño del icono
+                            size: 18, // Tamaño del icono
                           ),
                           const SizedBox(
                             width: 4,
@@ -588,7 +588,7 @@ class ConductorDetalle extends StatelessWidget {
                           Text(
                             '${viaje['hora']}',
                             style: const TextStyle(
-                                fontSize: 16,
+                                fontSize: 17,
                                 color: Color(0xff0E402E) // Color del texto
                                 ),
                           ),
@@ -820,35 +820,75 @@ class ConductorDetalle extends StatelessWidget {
 
   Widget _buildComentarioItem(Map<String, dynamic> comentario) {
     return Container(
-      padding: EdgeInsets.all(10),
-      margin: EdgeInsets.symmetric(vertical: 5),
+      padding: EdgeInsets.all(16),
+      margin: EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
+        color: Colors.white, // Fondo blanco para resaltar
         borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: Offset(0, 3), // Desplazamiento de la sombra
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Usuario: ${comentario['usuario']}',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          SizedBox(height: 5),
-          Text('Comentario: ${comentario['comentario']}',
-              style: TextStyle(fontSize: 16)),
-          SizedBox(height: 5),
           Row(
             children: [
-              Text('Calificación: ', style: TextStyle(fontSize: 16)),
+              Icon(
+                Icons.person,
+                color: Colors.grey[700],
+                size: 20,
+              ),
+              SizedBox(width: 8),
+              Text(
+                'Usuario: ${comentario['usuario']['nombre']}',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 8),
+          Text(
+            'Comentario: ${comentario['comentario']}',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey[800],
+            ),
+          ),
+          SizedBox(height: 8),
+          Row(
+            children: [
+              Text(
+                'Calificación:',
+                style: TextStyle(fontSize: 16, color: Colors.grey[800]),
+              ),
+              SizedBox(width: 4),
               _buildStarRating(comentario['calificacion']),
             ],
           ),
-          SizedBox(height: 5),
+          SizedBox(height: 8),
           Row(
             children: [
-              Icon(Icons.thumb_up),
-              SizedBox(width: 5),
-              Icon(Icons.thumb_down),
-              SizedBox(width: 5),
-              Text('Reportar'),
+              Icon(Icons.thumb_up, color: Colors.green, size: 20),
+              SizedBox(width: 8),
+              Icon(Icons.thumb_down, color: Colors.red, size: 20),
+              SizedBox(width: 8),
+              Text(
+                'Reportar',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.blue,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
             ],
           ),
         ],
