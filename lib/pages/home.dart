@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF0E402E),
+        backgroundColor: Color(0xff688C6A),
         automaticallyImplyLeading: false,
         leading: Padding(
           padding: const EdgeInsets.fromLTRB(12, 6, 0, 6),
@@ -25,10 +25,10 @@ class _HomePageState extends State<HomePage> {
             width: 44,
             height: 44,
             decoration: BoxDecoration(
-              color: Color(0x4D9489F5),
+              color: Color(0xffF29F05),
               shape: BoxShape.circle,
               border: Border.all(
-                color: Color(0xFFF29F05),
+                color: Colors.white,
                 width: 2,
               ),
             ),
@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
         title: const Text(
           'Bienvenido',
           style: TextStyle(
-            color: Color(0xFFF2B90C),
+            color: Colors.white,
             fontSize: 24,
             letterSpacing: 0,
             fontWeight: FontWeight.w500,
@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
             child: IconButton(
               icon: const Icon(
                 FontAwesomeIcons.bell,
-                color: Color(0xFFF2B90C),
+                color: Colors.white,
                 size: 24,
               ),
               onPressed: () {
@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
         child: Container(
           decoration: BoxDecoration(
             color: Color(0xff688C6A)
-                .withOpacity(0.09), // Color de fondo del contenedor
+                .withOpacity(0.1), // Color de fondo del contenedor
           ),
           child: Column(
             children: [
@@ -210,70 +210,18 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               const SizedBox(
-                height: 5,
+                height: 15,
               ),
-              //Caja de botones
-              Container(
-                padding: EdgeInsets.all(8),
-                margin: EdgeInsets.symmetric(vertical: 4, horizontal: 40),
-                decoration: BoxDecoration(
-                  color: Color(0xff688C6A), // Color de fondo del contenedor
-                  borderRadius: BorderRadius.circular(20), // Bordes redondeados
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xffBF8756)
-                          .withOpacity(0.4), // Sombra naranja
-                      spreadRadius: 2,
-                      blurRadius: 5,
-                      offset: Offset(0, 2), // Desplazamiento de la sombra
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _buildDestination(
-                          '     Reservas    ',
-                          FontAwesomeIcons.car,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => DetalleReservas()),
-                            );
-                          },
-                        ),
-                        _buildDestination(
-                          '  Comentarios  ',
-                          FontAwesomeIcons.comments,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => DetalleComentarios()),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 16),
-                  ],
-                ),
-              ),
-              SizedBox(height: 50),
               Container(
                 width: 300,
                 height: 60,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color: Color(0xffBF8756),
+                    color: Color(0xff688C6A),
                     width: 2,
                   ),
-                  color: Color(0xFF0E402E),
+                  color: Colors.orange,
                   boxShadow: const [
                     BoxShadow(
                       color: Color.fromRGBO(0, 0, 0, 0.1),
@@ -296,13 +244,69 @@ class _HomePageState extends State<HomePage> {
                   child: const Text(
                     '¡Reserva Ahora!',
                     style: TextStyle(
-                      color: Color(0xffF2B90C),
-                      letterSpacing: 0,
-                      fontSize: 20,
-                    ),
+                        color: Color.fromARGB(255, 20, 70, 22),
+                        letterSpacing: 0,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
+              const SizedBox(
+                height: 25,
+              ),
+              //Caja de botones
+              Container(
+                padding: EdgeInsets.all(8),
+                margin: EdgeInsets.symmetric(vertical: 4, horizontal: 40),
+                decoration: BoxDecoration(
+                  color: Color(0xff688C6A), // Color de fondo del contenedor
+                  borderRadius: BorderRadius.circular(20), // Bordes redondeados
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xff688C6A)
+                          .withOpacity(0.4), // Sombra naranja
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: Offset(0, 2), // Desplazamiento de la sombra
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _buildDestination(
+                          ' Tus Reservas  ',
+                          FontAwesomeIcons.car,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DetalleReservas()),
+                            );
+                          },
+                        ),
+                        _buildDestination(
+                          'Tus Comentarios',
+                          FontAwesomeIcons.solidMessage,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DetalleComentarios()),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16),
+                  ],
+                ),
+              ),
+              SizedBox(height: 50),
+
               SizedBox(
                 height: 78,
               )
