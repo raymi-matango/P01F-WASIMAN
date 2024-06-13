@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:iniciofront/components/buttuns_navbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -170,7 +171,7 @@ class _DetalleReservasState extends State<DetalleReservas> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Fecha: ${reserva['fecha']}',
+                                    'Fecha: ${reserva['fecha'].toString().split('T')[0]}',
                                     style: TextStyle(
                                       color:
                                           Color(0xFFBF8756), // Color del texto
