@@ -566,7 +566,7 @@ class ConductorDetalle extends StatelessWidget {
                           Text(
                             '${viaje['origen']}',
                             style: const TextStyle(
-                              fontSize: 17,
+                              fontSize: 18,
                               color: Color(0xff0E402E), // Color del texto
                             ),
                           ),
@@ -588,13 +588,13 @@ class ConductorDetalle extends StatelessWidget {
                           Text(
                             '${viaje['hora']}',
                             style: const TextStyle(
-                                fontSize: 17,
+                                fontSize: 18,
                                 color: Color(0xff0E402E) // Color del texto
                                 ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 5),
+                      SizedBox(height: 3),
                       Row(
                         children: [
                           _buildStarRating(viaje['calificacion']),
@@ -655,7 +655,7 @@ class ConductorDetalle extends StatelessWidget {
                   ), // Espa
                   const Icon(
                     FontAwesomeIcons.solidUser,
-                    color: Color(0xffBF8756), // Color del icono
+                    color: Color(0xff688C6A), // Color del icono
                     size: 20, // Tamaño del icono
                   ),
                   const SizedBox(
@@ -678,7 +678,7 @@ class ConductorDetalle extends StatelessWidget {
                   ), // Espa
                   const Icon(
                     FontAwesomeIcons.envelopeCircleCheck,
-                    color: Color(0xffBF8756), // Color del icono
+                    color: Color(0xff688C6A), // Color del icono
                     size: 20, // Tamaño del icono
                   ),
                   const SizedBox(
@@ -701,7 +701,7 @@ class ConductorDetalle extends StatelessWidget {
                   ), // Espa
                   const Icon(
                     FontAwesomeIcons.school,
-                    color: Color(0xffBF8756), // Color del icono
+                    color: Color(0xff688C6A), // Color del icono
                     size: 20, // Tamaño del icono
                   ),
                   const SizedBox(
@@ -724,7 +724,7 @@ class ConductorDetalle extends StatelessWidget {
                   ), // Espa
                   const Icon(
                     FontAwesomeIcons.phone,
-                    color: Color(0xffBF8756), // Color del icono
+                    color: Color(0xff688C6A), // Color del icono
                     size: 20, // Tamaño del icono
                   ),
                   const SizedBox(
@@ -740,8 +740,12 @@ class ConductorDetalle extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 20),
-              Text('Comentarios:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const Text('Comentarios:',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xff0E402E),
+                  )),
               SizedBox(height: 10),
               Expanded(
                 child: ListView.builder(
@@ -765,9 +769,20 @@ class ConductorDetalle extends StatelessWidget {
                       ),
                     );
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    child: Text('Reservar', style: TextStyle(fontSize: 18)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                        Color(0xffBF8756), // Color de fondo del botón
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                    child: Text(
+                      'RESERVAR',
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold // Color del texto
+                          ),
+                    ),
                   ),
                 ),
               ),
@@ -827,7 +842,7 @@ class ConductorDetalle extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Color.fromARGB(255, 213, 146, 10).withOpacity(0.2),
             spreadRadius: 2,
             blurRadius: 5,
             offset: Offset(0, 3), // Desplazamiento de la sombra
@@ -840,13 +855,12 @@ class ConductorDetalle extends StatelessWidget {
           Row(
             children: [
               Icon(
-                Icons.person,
-                color: Colors.grey[700],
-                size: 20,
+                FontAwesomeIcons.at,
+                color: Color(0xFF616161),
+                size: 16,
               ),
-              SizedBox(width: 8),
               Text(
-                'Usuario: ${comentario['usuario']['nombre']}',
+                ' ${comentario['usuario']['nombre']}',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -877,18 +891,16 @@ class ConductorDetalle extends StatelessWidget {
           SizedBox(height: 8),
           Row(
             children: [
-              Icon(Icons.thumb_up, color: Colors.green, size: 20),
+              Icon(FontAwesomeIcons.thumbsUp, color: Colors.green, size: 15),
               SizedBox(width: 8),
-              Icon(Icons.thumb_down, color: Colors.red, size: 20),
-              SizedBox(width: 8),
-              Text(
-                'Reportar',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.blue,
-                  decoration: TextDecoration.underline,
+              Transform.rotate(
+                angle: 3.14, // 180 grados en radianes
+                child: Icon(
+                  FontAwesomeIcons.thumbsUp,
+                  color: Colors.red,
+                  size: 15,
                 ),
-              ),
+              )
             ],
           ),
         ],
