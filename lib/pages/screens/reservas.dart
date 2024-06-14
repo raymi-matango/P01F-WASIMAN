@@ -136,101 +136,105 @@ class _ReservaPaginaState extends State<ReservaPagina> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Reserva',
+          'CONFIRMACIÓN DE RESERVA',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
+            fontSize: 19,
           ),
         ),
-        backgroundColor: Color(0xff688C6A),
+        backgroundColor: Color.fromARGB(255, 200, 132, 6),
         centerTitle: true,
         iconTheme: IconThemeData(
             color: Colors
                 .white), // Cambia el color del icono de la barra de aplicación
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(height: 100),
-            Icon(
-              FontAwesomeIcons.car,
-              size: 90, // Tamaño del icono
-              color: Color(0xff0E402E), // Color del icono
-            ),
-            SizedBox(height: 30),
-            TextField(
-              controller: _cantidadAsientosController,
-              decoration: InputDecoration(
-                labelText: 'Ingresa la cantidad de asientos (de 1 a 5)',
-                labelStyle: TextStyle(fontSize: 14),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.orange,
-                    width: 2.0,
+      body: Container(
+        color: Color(0xffBF8756).withOpacity(0.1),
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(height: 100),
+              Icon(
+                FontAwesomeIcons.carSide,
+                size: 100, // Tamaño del icono
+                color: Color(0xff0E402E), // Color del icono
+              ),
+              SizedBox(height: 30),
+              TextField(
+                controller: _cantidadAsientosController,
+                keyboardType: TextInputType.numberWithOptions(
+                    decimal: false), // Esto permite solo números enteros
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly
+                ], // Esto permite solo dígitos
+                decoration: InputDecoration(
+                  labelText: 'Ingresa la cantidad de asientos (de 1 a 5)',
+                  labelStyle: TextStyle(fontSize: 12),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.orange,
+                      width: 2.0,
+                    ),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 15,
+                    horizontal: 10,
+                  ),
+                  suffixIcon: Icon(
+                    Icons.airline_seat_recline_normal,
+                    color: Color(0xff0E402E),
+                    size: 28,
                   ),
                 ),
-                contentPadding: EdgeInsets.symmetric(
-                  vertical: 15,
-                  horizontal: 10,
-                ),
-                suffixIcon: Icon(
-                  Icons.airline_seat_recline_normal,
-                  color: Color(0xff0E402E),
-                  size: 28,
-                ),
               ),
-            ),
-            SizedBox(height: 20),
-            TextField(
-              controller: _ubicacionController,
-              keyboardType: TextInputType.numberWithOptions(
-                  decimal: false), // Esto permite solo números enteros
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly
-              ], // Esto permite solo dígitos
-              decoration: InputDecoration(
-                labelText: 'Ingresa la dirección de tu destino',
-                labelStyle: TextStyle(fontSize: 14),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.orange,
-                    width: 2.0,
+              SizedBox(height: 20),
+              TextField(
+                controller: _ubicacionController,
+                decoration: InputDecoration(
+                  labelText: 'Ingresa la dirección de tu destino',
+                  labelStyle: TextStyle(fontSize: 12),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.orange,
+                      width: 2.0,
+                    ),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 15,
+                    horizontal: 10,
+                  ),
+                  suffixIcon: Icon(
+                    FontAwesomeIcons.locationDot,
+                    color: Color(0xff0E402E),
+                    size: 30,
                   ),
                 ),
-                contentPadding: EdgeInsets.symmetric(
-                  vertical: 15,
-                  horizontal: 10,
-                ),
-                suffixIcon: Icon(
-                  FontAwesomeIcons.locationDot,
-                  color: Color(0xff0E402E),
-                  size: 28,
-                ),
               ),
-            ),
-            SizedBox(height: 20),
-            _isLoading
-                ? Center(child: CircularProgressIndicator())
-                : ElevatedButton(
-                    onPressed: _reservarAsientos,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 15),
-                      child: Text(
-                        'CONFIRMAR',
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Color(0xff0E402E),
-                            fontWeight: FontWeight.bold),
+              SizedBox(height: 85),
+              _isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : ElevatedButton(
+                      onPressed: _reservarAsientos,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        child: Text(
+                          'CONFIRMAR',
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Color(0xff0E402E),
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xffF29F05),
+                        elevation: 4,
                       ),
                     ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xffF29F05),
-                      elevation: 4,
-                    ),
-                  ),
-          ],
+            ],
+          ),
         ),
       ),
     );
