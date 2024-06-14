@@ -576,22 +576,37 @@ class _DetallesViajePaginaState extends State<DetallesViajePagina> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Detalles del Viaje'),
+        title: const Text(
+          'INFORMACIÓN',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Color(0XFFBF8756),
+        centerTitle: true,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+          size: 30,
+        ), // Cambia el color del icono de la barra de aplicación
       ),
       body: Container(
-        decoration:
-            const BoxDecoration(color: Color.fromARGB(60, 255, 255, 255)),
+        decoration: BoxDecoration(
+          color: Color(0xff688C6A)
+              .withOpacity(0.09), // Color de fondo del contenedor
+        ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 20),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: 120,
-                    height: 120,
+                    width: 150,
+                    height: 150,
                     decoration: BoxDecoration(
                       color: Colors.orange,
                       borderRadius: BorderRadius.circular(10),
@@ -619,7 +634,7 @@ class _DetallesViajePaginaState extends State<DetallesViajePagina> {
                             '${widget.viaje['destino']}',
                             style: const TextStyle(
                                 color: Color(0xff0E402E), // Color del texto
-                                fontSize: 20,
+                                fontSize: 22,
                                 fontWeight:
                                     FontWeight.bold // Tamaño de la fuente
                                 ),
@@ -634,7 +649,7 @@ class _DetallesViajePaginaState extends State<DetallesViajePagina> {
                           const Icon(
                             FontAwesomeIcons.streetView,
                             color: Color(0xffBF8756), // Color del icono
-                            size: 18, // Tamaño del icono
+                            size: 22, // Tamaño del icono
                           ),
                           const SizedBox(
                             width: 4,
@@ -642,7 +657,7 @@ class _DetallesViajePaginaState extends State<DetallesViajePagina> {
                           Text(
                             '${widget.viaje['origen']}',
                             style: const TextStyle(
-                              fontSize: 17,
+                              fontSize: 20,
                               color: Color(0xff0E402E), // Color del texto
                             ),
                           ),
@@ -656,7 +671,7 @@ class _DetallesViajePaginaState extends State<DetallesViajePagina> {
                           const Icon(
                             FontAwesomeIcons.clock,
                             color: Color(0xffBF8756), // Color del icono
-                            size: 18, // Tamaño del icono
+                            size: 20, // Tamaño del icono
                           ),
                           const SizedBox(
                             width: 4,
@@ -664,7 +679,7 @@ class _DetallesViajePaginaState extends State<DetallesViajePagina> {
                           Text(
                             '${widget.viaje['hora']}',
                             style: const TextStyle(
-                                fontSize: 17,
+                                fontSize: 20,
                                 color: Color(0xff0E402E) // Color del texto
                                 ),
                           ),
@@ -678,7 +693,7 @@ class _DetallesViajePaginaState extends State<DetallesViajePagina> {
                           const Icon(
                             Icons.airline_seat_recline_normal,
                             color: Color(0xffBF8756), // Color del icono
-                            size: 25, // Tamaño del icono
+                            size: 30, // Tamaño del icono
                           ),
                           const SizedBox(
                             width: 4,
@@ -686,7 +701,7 @@ class _DetallesViajePaginaState extends State<DetallesViajePagina> {
                           Text(
                             '${widget.viaje['asiento']}',
                             style: const TextStyle(
-                                fontSize: 17,
+                                fontSize: 20,
                                 color: Color(0xff0E402E) // Color del texto
                                 ),
                           ),
@@ -709,12 +724,11 @@ class _DetallesViajePaginaState extends State<DetallesViajePagina> {
                     ' ${widget.viaje['detalle']}',
                     style: const TextStyle(
                       color: Color(0xff0E402E), // Color del texto
-                      fontSize: 16,
+                      fontSize: 18,
                     ),
                   ),
                 ],
               ),
-
               const SizedBox(height: 20),
               const Text('Datos del Conductor:',
                   style: TextStyle(
@@ -838,53 +852,103 @@ class _DetallesViajePaginaState extends State<DetallesViajePagina> {
                 ],
               ),
               SizedBox(height: 20),
-              const Text('Comentarios:',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xff0E402E),
-                  )),
-              SizedBox(height: 10),
-
-              Text('Calificación: ${widget.viaje['calificacion']}'),
-              // Botón para mostrar comentarios
-              ElevatedButton(
-                onPressed: () {
-                  // Mostrar diálogo de comentarios
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return ComentariosDialogo(comentarios: comentarios);
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Text('Comentarios:',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xff0E402E),
+                      )),
+                  SizedBox(width: 20),
+                  IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return ComentariosDialogo(comentarios: comentarios);
+                        },
+                      );
                     },
-                  );
-                },
-                child: Text('todo los Comentarios'),
-              ),
-              // Botón para reservar viaje
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          ReservaPagina(viajeId: widget.viaje['id']),
+                    icon: Icon(
+                      FontAwesomeIcons.eye,
+                      color: Color.fromARGB(
+                          255, 92, 130, 94), // Color del primer icono
+                      size: 33, // Tamaño del primer icono
                     ),
-                  );
-                },
-                child: Text('RESERVAR'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          ComentarioPagina(viajeId: widget.viaje['id']),
+                  ),
+                  SizedBox(width: 15), // Espaciado entre los iconos
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.orange, // Color de fondo del botón
+                      borderRadius: BorderRadius.circular(
+                          10), // Borde redondeado del botón
                     ),
-                  );
-                },
-                child: Text('Calificar'),
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ComentarioPagina(viajeId: widget.viaje['id']),
+                          ),
+                        );
+                      },
+                      icon: Row(
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.penToSquare,
+                            color: Colors.white, // Color del icono
+                            size: 20, // Tamaño del icono
+                          ),
+                          SizedBox(
+                              width: 5), // Espacio entre el icono y el texto
+                          Text(
+                            'CALIFICAR',
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
+              SizedBox(height: 120),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ReservaPagina(viajeId: widget.viaje['id']),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                        Color(0xff0E402E), // Color de fondo del botón
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                    child: Text(
+                      'RESERVAR',
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Color(0xffF29F05),
+                          fontWeight: FontWeight.bold // Color del texto
+                          ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 1),
             ],
           ),
         ),
