@@ -221,7 +221,7 @@ class _ViajePaginaState extends State<ViajePagina> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Destinos para tu viaje',
+          'ENCUENTRA TU RUTA',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -229,6 +229,10 @@ class _ViajePaginaState extends State<ViajePagina> {
         ),
         backgroundColor: Color(0xff688C6A),
         centerTitle: true,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+          size: 30,
+        ), // Cambia el color del icono de la barra de aplicación
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -251,28 +255,28 @@ class _ViajePaginaState extends State<ViajePagina> {
                           _buscarViajes();
                         },
                         decoration: InputDecoration(
-                          labelText: 'Escriba el destino deseado',
+                          labelText: 'Busca tu destino deseado',
+                          labelStyle: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w400),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderSide: const BorderSide(
-                              color: Colors
-                                  .orange, // Color del borde cuando no está enfocado
+                              color: Colors.orange,
                             ),
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: const BorderSide(
-                              color: Colors
-                                  .orange, // Color del borde cuando está enfocado
+                              color: Colors.orange,
                             ),
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           suffixIcon: IconButton(
                             icon: Icon(
                               FontAwesomeIcons.solidCircleXmark,
-                              color: Color(0xFF0E402E).withOpacity(0.7),
+                              color: Color(0xFF0E402E).withOpacity(0.8),
                             ),
                             onPressed: () {
                               // Limpia el texto cuando se presiona el icono
@@ -288,7 +292,7 @@ class _ViajePaginaState extends State<ViajePagina> {
                     IconButton(
                       icon: Icon(
                         FontAwesomeIcons.filter,
-                        color: Color(0xFF0E402E).withOpacity(0.7),
+                        color: Color(0xFF0E402E).withOpacity(0.8),
                         size: 25,
                       ),
                       onPressed: _mostrarFiltro,
@@ -392,7 +396,7 @@ class _ViajePaginaState extends State<ViajePagina> {
                       const SizedBox(width: 4),
                       Text(
                         stars,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
@@ -424,16 +428,20 @@ class _ViajePaginaState extends State<ViajePagina> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(
-                        FontAwesomeIcons.userTie,
-                        color: Color(0xffBF8756),
-                      ),
                       const SizedBox(width: 0.5),
                       Text(
                         userName,
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black,
+                              offset: Offset(1, 1),
+                              blurRadius: 2,
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -447,15 +455,30 @@ class _ViajePaginaState extends State<ViajePagina> {
                     children: [
                       const Icon(
                         FontAwesomeIcons.clock,
-                        color: Colors.white,
-                        size: 11,
+                        color: Colors.orange,
+                        size: 15,
+                        shadows: [
+                          Shadow(
+                            color: Color.fromARGB(255, 5, 103, 0),
+                            offset: Offset(1, 1),
+                            blurRadius: 2,
+                          ),
+                        ],
                       ),
                       Text(
                         hora,
                         style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 11),
+                          color: Colors.orange,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black,
+                              offset: Offset(1, 1),
+                              blurRadius: 2,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

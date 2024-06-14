@@ -101,7 +101,6 @@ class _HomePageState extends State<HomePage> {
                     const Text(
                       '  Elige tu destino',
                       style: TextStyle(
-                        fontFamily: 'Readex Pro',
                         fontSize: 20,
                         letterSpacing: 0,
                         fontWeight: FontWeight.w800,
