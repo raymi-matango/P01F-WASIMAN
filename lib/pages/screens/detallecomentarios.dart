@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -163,47 +164,106 @@ class _DetalleComentariosState extends State<DetalleComentarios> {
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    'Calificación: ${comentario['calificacion']}',
-                                    style: TextStyle(
-                                      color:
-                                          Color(0xFFBF8756), // Color del texto
-                                    ),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        FontAwesomeIcons.solidStar,
+                                        color: Color(0xff688C6A),
+                                        size: 15,
+                                      ),
+                                      SizedBox(
+                                          width:
+                                              5), // Espacio entre el icono y el texto
+                                      Text(
+                                        '${comentario['calificacion']}',
+                                        style: TextStyle(
+                                          color: Color(0xff688C6A),
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  Text(
-                                    'Fecha: ${comentario['fecha'].toString().split('T')[0]}',
-                                    style: TextStyle(
-                                      color:
-                                          Color(0xFFBF8756), // Color del texto
-                                    ),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        FontAwesomeIcons.calendar,
+                                        color: Color.fromARGB(255, 1, 85, 159),
+                                        size: 15,
+                                      ),
+                                      SizedBox(
+                                          width:
+                                              5), // Espacio entre el icono y el texto
+                                      Text(
+                                        '${comentario['fecha'].toString().split('T')[0]}',
+                                        style: TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 1, 85, 159),
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  Text(
-                                    'Nombre del viaje: ${comentario['viaje']['nombre']}',
-                                    style: TextStyle(
-                                      color:
-                                          Color(0xFFBF8756), // Color del texto
-                                    ),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        FontAwesomeIcons.at,
+                                        color: Color(0xffF29F05),
+                                        size: 15,
+                                      ),
+                                      SizedBox(
+                                          width:
+                                              5), // Espacio entre el icono y el texto
+                                      Text(
+                                        '${comentario['viaje']['nombre']}',
+                                        style: TextStyle(
+                                          color: Color(0xffF29F05),
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  Text(
-                                    'Destino: ${comentario['viaje']['destino']}',
-                                    style: TextStyle(
-                                      color:
-                                          Color(0xFFBF8756), // Color del texto
-                                    ),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        FontAwesomeIcons.locationDot,
+                                        color: Color(0xFFBF8756),
+                                        size: 15,
+                                      ),
+                                      SizedBox(
+                                          width:
+                                              5), // Espacio entre el icono y el texto
+                                      Text(
+                                        'Destino: ${comentario['viaje']['destino']}',
+                                        style: TextStyle(
+                                          color: Color(0xFFBF8756),
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  Text(
-                                    'Fecha del viaje: ${comentario['viaje']['fecha']}',
-                                    style: TextStyle(
-                                      color:
-                                          Color(0xFFBF8756), // Color del texto
-                                    ),
-                                  ),
-                                  Text(
-                                    'Hora del viaje: ${comentario['viaje']['hora']}',
-                                    style: TextStyle(
-                                      color:
-                                          Color(0xFFBF8756), // Color del texto
-                                    ),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        FontAwesomeIcons.clock,
+                                        color: Color(0xff0E402E),
+                                        size: 15,
+                                      ),
+                                      SizedBox(
+                                          width:
+                                              5), // Espacio entre el icono y el texto
+                                      Text(
+                                        'Hora del viaje: ${comentario['viaje']['hora']}',
+                                        style: TextStyle(
+                                          color: Color(0xff0E402E),
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
