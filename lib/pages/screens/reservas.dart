@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -162,8 +163,8 @@ class _ReservaPaginaState extends State<ReservaPagina> {
             TextField(
               controller: _cantidadAsientosController,
               decoration: InputDecoration(
-                labelText: 'Asientos',
-                labelStyle: TextStyle(fontSize: 18),
+                labelText: 'Ingresa la cantidad de asientos (de 1 a 5)',
+                labelStyle: TextStyle(fontSize: 14),
                 border: OutlineInputBorder(
                   borderSide: BorderSide(
                     color: Colors.orange,
@@ -175,7 +176,7 @@ class _ReservaPaginaState extends State<ReservaPagina> {
                   horizontal: 10,
                 ),
                 suffixIcon: Icon(
-                  FontAwesomeIcons.locationDot,
+                  Icons.airline_seat_recline_normal,
                   color: Color(0xff0E402E),
                   size: 28,
                 ),
@@ -184,9 +185,14 @@ class _ReservaPaginaState extends State<ReservaPagina> {
             SizedBox(height: 20),
             TextField(
               controller: _ubicacionController,
+              keyboardType: TextInputType.numberWithOptions(
+                  decimal: false), // Esto permite solo números enteros
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly
+              ], // Esto permite solo dígitos
               decoration: InputDecoration(
-                labelText: 'Ubicación',
-                labelStyle: TextStyle(fontSize: 18),
+                labelText: 'Ingresa la dirección de tu destino',
+                labelStyle: TextStyle(fontSize: 14),
                 border: OutlineInputBorder(
                   borderSide: BorderSide(
                     color: Colors.orange,
