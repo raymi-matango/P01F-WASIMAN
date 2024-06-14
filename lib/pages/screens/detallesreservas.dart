@@ -111,7 +111,7 @@ class _DetalleReservasState extends State<DetalleReservas> {
           content: TextField(
             controller: _controller,
             decoration: InputDecoration(
-              hintText: 'Escribe tu mensaje',
+              hintText: 'Escribe tú mensaje',
             ),
           ),
           actions: <Widget>[
