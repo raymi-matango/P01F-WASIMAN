@@ -164,41 +164,99 @@ class _DetalleReservasState extends State<DetalleReservas> {
                             },
                             child: ListTile(
                               title: Text(
-                                'Destino: ${reserva['viaje']['destino']}',
+                                '${reserva['viaje']['destino']}',
                                 style: TextStyle(
-                                  color: Color(0xFF0E402E), // Color del título
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                    color:
+                                        Color(0xFF0E402E), // Color del título
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20),
                               ),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    'Fecha: ${reserva['fecha'].toString().split('T')[0]}',
-                                    style: TextStyle(
-                                      color:
-                                          Color(0xFFBF8756), // Color del texto
+                                  RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: 'Fecha: ',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xFFBF8756),
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text:
+                                              '${reserva['fecha'].toString().split('T')[0]}',
+                                          style: TextStyle(
+                                            color: Color(0xFFBF8756),
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  Text(
-                                    'Estado: ${reserva['estado']}',
-                                    style: TextStyle(
-                                      color:
-                                          Color(0xFFF29F05), // Color del texto
+                                  RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: 'Estado: ',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xFFF29F05),
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: '${reserva['estado']}',
+                                          style: TextStyle(
+                                            color: Color(0xFFF29F05),
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  Text(
-                                    'Asiento: ${reserva['asiento']}',
-                                    style: TextStyle(
-                                      color:
-                                          Color(0xFF0E402E), // Color del texto
+                                  RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: 'Asiento: ',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xFF0E402E),
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: '${reserva['asiento']}',
+                                          style: TextStyle(
+                                            color: Color(0xFF0E402E),
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  Text(
-                                    'Ubicación: ${reserva['ubicacion']}',
-                                    style: TextStyle(
-                                      color:
-                                          Color(0xFFBF8756), // Color del texto
+                                  RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: 'Ubicación: ',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xFFBF8756),
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: '${reserva['ubicacion']}',
+                                          style: TextStyle(
+                                            color: Color(0xFFBF8756),
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
@@ -222,7 +280,7 @@ class _DetalleReservasState extends State<DetalleReservas> {
                                             child: Icon(
                                               Icons.delete,
                                               color: Colors.red,
-                                              size: 25,
+                                              size: 30,
                                             ),
                                           ),
                                         ),
@@ -252,7 +310,7 @@ class _DetalleReservasState extends State<DetalleReservas> {
                                             child: Icon(
                                               Icons.telegram,
                                               color: Colors.green,
-                                              size: 25,
+                                              size: 30,
                                             ),
                                           ),
                                         ),
