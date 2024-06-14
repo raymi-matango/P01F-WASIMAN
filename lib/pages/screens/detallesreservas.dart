@@ -288,25 +288,26 @@ class _DetalleReservasState extends State<DetalleReservas> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
-                                      width: 16), // Espacio entre los íconos
+                                  SizedBox(width: 16),
                                   GestureDetector(
-                                    onTap: () {
-                                      _launchWhatsapp(
-                                          number: "0993994147",
-                                          message:
-                                              "Hola, soy XXXXX estoy en el punto de encuentro. ¿Dónde estás tú?");
+                                    onTap: () async {
+                                      String phoneNumber =
+                                          '+593998064828'; // Reemplaza con el número de teléfono del destinatario, sin el símbolo "+"
+                                      String message =
+                                          'Hola, estoy en el punto de encuentro, ¿dónde estás?'; // Mensaje que deseas enviar
+                                      String url =
+                                          'https://wa.me/$phoneNumber?text=${Uri.encodeComponent(message)}';
+
+                                      if (await canLaunch(url)) {
+                                        await launch(url);
+                                      } else {
+                                        throw 'No se pudo abrir el enlace $url';
+                                      }
                                     },
                                     child: Material(
                                       color: Colors.transparent,
                                       child: ClipOval(
                                         child: InkWell(
-                                          onTap: () {
-                                            _launchWhatsapp(
-                                                number: "0993994147",
-                                                message:
-                                                    "Hola, soy XXXXX estoy en el punto de encuentro. ¿Dónde estás tú?");
-                                          },
                                           splashColor:
                                               Color.fromARGB(62, 255, 157, 0),
                                           child: Padding(
@@ -321,6 +322,7 @@ class _DetalleReservasState extends State<DetalleReservas> {
                                       ),
                                     ),
                                   ),
+                                  // Espacio entre los íconos
                                 ],
                               ),
                             ),

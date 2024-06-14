@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Notificacion extends StatefulWidget {
   final String fechaIngreso;
@@ -74,6 +75,23 @@ class _NotificacionState extends State<Notificacion> {
                     ),
                   ),
                 ],
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  String phoneNumber =
+                      '+593998064828'; // Reemplaza con el número de teléfono del destinatario, sin el símbolo "+"
+                  String message =
+                      'Hola, estoy en el punto de encuentro, ¿dónde estás?'; // Reemplaza con el mensaje que deseas enviar
+                  String url =
+                      'https://wa.me/$phoneNumber?text=${Uri.encodeComponent(message)}';
+
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    throw 'No se pudo abrir el enlace $url';
+                  }
+                },
+                child: Text('Enviar mensaje en WhatsApp'),
               ),
             ],
           ),
