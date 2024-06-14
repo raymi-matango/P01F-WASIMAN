@@ -130,8 +130,6 @@ class _ReservaPaginaState extends State<ReservaPagina> {
     super.dispose();
   }
 
-  String? _selectedSeatCount;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -161,36 +159,27 @@ class _ReservaPaginaState extends State<ReservaPagina> {
               color: Color(0xff0E402E), // Color del icono
             ),
             SizedBox(height: 30),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Seleccione cantidad de asientos:',
-                  style: TextStyle(fontSize: 18),
+            TextField(
+              controller: _cantidadAsientosController,
+              decoration: InputDecoration(
+                labelText: 'Asientos',
+                labelStyle: TextStyle(fontSize: 18),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.orange,
+                    width: 2.0,
+                  ),
                 ),
-                SizedBox(
-                  height: 10,
-                ), // Espacio entre el texto y los botones de radio
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children:
-                      <String>['1', '2', '3', '4', '5'].map((String value) {
-                    return Expanded(
-                      child: RadioListTile<String>(
-                        title: Text(value),
-                        value: value,
-                        groupValue: _selectedSeatCount,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            _selectedSeatCount = newValue;
-                            _cantidadAsientosController.text = newValue!;
-                          });
-                        },
-                      ),
-                    );
-                  }).toList(),
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 15,
+                  horizontal: 10,
                 ),
-              ],
+                suffixIcon: Icon(
+                  FontAwesomeIcons.locationDot,
+                  color: Color(0xff0E402E),
+                  size: 28,
+                ),
+              ),
             ),
             SizedBox(height: 20),
             TextField(
