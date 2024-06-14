@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -134,99 +135,107 @@ class _ComentarioPaginaState extends State<ComentarioPagina> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Comparte tu opinión',
+        title: const Text(
+          '¡COMENTA Y CALIFICA!',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
+            fontSize: 19,
           ),
         ),
-        backgroundColor: Color(0xff688C6A),
+        backgroundColor: Color.fromARGB(255, 200, 132, 6),
         centerTitle: true,
         iconTheme: IconThemeData(
-          color: Colors.white,
-        ),
+            color: Colors
+                .white), // Cambia el color del icono de la barra de aplicación
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(height: 100),
-            Icon(
-              FontAwesomeIcons.solidCommentDots,
-              size: 90,
-              color: Color(0xff0E402E),
-            ),
-            SizedBox(height: 30),
-            TextField(
-              controller: _comentarioController,
-              decoration: InputDecoration(
-                labelText: 'Comentario',
-                labelStyle: TextStyle(fontSize: 18),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.orange,
-                    width: 2.0,
+      body: Container(
+        color: Color(0xffBF8756).withOpacity(0.1),
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(height: 100),
+              Icon(
+                FontAwesomeIcons.solidCommentDots,
+                size: 100,
+                color: Color(0xff0E402E),
+              ),
+              SizedBox(height: 30),
+              TextField(
+                controller: _comentarioController,
+                decoration: InputDecoration(
+                  labelText: 'Deja tú Comentario',
+                  labelStyle: TextStyle(fontSize: 18),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.orange,
+                      width: 2.0,
+                    ),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 15,
+                    horizontal: 10,
+                  ),
+                  suffixIcon: Icon(
+                    FontAwesomeIcons.pen,
+                    color: Color(0xff0E402E),
+                    size: 28,
                   ),
                 ),
-                contentPadding: EdgeInsets.symmetric(
-                  vertical: 15,
-                  horizontal: 10,
-                ),
-                suffixIcon: Icon(
-                  FontAwesomeIcons.pen,
-                  color: Color(0xff0E402E),
-                  size: 28,
-                ),
               ),
-            ),
-            SizedBox(height: 20),
-            TextField(
-              controller: _calificacionController,
-              decoration: InputDecoration(
-                labelText: 'Calificación (1-5)',
-                labelStyle: TextStyle(fontSize: 18),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.orange,
-                    width: 2.0,
+              SizedBox(height: 20),
+              TextField(
+                controller: _calificacionController,
+                keyboardType: TextInputType.numberWithOptions(
+                    decimal: false), // Esto permite solo números enteros
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly
+                ], // Esto permite solo dígitos
+                decoration: InputDecoration(
+                  labelText: 'Indica tu valoración del 1 al 5:',
+                  labelStyle: TextStyle(fontSize: 12),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.orange,
+                      width: 2.0,
+                    ),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 15,
+                    horizontal: 10,
+                  ),
+                  suffixIcon: Icon(
+                    Icons.airline_seat_recline_normal,
+                    color: Color(0xff0E402E),
+                    size: 28,
                   ),
                 ),
-                contentPadding: EdgeInsets.symmetric(
-                  vertical: 15,
-                  horizontal: 10,
-                ),
-                suffixIcon: Icon(
-                  FontAwesomeIcons.solidStar,
-                  color: Color(0xff0E402E),
-                  size: 28,
-                ),
               ),
-              keyboardType: TextInputType.number,
-            ),
-            SizedBox(height: 50),
-            _isLoading
-                ? Center(child: CircularProgressIndicator())
-                : ElevatedButton(
-                    onPressed: _enviarComentario,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 15),
-                      child: Text(
-                        'ENVIAR',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Color(0xff0E402E),
-                          fontWeight: FontWeight.bold,
+              SizedBox(height: 85),
+              _isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : ElevatedButton(
+                      onPressed: _enviarComentario,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        child: Text(
+                          'ENVIAR',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Color(0xff0E402E),
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xffF29F05),
+                        elevation: 4,
+                      ),
                     ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xffF29F05),
-                      elevation: 4,
-                    ),
-                  ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:iniciofront/components/buttuns_navbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TokenManager {
@@ -63,6 +64,8 @@ class _ReservaPaginaState extends State<ReservaPagina> {
 
     await Future.delayed(Duration(seconds: 2));
     Navigator.of(context).pop();
+    Navigator.of(context)
+        .pop(); // Cerrar el diálogo y volver a la pantalla anterior
   }
 
   Future<void> _reservarAsientos() async {
@@ -113,7 +116,11 @@ class _ReservaPaginaState extends State<ReservaPagina> {
     if (response.statusCode == 201) {
       final responseData = json.decode(response.body);
       await _mostrarDialogo(responseData['message']);
-      Navigator.pop(context);
+      Navigator.pushReplacement(
+        // Reemplazar la pantalla actual por la pantalla de BotonesNavegan
+        context,
+        MaterialPageRoute(builder: (context) => BotonesNavegan()),
+      );
     } else {
       final responseData = json.decode(response.body);
       ScaffoldMessenger.of(context).showSnackBar(
