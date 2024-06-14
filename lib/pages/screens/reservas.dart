@@ -169,8 +169,8 @@ class _ReservaPaginaState extends State<ReservaPagina> {
                   style: TextStyle(fontSize: 18),
                 ),
                 SizedBox(
-                    height:
-                        10), // Espacio entre el texto y los botones de radio
+                  height: 10,
+                ), // Espacio entre el texto y los botones de radio
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children:

@@ -954,7 +954,7 @@ class _DetallesViajePaginaState extends State<DetallesViajePagina> {
                   ),
                 ],
               ),
-              SizedBox(height: 120),
+              SizedBox(height: 100),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(

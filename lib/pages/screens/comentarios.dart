@@ -205,7 +205,7 @@ class _ComentarioPaginaState extends State<ComentarioPagina> {
               ),
               keyboardType: TextInputType.number,
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 50),
             _isLoading
                 ? Center(child: CircularProgressIndicator())
                 : ElevatedButton(
