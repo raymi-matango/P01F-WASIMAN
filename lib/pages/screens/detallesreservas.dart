@@ -111,7 +111,7 @@ class _DetalleReservasState extends State<DetalleReservas> {
           content: TextField(
             controller: _controller,
             decoration: InputDecoration(
-              hintText: 'Escribe tú mensaje',
+              hintText: 'Escribe tu mensaje',
             ),
           ),
           actions: <Widget>[
@@ -123,41 +123,32 @@ class _DetalleReservasState extends State<DetalleReservas> {
             ),
             TextButton(
               child: Text('Enviar'),
-              onPressed: () async {
-                String phoneNumber =
-                    '+593998064828'; // Reemplaza con el número de teléfono del destinatario
+              onPressed: () {
+                // Aquí podrías realizar alguna acción adicional si lo deseas
                 String message = _controller.text;
-                String url =
-                    'https://wa.me/$phoneNumber?text=${Uri.encodeComponent(message)}';
+                _controller.clear();
+                Navigator.of(context)
+                    .pop(); // Cierra el diálogo de entrada de mensaje
 
-                if (await canLaunch(url)) {
-                  await launch(url);
-                  _controller.clear();
-                  Navigator.of(context)
-                      .pop(); // Cierra el diálogo de entrada de mensaje
-
-                  // Mostrar modal de "Enviado con éxito"
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text('Éxito'),
-                        content: Text('Mensaje enviado con éxito'),
-                        actions: <Widget>[
-                          TextButton(
-                            child: Text('OK'),
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .pop(); // Cierra el diálogo de confirmación
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                } else {
-                  throw 'No se pudo abrir el enlace $url';
-                }
+                // Mostrar modal de "Enviado con éxito"
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Éxito'),
+                      content: Text('Mensaje enviado con éxito: $message'),
+                      actions: <Widget>[
+                        TextButton(
+                          child: Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pop(); // Cierra el diálogo de confirmación
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
             ),
           ],
