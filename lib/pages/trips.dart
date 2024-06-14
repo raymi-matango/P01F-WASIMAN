@@ -536,8 +536,44 @@ class _ComentariosDialogoState extends State<ComentariosDialogo> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: widget.comentarios.map((comentario) {
             return ListTile(
-              title: Text(comentario.comentario),
-              subtitle: Text('Usuario: ${comentario.nombreUsuario}'),
+              title: Row(
+                children: [
+                  Icon(
+                    FontAwesomeIcons.comment, // Icono para el comentario
+                    color: Colors.orange, // Color del icono
+                    size: 11, // Tamaño del icono
+                  ),
+                  SizedBox(width: 5), // Espacio entre el icono y el texto
+                  Text(
+                    comentario.comentario,
+                    style: TextStyle(
+                      color: const Color.fromARGB(
+                          255, 6, 54, 7), // Color del texto del comentario
+                      fontSize: 11, // Tamaño de la fuente del comentario
+                      fontWeight:
+                          FontWeight.bold, // Peso de la fuente del comentario
+                    ),
+                  ),
+                ],
+              ),
+              subtitle: Row(
+                children: [
+                  const Icon(
+                    FontAwesomeIcons.solidUser,
+                    color: Colors.orange,
+                    size: 10, // Tamaño del icono
+                  ),
+                  SizedBox(width: 5), // Espacio entre el icono y el texto
+                  Text(
+                    '${comentario.nombreUsuario}',
+                    style: const TextStyle(
+                      color: const Color.fromARGB(
+                          255, 6, 54, 7), // Color del texto del usuario
+                      fontSize: 10, // Tamaño de la fuente del usuario
+                    ),
+                  ),
+                ],
+              ),
             );
           }).toList(),
         ),
