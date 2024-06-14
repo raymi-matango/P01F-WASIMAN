@@ -221,7 +221,7 @@ class _ViajePaginaState extends State<ViajePagina> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'ENCUENTRA TU RUTA',
+          'ENCUENTRA TÚ RUTA',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,

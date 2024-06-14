@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:iniciofront/pages/home.dart';
+import 'package:iniciofront/pages/screens/comentarios.dart';
+import 'package:iniciofront/pages/screens/detallecomentarios.dart';
 import 'package:iniciofront/pages/screens/detallesreservas.dart';
 import 'package:iniciofront/pages/trips.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -44,7 +46,7 @@ class _BotonesNaveganState extends State<BotonesNavegan> {
     HomePage(),
     ViajePagina(),
     DetalleReservas(),
-    HomePage(),
+    DetalleComentarios(),
   ];
 
   @override
@@ -85,8 +87,8 @@ class _BotonesNaveganState extends State<BotonesNavegan> {
                 text: ' Mis reservas',
               ),
               GButton(
-                icon: FontAwesomeIcons.userLarge,
-                text: ' Perfil',
+                icon: FontAwesomeIcons.solidComments,
+                text: ' Mis comentarios',
               ),
             ],
           ),

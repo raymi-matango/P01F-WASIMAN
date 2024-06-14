@@ -50,12 +50,12 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         title: const Text(
-          'Bienvenido',
+          '¡Hola, qué gusto verte!',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 24,
+            fontSize: 21,
             letterSpacing: 0,
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.bold,
           ),
         ),
         actions: [

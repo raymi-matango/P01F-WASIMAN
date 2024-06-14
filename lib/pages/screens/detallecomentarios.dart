@@ -103,9 +103,19 @@ class _DetalleComentariosState extends State<DetalleComentarios> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Comentarios'),
-        backgroundColor:
-            Color(0xFF688C6A), // Color de fondo de la barra de aplicación
+        title: const Text(
+          'MIS COMENTARIOS',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Color(0xff688C6A),
+        centerTitle: true,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+          size: 30,
+        ), // Cambia el color del icono de la barra de aplicación
       ),
       body: FutureBuilder<List<dynamic>>(
         future: fetchComentarios(),

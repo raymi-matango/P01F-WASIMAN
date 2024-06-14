@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:iniciofront/components/buttuns_navbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TokenManager {
@@ -113,7 +114,11 @@ class _ComentarioPaginaState extends State<ComentarioPagina> {
 
     if (response.statusCode == 201) {
       await _mostrarDialogo('Comentario enviado con éxito');
-      Navigator.pop(context);
+      Navigator.pushReplacement(
+        // Reemplazar la pantalla actual por la pantalla de BotonesNavegan
+        context,
+        MaterialPageRoute(builder: (context) => BotonesNavegan()),
+      );
     } else {
       final responseData = json.decode(response.body);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -167,7 +172,7 @@ class _ComentarioPaginaState extends State<ComentarioPagina> {
                 controller: _comentarioController,
                 decoration: InputDecoration(
                   labelText: 'Deja tú Comentario',
-                  labelStyle: TextStyle(fontSize: 18),
+                  labelStyle: TextStyle(fontSize: 12),
                   border: OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.orange,
@@ -209,7 +214,7 @@ class _ComentarioPaginaState extends State<ComentarioPagina> {
                   suffixIcon: Icon(
                     Icons.airline_seat_recline_normal,
                     color: Color(0xff0E402E),
-                    size: 28,
+                    size: 35,
                   ),
                 ),
               ),
