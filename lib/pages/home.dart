@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iniciofront/pages/screens/detallecomentarios.dart';
 import 'package:iniciofront/pages/screens/detallesreservas.dart';
+import 'package:iniciofront/pages/screens/notificacion.dart';
 import 'package:iniciofront/pages/trips.dart';
 
 class HomePage extends StatefulWidget {
@@ -70,7 +71,12 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => DetalleReservas()),
+                  MaterialPageRoute(
+                    builder: (context) => Notificacion(
+                      fechaIngreso:
+                          '14-06-2024', // Puedes pasar la fecha real aquí
+                    ),
+                  ),
                 );
               },
             ),
