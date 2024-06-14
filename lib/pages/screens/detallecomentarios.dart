@@ -188,7 +188,7 @@ class _DetalleComentariosState extends State<DetalleComentarios> {
                                     children: [
                                       Icon(
                                         FontAwesomeIcons.calendar,
-                                        color: Color.fromARGB(255, 1, 85, 159),
+                                        color: Color(0xff688C6A),
                                         size: 15,
                                       ),
                                       SizedBox(
@@ -197,8 +197,7 @@ class _DetalleComentariosState extends State<DetalleComentarios> {
                                       Text(
                                         '${comentario['fecha'].toString().split('T')[0]}',
                                         style: TextStyle(
-                                          color:
-                                              Color.fromARGB(255, 1, 85, 159),
+                                          color: Color(0xff688C6A),
                                           fontSize: 15,
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -269,7 +268,7 @@ class _DetalleComentariosState extends State<DetalleComentarios> {
                               ),
                               trailing: IconButton(
                                 icon: Icon(
-                                  Icons.delete,
+                                  FontAwesomeIcons.trashCan,
                                   color: Colors.red,
                                   size: 25,
                                 ),

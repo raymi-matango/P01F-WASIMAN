@@ -14,7 +14,19 @@ class _NotificacionState extends State<Notificacion> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notificación'),
+        title: const Text(
+          'NOTIFICACIÓN',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 19,
+          ),
+        ),
+        backgroundColor: Color(0xff0E402E),
+        centerTitle: true,
+        iconTheme: IconThemeData(
+            color: Colors
+                .white), // Cambia el color del icono de la barra de aplicación
       ),
       body: Card(
         elevation: 4,

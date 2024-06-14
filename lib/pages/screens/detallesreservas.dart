@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -278,7 +279,7 @@ class _DetalleReservasState extends State<DetalleReservas> {
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Icon(
-                                              Icons.delete,
+                                              FontAwesomeIcons.trashCan,
                                               color: Colors.red,
                                               size: 30,
                                             ),
@@ -291,7 +292,10 @@ class _DetalleReservasState extends State<DetalleReservas> {
                                       width: 16), // Espacio entre los íconos
                                   GestureDetector(
                                     onTap: () {
-                                      // Acción para el ícono de WhatsApp
+                                      _launchWhatsapp(
+                                          number: "0993994147",
+                                          message:
+                                              "Hola, soy XXXXX estoy en el punto de encuentro. ¿Dónde estás tú?");
                                     },
                                     child: Material(
                                       color: Colors.transparent,
@@ -299,16 +303,16 @@ class _DetalleReservasState extends State<DetalleReservas> {
                                         child: InkWell(
                                           onTap: () {
                                             _launchWhatsapp(
-                                                number: "+593993994147",
+                                                number: "0993994147",
                                                 message:
-                                                    "Hola, estoy en el punto de encuentro. ¿Dónde estás tú?");
+                                                    "Hola, soy XXXXX estoy en el punto de encuentro. ¿Dónde estás tú?");
                                           },
                                           splashColor:
                                               Color.fromARGB(62, 255, 157, 0),
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Icon(
-                                              Icons.telegram,
+                                              FontAwesomeIcons.whatsapp,
                                               color: Colors.green,
                                               size: 30,
                                             ),

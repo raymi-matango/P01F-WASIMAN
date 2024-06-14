@@ -199,7 +199,7 @@ class _ComentarioPaginaState extends State<ComentarioPagina> {
                   FilteringTextInputFormatter.digitsOnly
                 ], // Esto permite solo dígitos
                 decoration: InputDecoration(
-                  labelText: 'Indica tu valoración del 1 al 5:',
+                  labelText: 'Indica tú valoración del 1 al 5:',
                   labelStyle: TextStyle(fontSize: 12),
                   border: OutlineInputBorder(
                     borderSide: BorderSide(
