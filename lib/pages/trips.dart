@@ -578,63 +578,315 @@ class _DetallesViajePaginaState extends State<DetallesViajePagina> {
       appBar: AppBar(
         title: Text('Detalles del Viaje'),
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Origen: ${widget.viaje['origen']}'),
-            Text('Destino: ${widget.viaje['destino']}'),
-            Text('Fecha: ${widget.viaje['fecha']}'),
-            Text('Hora: ${widget.viaje['hora']}'),
-            Text('Asiento: ${widget.viaje['asiento']}'),
-            Text('Detalle: ${widget.viaje['detalle']}'),
-            Text('Disponible: ${widget.viaje['disponible']}'),
-            Text('Nombre: ${widget.viaje['nombre']}'),
-            Text('Facultad: ${widget.viaje['facultad']}'),
-            Text('Correo: ${widget.viaje['correo']}'),
-            Text('Teléfono: ${widget.viaje['telefono']}'),
-            Image.network(widget.viaje['foto']),
-            Text('Calificación: ${widget.viaje['calificacion']}'),
-            // Botón para mostrar comentarios
-            ElevatedButton(
-              onPressed: () {
-                // Mostrar diálogo de comentarios
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return ComentariosDialogo(comentarios: comentarios);
-                  },
-                );
-              },
-              child: Text('todo los Comentarios'),
-            ),
-            // Botón para reservar viaje
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        ReservaPagina(viajeId: widget.viaje['id']),
+      body: Container(
+        decoration:
+            const BoxDecoration(color: Color.fromARGB(60, 255, 255, 255)),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 120,
+                    height: 120,
+                    decoration: BoxDecoration(
+                      color: Colors.orange,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: widget.viaje['foto'] != null
+                          ? Image.network(
+                              widget.viaje['foto'],
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                              height: double.infinity,
+                            )
+                          : Icon(Icons.person, size: 50, color: Colors.white),
+                    ),
                   ),
-                );
-              },
-              child: Text('RESERVAR'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        ComentarioPagina(viajeId: widget.viaje['id']),
+                  SizedBox(width: 6),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Container(
+                          child: Text(
+                            '${widget.viaje['destino']}',
+                            style: const TextStyle(
+                                color: Color(0xff0E402E), // Color del texto
+                                fontSize: 20,
+                                fontWeight:
+                                    FontWeight.bold // Tamaño de la fuente
+                                ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        children: [
+                          const Icon(
+                            FontAwesomeIcons.streetView,
+                            color: Color(0xffBF8756), // Color del icono
+                            size: 18, // Tamaño del icono
+                          ),
+                          const SizedBox(
+                            width: 4,
+                          ), // Espaciado entre el icono y el texto
+                          Text(
+                            '${widget.viaje['origen']}',
+                            style: const TextStyle(
+                              fontSize: 17,
+                              color: Color(0xff0E402E), // Color del texto
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        children: [
+                          const Icon(
+                            FontAwesomeIcons.clock,
+                            color: Color(0xffBF8756), // Color del icono
+                            size: 18, // Tamaño del icono
+                          ),
+                          const SizedBox(
+                            width: 4,
+                          ), // Espaciado entre el icono y el texto
+                          Text(
+                            '${widget.viaje['hora']}',
+                            style: const TextStyle(
+                                fontSize: 17,
+                                color: Color(0xff0E402E) // Color del texto
+                                ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.airline_seat_recline_normal,
+                            color: Color(0xffBF8756), // Color del icono
+                            size: 25, // Tamaño del icono
+                          ),
+                          const SizedBox(
+                            width: 4,
+                          ), // Espaciado entre el icono y el texto
+                          Text(
+                            '${widget.viaje['asiento']}',
+                            style: const TextStyle(
+                                fontSize: 17,
+                                color: Color(0xff0E402E) // Color del texto
+                                ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                );
-              },
-              child: Text('Calificar'),
-            ),
-          ],
+                ],
+              ),
+              const SizedBox(height: 5),
+              Row(
+                children: [
+                  const Icon(
+                    FontAwesomeIcons.carSide, // Icono para el detalle
+                    color: Color(0xffBF8756),
+                    size: 20, // Color del icono
+                  ),
+                  SizedBox(width: 5), // Espacio entre el icono y el texto
+                  Text(
+                    ' ${widget.viaje['detalle']}',
+                    style: const TextStyle(
+                      color: Color(0xff0E402E), // Color del texto
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 20),
+              const Text('Datos del Conductor:',
+                  style: TextStyle(
+                    fontSize: 19,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xff0E402E),
+                  )),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  const SizedBox(
+                    width: 18,
+                  ), // Espa
+                  const Icon(
+                    FontAwesomeIcons.solidUser,
+                    color: Color(0xff688C6A), // Color del icono
+                    size: 20, // Tamaño del icono
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ), // Espaciado entre el icono y el texto
+                  Text(
+                    '${widget.viaje['nombre']}',
+                    style: const TextStyle(
+                        fontSize: 17,
+                        color: Color(0xff0E402E) // Color del texto
+                        ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  const SizedBox(
+                    width: 18,
+                  ), // Espa
+                  const Icon(
+                    FontAwesomeIcons.envelopeCircleCheck,
+                    color: Color(0xff688C6A), // Color del icono
+                    size: 20, // Tamaño del icono
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ), // Espaciado entre el icono y el texto
+                  Text(
+                    '${widget.viaje['correo']}',
+                    style: const TextStyle(
+                        fontSize: 17,
+                        color: Color(0xff0E402E) // Color del texto
+                        ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  const SizedBox(
+                    width: 18,
+                  ), // Espa
+                  const Icon(
+                    FontAwesomeIcons.school,
+                    color: Color(0xff688C6A), // Color del icono
+                    size: 20, // Tamaño del icono
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ), // Espaciado entre el icono y el texto
+                  Text(
+                    '${widget.viaje['facultad']}',
+                    style: const TextStyle(
+                        fontSize: 17,
+                        color: Color(0xff0E402E) // Color del texto
+                        ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  const SizedBox(
+                    width: 18,
+                  ), // Espa
+                  const Icon(
+                    FontAwesomeIcons.phone,
+                    color: Color(0xff688C6A), // Color del icono
+                    size: 20, // Tamaño del icono
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ), // Espaciado entre el icono y el texto
+                  Text(
+                    '${widget.viaje['telefono']}',
+                    style: const TextStyle(
+                        fontSize: 17,
+                        color: Color(0xff0E402E) // Color del texto
+                        ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  const SizedBox(
+                    width: 18,
+                  ), // Espa
+                  const Icon(
+                    FontAwesomeIcons.solidStar,
+                    color: Color(0xff688C6A), // Color del icono
+                    size: 20, // Tamaño del icono
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ), // Espaciado entre el icono y el texto
+                  Text(
+                    '${widget.viaje['calificacion']}',
+                    style: const TextStyle(
+                        fontSize: 17,
+                        color: Color(0xff0E402E) // Color del texto
+                        ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              const Text('Comentarios:',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xff0E402E),
+                  )),
+              SizedBox(height: 10),
+
+              Text('Calificación: ${widget.viaje['calificacion']}'),
+              // Botón para mostrar comentarios
+              ElevatedButton(
+                onPressed: () {
+                  // Mostrar diálogo de comentarios
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return ComentariosDialogo(comentarios: comentarios);
+                    },
+                  );
+                },
+                child: Text('todo los Comentarios'),
+              ),
+              // Botón para reservar viaje
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          ReservaPagina(viajeId: widget.viaje['id']),
+                    ),
+                  );
+                },
+                child: Text('RESERVAR'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          ComentarioPagina(viajeId: widget.viaje['id']),
+                    ),
+                  );
+                },
+                child: Text('Calificar'),
+              ),
+            ],
+          ),
         ),
       ),
     );
