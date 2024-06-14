@@ -100,6 +100,72 @@ class _DetalleReservasState extends State<DetalleReservas> {
     );
   }
 
+  Future<void> _mostrarDialogoWhatsApp() async {
+    final TextEditingController _controller = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Enviar mensaje por WhatsApp'),
+          content: TextField(
+            controller: _controller,
+            decoration: InputDecoration(
+              hintText: 'Escribe tú mensaje',
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Enviar'),
+              onPressed: () async {
+                String phoneNumber =
+                    '+593998064828'; // Reemplaza con el número de teléfono del destinatario
+                String message = _controller.text;
+                String url =
+                    'https://wa.me/$phoneNumber?text=${Uri.encodeComponent(message)}';
+
+                if (await canLaunch(url)) {
+                  await launch(url);
+                  _controller.clear();
+                  Navigator.of(context)
+                      .pop(); // Cierra el diálogo de entrada de mensaje
+
+                  // Mostrar modal de "Enviado con éxito"
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Éxito'),
+                        content: Text('Mensaje enviado con éxito'),
+                        actions: <Widget>[
+                          TextButton(
+                            child: Text('OK'),
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .pop(); // Cierra el diálogo de confirmación
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else {
+                  throw 'No se pudo abrir el enlace $url';
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _launchWhatsapp(
       {required String number, required String message}) async {
     final String url =
@@ -290,20 +356,8 @@ class _DetalleReservasState extends State<DetalleReservas> {
                                   ),
                                   SizedBox(width: 16),
                                   GestureDetector(
-                                    onTap: () async {
-                                      String phoneNumber =
-                                          '+593998064828'; // Reemplaza con el número de teléfono del destinatario, sin el símbolo "+"
-                                      String message =
-                                          'Hola, estoy en el punto de encuentro, ¿dónde estás?'; // Mensaje que deseas enviar
-                                      String url =
-                                          'https://wa.me/$phoneNumber?text=${Uri.encodeComponent(message)}';
-
-                                      if (await canLaunch(url)) {
-                                        await launch(url);
-                                      } else {
-                                        throw 'No se pudo abrir el enlace $url';
-                                      }
-                                    },
+                                    onTap:
+                                        _mostrarDialogoWhatsApp, // Cambiamos la llamada a la función del modal
                                     child: Material(
                                       color: Colors.transparent,
                                       child: ClipOval(
@@ -322,6 +376,7 @@ class _DetalleReservasState extends State<DetalleReservas> {
                                       ),
                                     ),
                                   ),
+
                                   // Espacio entre los íconos
                                 ],
                               ),
