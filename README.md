@@ -19,19 +19,10 @@ Al utilizar "Wasiman", los estudiantes pueden:
 - **Gestión de reservas**: Los usuarios pueden acceder a una lista de sus reservas activas, con detalles completos como el nombre del conductor, horario y punto de encuentro.
 
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Demostración</title>
-</head>
-<body>
-    <h2>Video Demostración</h2>
-    <p>Para una mejor comprensión de cómo funciona la aplicación "Wasiman" y verla en acción, te invitamos a ver nuestro video demostrativo en Vimeo. El video comenzará a reproducirse automáticamente:</p>
-    <iframe src="https://player.vimeo.com/video/968799354?autoplay=1" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-</body>
-</html>
+## Video Demostración
 
+Para una mejor comprensión de cómo funciona la aplicación "Wasiman" y verla en acción, te invitamos a ver nuestro video demostrativo en Vimeo. Haz clic en la imagen para ver el video:
+
+[![Ver el video en Vimeo](https://i.ibb.co/smgYFxQ/Imagen1.jpg)](https://vimeo.com/968799354)
 
 
