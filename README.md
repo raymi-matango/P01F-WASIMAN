@@ -20,7 +20,17 @@ Al utilizar "Wasiman", los estudiantes pueden:
 
 ## Video Demostración
 
-Para una mejor comprensión de cómo funciona la aplicación "Wasiman" y verla en acción, te invitamos a ver nuestro video demostrativo en YouTube. El video comenzará a reproducirse automáticamente:
-
-[Ver video demostrativo](https://www.youtube.com/embed/liERj_CoaMA?autoplay=1)
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Demostración</title>
+</head>
+<body>
+    <h2>Video Demostración</h2>
+    <p>Para una mejor comprensión de cómo funciona la aplicación "Wasiman" y verla en acción, te invitamos a ver nuestro video demostrativo en Vimeo. El video comenzará a reproducirse automáticamente:</p>
+    <iframe src="https://player.vimeo.com/video/968799354?autoplay=1" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+</body>
+</html>
 
