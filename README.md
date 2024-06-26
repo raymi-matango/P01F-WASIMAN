@@ -17,10 +17,13 @@ Al utilizar "Wasiman", los estudiantes pueden:
 - **Búsqueda y visualización de viajes**: Facilita la búsqueda y visualización de viajes compartidos, permitiendo filtrar por destino, horario y conductor.
 - **Reserva de viaje**: Permite a los usuarios reservar un lugar en el viaje seleccionado, confirmando su participación en el trayecto.
 - **Gestión de reservas**: Los usuarios pueden acceder a una lista de sus reservas activas, con detalles completos como el nombre del conductor, horario y punto de encuentro.
+
+
 ## Video Demostración
 
 Para una mejor comprensión de cómo funciona la aplicación "Wasiman" y verla en acción, te invitamos a ver nuestro video demostrativo en Vimeo. Haz clic en el enlace para ver el video:
 
-[![Ver el video en Vimeo](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://vimeo.com/968799354)
+[![Ver el video en Vimeo](https://via.placeholder.com/640x360.png?text=Ver+el+video+en+Vimeo)](https://vimeo.com/968799354)
+
 
 
