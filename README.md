@@ -23,10 +23,10 @@ Al utilizar "Wasiman", los estudiantes pueden:
 
 Para una mejor comprensión de cómo funciona la aplicación "Wasiman" y verla en acción, te invitamos a ver nuestro video demostrativo en Vimeo. Haz clic en la imagen para ver el video:
 
-<div align="center">
+<div align="center" style="position: relative; display: inline-block;">
   <a href="https://vimeo.com/968799354" target="_blank">
-    <img src="https://i.ibb.co/1nPddDz/Imagen1.jpg" alt="Ver el video en Vimeo" style="width:50%; max-width:300px; position: relative;">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Video-play-icon.png" alt="Play Icon" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 20%; opacity: 0.8;">
+    <img src="https://i.ibb.co/smgYFxQ/Imagen1.jpg" alt="Ver el video en Vimeo" style="width:50%; max-width:300px;">
+    <img src="https://img.icons8.com/?size=100&id=yZXTvV3Fz6vE&format=png&color=000000" alt="Play Icon" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 20%; opacity: 0.8;">
   </a>
 </div>
 
