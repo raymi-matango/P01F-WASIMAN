@@ -24,6 +24,6 @@ Para una mejor comprensión de cómo funciona la aplicación "Wasiman" y verla e
 
 <div align="center">
   <a href="https://vimeo.com/968799354" target="_blank">
-    <img src="https://i.ibb.co/1nPddDz/Imagen1.jpg" alt="Ver el video en Vimeo" style="width:50%; max-width:300px;">
+    <img src="https://i.ibb.co/1nPddDz/Imagen1.jpg" alt="Ver el video en Vimeo" style="width:50%; max-width:100px;">
   </a>
 </div>
