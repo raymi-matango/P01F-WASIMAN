@@ -23,7 +23,7 @@ Al utilizar "Wasiman", los estudiantes pueden:
 
 Para una mejor comprensión de cómo funciona la aplicación "Wasiman" y verla en acción, te invitamos a ver nuestro video demostrativo en Vimeo. Haz clic en la imagen para ver el video:
 
-[![Ver el video en Vimeo](https://i.ibb.co/pvDndgh/grano10.jpg](https://vimeo.com/968799354)
+[![Ver el video en Vimeo](https://i.ibb.co/pvDndgh/grano10.jpg)](https://vimeo.com/968799354)
 
 
 
